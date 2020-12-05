@@ -78,7 +78,7 @@
             <url>https://maven.pkg.github.com/${github.account}/${project.artifactId}</url>
         </snapshotRepository>
         <site>
-            <id>my.git.server</id>
+            <id>github.pages</id>
             <url>scm:git:ssh://git@github.com/${github.account}/${project.artifactId}</url>
         </site>
     </distributionManagement>
