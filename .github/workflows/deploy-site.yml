@@ -1,6 +1,8 @@
 name: Java CI
-# on every push
-on: [push]
+# on every push on develop branch
+  push:
+    branches:
+      - develop
 
 jobs:
   maven-build:
@@ -25,7 +27,5 @@ jobs:
       # and build the projet with a specific maven settings.xml
       # it contains env variables from github secrets for the credentials
       # to github, dockerhub and bintray
-      - name: Build and test with Maven
-        run: mvn -B --settings ci-settings.xml clean verify
-      - name: Deploy Maven Artifact
-        run: mvn -B --settings ci-settings.xml deploy
+      - name: Build with Maven
+        run: mvn -B --settings ci-settings.xml verify deploy-site
