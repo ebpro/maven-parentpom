@@ -26,7 +26,4 @@ jobs:
       # it contains env variables from github secrets for the credentials
       # to github, dockerhub and bintray
       - name: Build with Maven
-        run: mvn -B \
-          --file pom.xml \
-          --settings ci-settings.xml \
-          verify
+        run: mvn -B --settings ci-settings.xml verify
