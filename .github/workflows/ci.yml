@@ -33,7 +33,7 @@ env:
   SONAR_TOKEN: ${{secrets.SONAR_TOKEN}}
 
 jobs:
-  # This job build, test and package the artefact
+  # This job build, test, package and deploy the artefact
   maven-build:
     # The tags on the runner
     runs-on: [self-hosted, Linux]
@@ -69,5 +69,5 @@ jobs:
     if: github.ref == 'refs/heads/develop'
     steps:
       - name: Build and deploy site with Maven
-        run: mvn -B --settings ci-settings.xml verify site:deploy
+        run: mvn -B --settings ci-settings.xml site:site site:deploy
 
