@@ -3,96 +3,11 @@
 
     <modelVersion>4.0.0</modelVersion>
 
+    <!-- The Basics -->
     <groupId>fr.univtln.bruno.demos.poms</groupId>
     <artifactId>demoparentpom</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>pom</packaging>
-
-    <properties>
-        <github.account>emmanuelbruno</github.account>
-        <app.main.class></app.main.class>
-
-        <!-- github server corresponds to entry in ~/.m2/settings.xml -->
-        <github.global.server>github</github.global.server>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <maven.compiler.release>8</maven.compiler.release>
-    </properties>
-
-    <name>Demo Parent POM</name>
-
-    <description>A parent POM from the Demos</description>
-    <url>https://${github.account}.github.io/${project.artifactId}/</url>
-    <inceptionYear>2020</inceptionYear>
-
-    <organization>
-        <name>Université de Toulon</name>
-        <url>http://www.univ-tln.fr</url>
-    </organization>
-
-    <developers>
-        <developer>
-            <id>emmanuelbruno</id>
-            <name>Emmanuel Bruno</name>
-            <email>emmanuel.bruno@univ-tln.fr</email>
-            <url>http://bruno.univ-tln.fr</url>
-            <organization>Université de Toulon</organization>
-            <organizationUrl>http://www.univ-tln.fr</organizationUrl>
-            <roles>
-                <role>architect</role>
-                <role>developer</role>
-            </roles>
-            <timezone>Europe/Paris</timezone>
-        </developer>
-    </developers>
-
-    <scm>
-        <url>https://github.com/${github.account}/${project.artifactId}/tree/${project.scm.tag}</url>
-        <connection>scm:git:git@github.com:${github.account}/${project.artifactId}.git</connection>
-        <developerConnection>scm:git:git@github.com:${github.account}/${project.artifactId}.git</developerConnection>
-    </scm>
-
-    <repositories>
-        <repository>
-            <id>central</id>
-            <url>https://repo1.maven.org/maven2</url>
-            <releases><enabled>true</enabled></releases>
-            <snapshots><enabled>true</enabled></snapshots>
-        </repository>
-        <repository>
-            <id>github</id>
-            <name>GitHub Packages</name>
-            <url>https://maven.pkg.github.com/${github.account}/${project.artifactId}</url>
-        </repository>
-    </repositories>
-
-    <distributionManagement>
-        <repository>
-            <id>github</id>
-            <name>GitHub Packages</name>
-            <url>https://maven.pkg.github.com/${github.account}/${project.artifactId}</url>
-        </repository>
-        <snapshotRepository>
-            <id>github</id>
-            <name>GitHub Packages</name>
-            <url>https://maven.pkg.github.com/${github.account}/${project.artifactId}</url>
-        </snapshotRepository>
-        <site>
-            <id>github.pages</id>
-            <url>scm:git:ssh://git@github.com/${github.account}/${project.artifactId}</url>
-        </site>
-    </distributionManagement>
-
-    <issueManagement>
-        <system>GitHub</system>
-        <url>https://github.com/${github.account}/${project.artifactId}/issues</url>
-    </issueManagement>
-
-    <ciManagement>
-        <system>Travis</system>
-        <url>https://travis-ci.org/${github.account}/${project.artifactId}</url>
-    </ciManagement>
-
     <dependencyManagement>
         <dependencies>
             <dependency>
@@ -101,46 +16,54 @@
                 <version>4.13.1</version>
                 <scope>test</scope>
             </dependency>
-
             <dependency>
                 <groupId>org.projectlombok</groupId>
                 <artifactId>lombok</artifactId>
                 <version>1.18.16</version>
                 <scope>provided</scope>
             </dependency>
-
         </dependencies>
     </dependencyManagement>
+    <properties>
+        <github.account>emmanuelbruno</github.account>
+        <app.main.class></app.main.class>
+        <!-- github server corresponds to entry in ~/.m2/settings.xml -->
+        <github.global.server>github</github.global.server>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <maven.compiler.release>8</maven.compiler.release>
+    </properties>
 
+    <!-- Build Settings -->
     <build>
-
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-site-plugin</artifactId>
-                <version>3.9.0</version>
-                <dependencies>
-                    <dependency>
-                        <groupId>org.apache.maven.doxia</groupId>
-                        <artifactId>doxia-module-markdown</artifactId>
-                        <version>1.9.1</version>
-                    </dependency>
-                    <dependency>
-                        <groupId>org.apache.maven.scm</groupId>
-                        <artifactId>maven-scm-provider-gitexe</artifactId>
-                        <version>1.11.2</version>
-                    </dependency>
-                    <dependency>
-                        <groupId>org.apache.maven.wagon</groupId>
-                        <artifactId>wagon-scm</artifactId>
-                        <version>3.4.2</version>
-                    </dependency>
-                    <dependency>
-                        <groupId>org.apache.maven.scm</groupId>
-                        <artifactId>maven-scm-manager-plexus</artifactId>
-                        <version>1.11.1</version>
-                    </dependency>
-                </dependencies>
+                <version>3.9.1</version>
+                <executions>
+                    <execution>
+                        <id>stage-for-scm-publish</id>
+                        <phase>post-site</phase>
+                        <goals>
+                            <goal>stage</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-scm-publish-plugin</artifactId>
+                <version>3.0.0</version>
+                <executions>
+                    <execution>
+                        <id>scm-publish</id>
+                        <phase>site-deploy</phase>
+                        <goals>
+                            <goal>publish-scm</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
 
             <plugin>
@@ -156,7 +79,7 @@
                         <configuration>
                             <rules>
                                 <requireMavenVersion>
-                                    <version>3.0.5</version>
+                                    <version>3.5.4</version>
                                 </requireMavenVersion>
                                 <requireJavaVersion>
                                     <version>1.8</version>
@@ -166,13 +89,35 @@
                     </execution>
                 </executions>
             </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>license-maven-plugin</artifactId>
+                <version>2.0.0</version>
+                <configuration>
+                    <licenseName>mit</licenseName>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>first</id>
+                        <goals>
+                            <goal>update-file-header</goal>
+                        </goals>
+                        <phase>process-sources</phase>
+                    </execution>
+                </executions>
+            </plugin>
         </plugins>
 
         <!-- Centralized plugin configuration. These plugins have to be
         explicitly activated in children projects. Versions are given to ensure
         build repeatability. -->
         <pluginManagement>
+
             <plugins>
+
+
+
+
                 <!-- The maven compiler. https://maven.apache.org/plugins/maven-compiler-plugin/
                 It sets the source and target java version.
                 mvn compile
@@ -181,10 +126,6 @@
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-compiler-plugin</artifactId>
                     <version>3.8.1</version>
-                    <configuration>
-                        <source>${java.version}</source>
-                        <target>${java.version}</target>
-                    </configuration>
                 </plugin>
 
                 <!-- Creates a jar of the sources of the project in the target directory.
@@ -234,7 +175,7 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-install-plugin</artifactId>
-                    <version>2.5.2</version>
+                    <version>3.0.0-M1</version>
                 </plugin>
 
                 <plugin>
@@ -304,12 +245,12 @@
                 -->
                 <plugin>
                     <artifactId>maven-surefire-plugin</artifactId>
-                    <version>3.0.0-M3</version>
+                    <version>3.0.0-M4</version>
                 </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-surefire-report-plugin</artifactId>
-                    <version>3.0.0-M3</version>
+                    <version>3.0.0-M4</version>
                     <configuration>
                         <aggregate>true</aggregate>
                         <linkXRef>true</linkXRef>
@@ -324,7 +265,7 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-failsafe-plugin</artifactId>
-                    <version>3.0.0-M3</version>
+                    <version>3.0.0-M4</version>
                     <executions>
                         <execution>
                             <goals>
@@ -356,14 +297,11 @@
                 mvn site:run launches de
                 a web server see http://localhost:8080/
                 -->
-                <plugin>
+                <!--plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-site-plugin</artifactId>
                     <version>3.9.0</version>
-                    <configuration>
-                        <locales>en,fr</locales>
-                    </configuration>
-                    <dependencies>
+                   <dependencies>
                         <dependency>
                             <groupId>org.apache.maven.doxia</groupId>
                             <artifactId>doxia-module-markdown</artifactId>
@@ -379,6 +317,13 @@
                             </goals>
                         </execution>
                     </executions>
+                </plugin-->
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-site-plugin</artifactId>
+                    <configuration>
+                        <skipDeploy>true</skipDeploy>
+                    </configuration>
                 </plugin>
 
                 <!-- This plugins implements the gitflow branching model (http://nvie.com/git-model,
@@ -500,6 +445,7 @@
                         <!-- The shaded artifact is not the main artifact -->
                         <shadedArtifactAttached>true</shadedArtifactAttached>
                         <shadedClassifierName>withdependencies</shadedClassifierName>
+
                         <transformers>
                             <!-- merge services ressource for SPI -->
                             <transformer
@@ -544,6 +490,42 @@
                         </execution>
                     </executions>
                 </plugin>
+
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-assembly-plugin</artifactId>
+                    <version>3.3.0</version>
+                </plugin>
+
+                <!-- configuration of the SCM plugin to deploy github pages in a dedicated branch -->
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-scm-publish-plugin</artifactId>
+                    <version>3.0.0</version>
+                    <configuration>
+                        <pubScmUrl>${project.scm.developerConnection}</pubScmUrl>
+                        <scmBranch>gh-pages</scmBranch>
+                    </configuration>
+                </plugin>
+
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-dependency-plugin</artifactId>
+                    <version>3.1.2</version>
+                </plugin>
+
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-release-plugin</artifactId>
+                    <version>3.0.0-M1</version>
+                </plugin>
+
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-antrun-plugin</artifactId>
+                    <version>3.0.0</version>
+                </plugin>
+
             </plugins>
         </pluginManagement>
     </build>
@@ -557,30 +539,35 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-project-info-reports-plugin</artifactId>
-                <version>3.0.0</version>
+                <version>3.1.1</version>
                 <configuration>
                     <!--dependencyLocationsEnabled>false</dependencyLocationsEnabled-->
                 </configuration>
                 <reportSets>
                     <reportSet>
                         <reports>
-                            <report>ci-management</report>
-                            <report>dependencies</report>
-                            <report>dependency-convergence</report>
+                            <report>summary</report>
                             <report>dependency-info</report>
-                            <report>dependency-management</report>
+                            <report>team</report>
+                            <report>scm</report>
                             <report>distribution-management</report>
-                            <!--report>help</report-->
-                            <report>index</report>
                             <report>issue-management</report>
-                            <report>licenses</report>
                             <report>mailing-lists</report>
+
+                            <report>ci-management</report>
+
+                            <report>dependencies</report>
+                            <!--report>dependency-convergence</report-->
+                            <report>dependency-management</report>
+
+
+                            <report>index</report>
+
+                            <report>licenses</report>
+
                             <report>modules</report>
                             <report>plugin-management</report>
                             <report>plugins</report>
-                            <report>team</report>
-                            <report>scm</report>
-                            <report>summary</report>
                         </reports>
                     </reportSet>
                 </reportSets>
@@ -597,7 +584,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-javadoc-plugin</artifactId>
-                <version>3.0.0-M1</version>
+                <version>3.2.0</version>
                 <configuration>
                     <show>public</show>
                 </configuration>
@@ -606,7 +593,7 @@
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>versions-maven-plugin</artifactId>
-                <version>2.7</version>
+                <version>2.8.1</version>
                 <reportSets>
                     <reportSet>
                         <reports>
@@ -618,7 +605,90 @@
                 </reportSets>
             </plugin>
 
+
         </plugins>
     </reporting>
+
+    <!-- More Project Information -->
+    <name>Demo Parent POM</name>
+    <description>A parent POM from the Demos</description>
+    <url>https://${github.account}.github.io/${project.artifactId}/</url>
+    <inceptionYear>2020</inceptionYear>
+    <licenses>
+        <license>
+            <name>mit</name>
+        </license>
+    </licenses>
+    <organization>
+        <name>Université de Toulon</name>
+        <url>http://www.univ-tln.fr</url>
+    </organization>
+    <developers>
+        <developer>
+            <id>emmanuelbruno</id>
+            <name>Emmanuel Bruno</name>
+            <email>emmanuel.bruno@univ-tln.fr</email>
+            <url>http://bruno.univ-tln.fr</url>
+            <organization>Université de Toulon</organization>
+            <organizationUrl>http://www.univ-tln.fr</organizationUrl>
+            <roles>
+                <role>architect</role>
+                <role>developer</role>
+            </roles>
+            <timezone>Europe/Paris</timezone>
+        </developer>
+    </developers>
+
+    <!-- Environment Settings -->
+    <issueManagement>
+        <system>GitHub</system>
+        <url>https://github.com/${github.account}/${project.artifactId}/issues</url>
+    </issueManagement>
+    <!--ciManagement>
+        <system>Travis</system>
+        <url>https://travis-ci.org/${github.account}/${project.artifactId}</url>
+    </ciManagement-->
+    <ciManagement>
+        <system>Github Actions</system>
+        <url>https://github.com/${github.account}/${project.artifactId}/actions</url>
+    </ciManagement>
+    <scm>
+        <url>https://github.com/${github.account}/${project.artifactId}/tree/${project.scm.tag}</url>
+        <connection>scm:git:git@github.com:${github.account}/${project.artifactId}.git</connection>
+        <developerConnection>scm:git:git@github.com:${github.account}/${project.artifactId}.git</developerConnection>
+    </scm>
+    <repositories>
+        <repository>
+            <id>central</id>
+            <url>https://repo1.maven.org/maven2</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </repository>
+        <repository>
+            <id>github</id>
+            <name>GitHub Packages</name>
+            <url>https://maven.pkg.github.com/${github.account}/${project.artifactId}</url>
+        </repository>
+    </repositories>
+    <distributionManagement>
+        <repository>
+            <id>github</id>
+            <name>GitHub Packages</name>
+            <url>https://maven.pkg.github.com/${github.account}/${project.artifactId}</url>
+        </repository>
+        <snapshotRepository>
+            <id>github</id>
+            <name>GitHub Packages</name>
+            <url>https://maven.pkg.github.com/${github.account}/${project.artifactId}</url>
+        </snapshotRepository>
+        <site>
+            <id>github.pages</id>
+            <url>scm:git:ssh://git@github.com/${github.account}/${project.artifactId}</url>
+        </site>
+    </distributionManagement>
 
 </project>
