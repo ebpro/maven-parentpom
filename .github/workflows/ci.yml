@@ -59,7 +59,6 @@ jobs:
       - name: Build and test with Maven in docker
         #run: mvn -B --settings .github/ci-settings.xml clean verify
         run: ./mvn.sh clean verify
-      - name: check token
       - name: Deploy Maven Artifact
         #run: mvn -B --settings .github/ci-settings.xml deploy
         run: ./mvn.sh deploy
