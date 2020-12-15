@@ -1,5 +1,4 @@
 #/bin/bash
-echo $GITHUBPASSWORD
 docker run \
           -e GITHUBLOGIN=$GITHUBLOGIN \
           -e GITHUBPASSWORD=$GITHUBPASSWORD \
