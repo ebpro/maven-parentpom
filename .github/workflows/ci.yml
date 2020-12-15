@@ -46,13 +46,16 @@ jobs:
         uses: actions/setup-java@v1
         with:
           java-version: 1.8
-      # sets a cache between builds for the maven repository
-      - name: Cache Maven packages
-        uses: actions/cache@v2
-        with:
-          path: ~/.m2
-          key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
-          restore-keys: ${{ runner.os }}-m2
+
+      ## TOO SLOW WITH A SELF HOSTED RUNNER
+      ## sets a cache between builds for the maven repository
+      #- name: Cache Maven packages
+      #  uses: actions/cache@v2
+      #  with:
+      #    path: ~/.m2
+      #    key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
+      #    restore-keys: ${{ runner.os }}-m2
+
       # and build the projet with a specific maven settings.xml
       # it contains env variables from github secrets for the credentials
       # to github, dockerhub and bintray

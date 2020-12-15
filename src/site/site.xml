@@ -53,7 +53,7 @@
             <item name="Readme" href="README.html" />
         </menu>
 
-        <menu ref="parent" inherit="top" />
+        <!--menu ref="parent" inherit="top" /-->
         <menu ref="reports" inherit="top" />
         <menu ref="modules" inherit="top" />
     </body>

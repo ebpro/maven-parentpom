@@ -26,7 +26,7 @@
     </dependencyManagement>
     <properties>
         <github.account>emmanuelbruno</github.account>
-        <app.main.class></app.main.class>
+        <app.main.class />
         <!-- github server corresponds to entry in ~/.m2/settings.xml -->
         <github.global.server>github</github.global.server>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -402,7 +402,7 @@
                             <featureBranchPrefix>feature/</featureBranchPrefix>
                             <releaseBranchPrefix>release/</releaseBranchPrefix>
                             <hotfixBranchPrefix>hotfix/</hotfixBranchPrefix>
-                            <versionTagPrefix></versionTagPrefix>
+                            <versionTagPrefix />
                         </flowInitContext>
                     </configuration>
                 </plugin>
