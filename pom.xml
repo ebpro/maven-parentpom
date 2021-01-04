@@ -498,13 +498,25 @@
                 </plugin>
 
                 <!-- configuration of the SCM plugin to deploy github pages in a dedicated branch -->
+                <!--
+                Initial creation of the branch has to be done manually, as a Git orphan branch:
+                1. git checkout - -orphan gh-pages to create the branch locally,
+                2. rm .git/index ; git clean -fdx to clean the branch content and let it empy,
+                3. copy an initial site content,
+                4. commit and push: git add *, git commit -m "initial site content", git push
+                -->
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-scm-publish-plugin</artifactId>
-                    <version>3.0.0</version>
+                    <version>3.1.0</version>
                     <configuration>
-                        <pubScmUrl>${project.scm.developerConnection}</pubScmUrl>
+                        <!--providerImplementations>
+                            <git>jgit</git>
+                        </providerImplementations-->
+                        <pubScmUrl>scm:git:https://github.com/${github.account}/${project.artifactId}</pubScmUrl>
                         <scmBranch>gh-pages</scmBranch>
+                        <username>${env.GITHUBLOGIN}</username>
+                        <password>${env.GITHUBPASSWORD}</password>
                     </configuration>
                 </plugin>
 
