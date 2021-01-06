@@ -33,6 +33,13 @@
                 <scope>provided</scope>
             </dependency>
 
+            <!-- Eclipse Collections -->
+            <dependency>
+                <groupId>org.eclipse.collections</groupId>
+                <artifactId>eclipse-collections</artifactId>
+                <version>10.4.0</version>
+            </dependency>
+
             <!-- JDBC -->
             <dependency>
                 <groupId>com.h2database</groupId>
@@ -59,21 +66,52 @@
                 <artifactId>jakarta.el</artifactId>
                 <version>3.0.3</version>
             </dependency>
+
+            <!-- JWT -->
+            <dependency>
+                <groupId>io.jsonwebtoken</groupId>
+                <artifactId>jjwt-api</artifactId>
+                <version>${jjwt.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.jsonwebtoken</groupId>
+                <artifactId>jjwt-impl</artifactId>
+                <version>${jjwt.version}</version>
+                <scope>runtime</scope>
+            </dependency>
+            <dependency>
+                <groupId>io.jsonwebtoken</groupId>
+                <artifactId>jjwt-jackson</artifactId>
+                <version>${jjwt.version}</version>
+                <scope>runtime</scope>
+            </dependency>
+
+
         </dependencies>
     </dependencyManagement>
     <properties>
+        <!-- These two properties should be overriden in sub projects -->
         <github.account>ebpro</github.account>
         <app.main.class />
+
         <!-- github server corresponds to entry in ~/.m2/settings.xml -->
         <github.global.server>github</github.global.server>
+
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+
         <maven.compiler.release>11</maven.compiler.release>
         <!-- still needed for sonar -->
         <maven.compiler.source>${maven.compiler.release}</maven.compiler.source>
         <maven.compiler.target>${maven.compiler.release}</maven.compiler.target>
+
         <sonar.java.coveragePlugin>jacoco</sonar.java.coveragePlugin>
+
         <junit.version>5.7.0</junit.version>
+
+        <!-- JAXRS -->
+        <jersey.version>3.0.0</jersey.version>
+        <jjwt.version>0.11.2</jjwt.version>
     </properties>
 
     <!-- Build Settings -->
