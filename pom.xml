@@ -10,7 +10,7 @@
     <packaging>pom</packaging>
     <dependencyManagement>
         <dependencies>
-
+            <!-- Junit -->
             <dependency>
                 <groupId>org.junit.jupiter</groupId>
                 <artifactId>junit-jupiter-engine</artifactId>
@@ -25,11 +25,39 @@
                 <scope>test</scope>
             </dependency>
 
+            <!-- Lombok -->
             <dependency>
                 <groupId>org.projectlombok</groupId>
                 <artifactId>lombok</artifactId>
                 <version>1.18.16</version>
                 <scope>provided</scope>
+            </dependency>
+
+            <!-- JDBC -->
+            <dependency>
+                <groupId>com.h2database</groupId>
+                <artifactId>h2</artifactId>
+                <version>1.4.200</version>
+            </dependency>
+
+            <!-- JPA -->
+            <dependency>
+                <groupId>jakarta.persistence</groupId>
+                <artifactId>jakarta.persistence-api</artifactId>
+                <version>3.0.0</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.eclipse.persistence</groupId>
+                <artifactId>eclipselink</artifactId>
+                <version>3.0.0</version>
+            </dependency>
+
+            <!-- EL -->
+            <dependency>
+                <groupId>org.glassfish</groupId>
+                <artifactId>jakarta.el</artifactId>
+                <version>3.0.3</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
@@ -41,6 +69,10 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <maven.compiler.release>11</maven.compiler.release>
+        <!-- still needed for sonar -->
+        <maven.compiler.source>${maven.compiler.release}</maven.compiler.source>
+        <maven.compiler.target>${maven.compiler.release}</maven.compiler.target>
+        <sonar.java.coveragePlugin>jacoco</sonar.java.coveragePlugin>
         <junit.version>5.7.0</junit.version>
     </properties>
 
@@ -124,10 +156,6 @@
         <pluginManagement>
 
             <plugins>
-
-
-
-
                 <!-- The maven compiler. https://maven.apache.org/plugins/maven-compiler-plugin/
                 It sets the source and target java version.
                 mvn compile
@@ -526,6 +554,34 @@
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-antrun-plugin</artifactId>
                     <version>3.0.0</version>
+                </plugin>
+
+                <!-- Sonarqube -->
+                <plugin>
+                    <groupId>org.sonarsource.scanner.maven</groupId>
+                    <artifactId>sonar-maven-plugin</artifactId>
+                    <version>3.7.0.1746</version>
+                </plugin>
+
+                <plugin>
+                    <groupId>org.jacoco</groupId>
+                    <artifactId>jacoco-maven-plugin</artifactId>
+                    <version>0.8.6</version>
+
+                    <executions>
+                        <execution>
+                            <goals>
+                                <goal>prepare-agent</goal>
+                                <goal>report</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
+
+                <plugin>
+                    <groupId>io.github.r0bb3n</groupId>
+                    <artifactId>sonar-quality-gate-maven-plugin</artifactId>
+                    <version>1.0.2</version>
                 </plugin>
 
             </plugins>
