@@ -10,12 +10,21 @@
     <packaging>pom</packaging>
     <dependencyManagement>
         <dependencies>
+
             <dependency>
-                <groupId>junit</groupId>
-                <artifactId>junit</artifactId>
-                <version>4.13.1</version>
+                <groupId>org.junit.jupiter</groupId>
+                <artifactId>junit-jupiter-engine</artifactId>
+                <version>${junit.version}</version>
                 <scope>test</scope>
             </dependency>
+
+            <dependency>
+                <groupId>org.junit.vintage</groupId>
+                <artifactId>junit-vintage-engine</artifactId>
+                <version>${junit.version}</version>
+                <scope>test</scope>
+            </dependency>
+
             <dependency>
                 <groupId>org.projectlombok</groupId>
                 <artifactId>lombok</artifactId>
@@ -32,6 +41,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <maven.compiler.release>11</maven.compiler.release>
+        <junit.version>5.7.0</junit.version>
     </properties>
 
     <!-- Build Settings -->
@@ -279,7 +289,7 @@
                 <!-- Generate of web site for the project. It includes static and dynamic pages,
                 and several reports.
                 See <reporting> below.
-                See the directory src/site in simplejava exemple .
+                See the directory src/site
                 https://maven.apache.org/plugins/maven-site-plugin/
 
                 mvn site
@@ -297,27 +307,6 @@
                 mvn site:run launches de
                 a web server see http://localhost:8080/
                 -->
-                <!--plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-site-plugin</artifactId>
-                    <version>3.9.0</version>
-                   <dependencies>
-                        <dependency>
-                            <groupId>org.apache.maven.doxia</groupId>
-                            <artifactId>doxia-module-markdown</artifactId>
-                            <version>1.9.1</version>
-                        </dependency>
-
-                    </dependencies>
-                    <executions>
-                        <execution>
-                            <id>attach-descriptor</id>
-                            <goals>
-                                <goal>attach-descriptor</goal>
-                            </goals>
-                        </execution>
-                    </executions>
-                </plugin-->
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-site-plugin</artifactId>
@@ -392,6 +381,7 @@
 
                         <!-- A VOIR -->
                         <featureRebase>true</featureRebase>
+
 
                         <!--pullDevelop>true</pullDevelop>
                         <pullMaster>true</pullMaster-->
@@ -545,7 +535,7 @@
     <!-- See maven:site plugin -->
     <reporting>
         <excludeDefaults>true</excludeDefaults>
-        <outputDirectory>${project.build.directory}/site</outputDirectory>
+        <!--outputDirectory>${project.build.directory}/site</outputDirectory-->
         <plugins>
 
             <plugin>
@@ -565,18 +555,12 @@
                             <report>distribution-management</report>
                             <report>issue-management</report>
                             <report>mailing-lists</report>
-
                             <report>ci-management</report>
-
                             <report>dependencies</report>
                             <!--report>dependency-convergence</report-->
                             <report>dependency-management</report>
-
-
                             <report>index</report>
-
                             <report>licenses</report>
-
                             <report>modules</report>
                             <report>plugin-management</report>
                             <report>plugins</report>
@@ -598,8 +582,27 @@
                 <artifactId>maven-javadoc-plugin</artifactId>
                 <version>3.2.0</version>
                 <configuration>
-                    <show>public</show>
                 </configuration>
+                <reportSets>
+                    <reportSet>
+                        <id>default</id>
+                        <configuration>
+                            <show>public</show>
+                        </configuration>
+                        <reports>
+                            <report>javadoc</report>
+                            <!--report>test-javadoc</report-->
+                        </reports>
+                    </reportSet>
+                    <!--reportSet>
+                        <id>aggregate</id>
+                        <configuration>
+                        </configuration>
+                        <reports>
+                            <report>aggregate</report>
+                        </reports>
+                    </reportSet-->
+                </reportSets>
             </plugin>
 
             <plugin>
@@ -616,7 +619,6 @@
                     </reportSet>
                 </reportSets>
             </plugin>
-
 
         </plugins>
     </reporting>
