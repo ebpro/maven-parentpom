@@ -51,6 +51,16 @@ jobs:
             notification-summary: Builded and deployed.
             notification-color: 17a2b8
             timezone: Europe/Paris
+      - uses: skitionek/notify-microsoft-teams@master
+        if: success()
+        with:
+          webhook_url: ${{ secrets.MSTEAMS_WEBHOOK }}
+          overwrite: "{title: `${GITHUB_REPOSITORY}/${GITHUB_BASE_REF} Builded and deployed.`}"
+      - uses: skitionek/notify-microsoft-teams@master
+        if: failure()
+        with:
+          webhook_url: ${{ secrets.MSTEAMS_WEBHOOK }}
+          overwrite: "{title: `${GITHUB_REPOSITORY}/${GITHUB_BASE_REF} Failure to build and deploy.`}"
 
   # This job publish the site for develop branch
   maven-site:
@@ -68,3 +78,13 @@ jobs:
             notification-summary: Web site updated.
             notification-color: 17a2b8
             timezone: Europe/Paris
+      - uses: skitionek/notify-microsoft-teams@master
+        if: success()
+        with:
+          webhook_url: ${{ secrets.MSTEAMS_WEBHOOK }}
+          overwrite: "{title: `${GITHUB_REPOSITORY}/${GITHUB_BASE_REF} WebSite deployed`}"
+      - uses: skitionek/notify-microsoft-teams@master
+        if: failure()
+        with:
+          webhook_url: ${{ secrets.MSTEAMS_WEBHOOK }}
+          overwrite: "{title: `${GITHUB_REPOSITORY}/${GITHUB_BASE_REF} Failure to deploy Website.`}"
