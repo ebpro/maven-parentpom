@@ -48,7 +48,7 @@ jobs:
         with:
             github-token: ${{secrets.GITHUBPASSWORD}}
             ms-teams-webhook-uri: ${{secrets.MSTEAMS_WEBHOOK}}
-            notification-summary: $GITHUB_REPOSITORY/$GITHUB_BASE_REF builded and deployed.
+            notification-summary: Builded and deployed.
             notification-color: 17a2b8
             timezone: Europe/Paris
 
@@ -65,6 +65,6 @@ jobs:
         with:
             github-token: ${{secrets.GITHUBPASSWORD}}
             ms-teams-webhook-uri: ${{secrets.MSTEAMS_WEBHOOK}}
-            notification-summary: $GITHUB_REPOSITORY/$GITHUB_BASE_REF Web site updated.
+            notification-summary: Web site updated.
             notification-color: 17a2b8
             timezone: Europe/Paris
