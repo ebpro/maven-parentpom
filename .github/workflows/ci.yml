@@ -55,11 +55,17 @@ jobs:
         if: success()
         with:
           webhook_url: ${{ secrets.MSTEAMS_WEBHOOK }}
+          needs: ${{ toJson(needs) }}
+          job: ${{ toJson(job) }}
+          steps: ${{ toJson(steps) }}
           overwrite: "{title: `Builded and deployed.`}"
       - uses: skitionek/notify-microsoft-teams@master
         if: failure()
         with:
           webhook_url: ${{ secrets.MSTEAMS_WEBHOOK }}
+          needs: ${{ toJson(needs) }}
+          job: ${{ toJson(job) }}
+          steps: ${{ toJson(steps) }}
           overwrite: "{title: `Failure to build and deploy.`}"
 
   # This job publish the site for develop branch
@@ -82,9 +88,15 @@ jobs:
         if: success()
         with:
           webhook_url: ${{ secrets.MSTEAMS_WEBHOOK }}
+          needs: ${{ toJson(needs) }}
+          job: ${{ toJson(job) }}
+          steps: ${{ toJson(steps) }}
           overwrite: "{title: `WebSite deployed`}"
       - uses: skitionek/notify-microsoft-teams@master
         if: failure()
         with:
           webhook_url: ${{ secrets.MSTEAMS_WEBHOOK }}
+          needs: ${{ toJson(needs) }}
+          job: ${{ toJson(job) }}
+          steps: ${{ toJson(steps) }}
           overwrite: "{title: `Failure to deploy Website.`}"
