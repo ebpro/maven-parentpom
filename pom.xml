@@ -111,6 +111,15 @@
                 <version>7.0.0.Final</version>
             </dependency>
 
+            <!-- JAXRS -->
+            <dependency>
+                <groupId>org.glassfish.jersey</groupId>
+                <artifactId>jersey-bom</artifactId>
+                <version>${jersey.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
         </dependencies>
     </dependencyManagement>
     <properties>
