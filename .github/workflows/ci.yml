@@ -44,13 +44,6 @@ jobs:
         run: ./mvn.sh clean verify
       - name: Deploy Maven Artifacts
         run: ./mvn.sh deploy
-      - uses: jdcargile/ms-teams-notification@v1.3
-        with:
-            github-token: ${{secrets.GITHUBPASSWORD}}
-            ms-teams-webhook-uri: ${{secrets.MSTEAMS_WEBHOOK}}
-            notification-summary: Builded and deployed.
-            notification-color: 17a2b8
-            timezone: Europe/Paris
       - uses: skitionek/notify-microsoft-teams@master
         if: success()
         with:
@@ -77,13 +70,6 @@ jobs:
     steps:
       - name: Build and deploy site with Maven
         run: ./mvn.sh site:site site-deploy
-      - uses: jdcargile/ms-teams-notification@v1.3
-        with:
-            github-token: ${{secrets.GITHUBPASSWORD}}
-            ms-teams-webhook-uri: ${{secrets.MSTEAMS_WEBHOOK}}
-            notification-summary: Web site updated.
-            notification-color: 17a2b8
-            timezone: Europe/Paris
       - uses: skitionek/notify-microsoft-teams@master
         if: success()
         with:
