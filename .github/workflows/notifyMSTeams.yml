@@ -8,7 +8,7 @@ on:
 jobs:
   success:
     name: One with everything
-    runs-on: ubuntu-18.04
+    runs-on: [self-hosted, Linux]
     steps:
       - uses: actions/checkout@master
       - name: Microsoft Teams Notification
@@ -19,4 +19,4 @@ jobs:
           needs: ${{ toJson(needs) }}
           job: ${{ toJson(job) }}
           steps: ${{ toJson(steps) }}
-          dry_run: True
+          #dry_run: True
