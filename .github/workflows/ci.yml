@@ -44,9 +44,8 @@ jobs:
         run: ./mvn.sh clean verify
       - name: Deploy Maven Artifacts
         run: ./mvn.sh deploy
-      - name: Notify dedicated teams channel
-          uses: jdcargile/ms-teams-notification@v1.3
-          with:
+      - uses: jdcargile/ms-teams-notification@v1.3
+        with:
             github-token: ${{secrets.GITHUBPASSWORD}}
             ms-teams-webhook-uri: ${{secrets.MSTEAMS_WEBHOOK}}
             notification-summary: $GITHUB_REPOSITORY/$GITHUB_BASE_REF builded and deployed.
@@ -62,9 +61,8 @@ jobs:
     steps:
       - name: Build and deploy site with Maven
         run: ./mvn.sh site:site site-deploy
-      - name: Notify dedicated teams channel
-          uses: jdcargile/ms-teams-notification@v1.3
-          with:
+      - uses: jdcargile/ms-teams-notification@v1.3
+        with:
             github-token: ${{secrets.GITHUBPASSWORD}}
             ms-teams-webhook-uri: ${{secrets.MSTEAMS_WEBHOOK}}
             notification-summary: $GITHUB_REPOSITORY/$GITHUB_BASE_REF Web site updated.
