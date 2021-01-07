@@ -55,12 +55,12 @@ jobs:
         if: success()
         with:
           webhook_url: ${{ secrets.MSTEAMS_WEBHOOK }}
-          overwrite: "{title: `${GITHUB_REPOSITORY}/${GITHUB_BASE_REF} Builded and deployed.`}"
+          overwrite: "{title: `Builded and deployed.`}"
       - uses: skitionek/notify-microsoft-teams@master
         if: failure()
         with:
           webhook_url: ${{ secrets.MSTEAMS_WEBHOOK }}
-          overwrite: "{title: `${GITHUB_REPOSITORY}/${GITHUB_BASE_REF} Failure to build and deploy.`}"
+          overwrite: "{title: `Failure to build and deploy.`}"
 
   # This job publish the site for develop branch
   maven-site:
@@ -82,9 +82,9 @@ jobs:
         if: success()
         with:
           webhook_url: ${{ secrets.MSTEAMS_WEBHOOK }}
-          overwrite: "{title: `${GITHUB_REPOSITORY}/${GITHUB_BASE_REF} WebSite deployed`}"
+          overwrite: "{title: `WebSite deployed`}"
       - uses: skitionek/notify-microsoft-teams@master
         if: failure()
         with:
           webhook_url: ${{ secrets.MSTEAMS_WEBHOOK }}
-          overwrite: "{title: `${GITHUB_REPOSITORY}/${GITHUB_BASE_REF} Failure to deploy Website.`}"
+          overwrite: "{title: `Failure to deploy Website.`}"
