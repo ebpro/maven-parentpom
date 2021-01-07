@@ -44,6 +44,15 @@ jobs:
         run: ./mvn.sh clean verify
       - name: Deploy Maven Artifacts
         run: ./mvn.sh deploy
+      - name: Notify dedicated teams channel
+          uses: jdcargile/ms-teams-notification@v1.3
+          with:
+            github-token: ${{secrets.GITHUBPASSWORD}}
+            ms-teams-webhook-uri: ${{secrets.MSTEAMS_WEBHOOK}}
+            notification-summary: $GITHUB_REPOSITORY/$GITHUB_BASE_REF builded and deployed.
+            notification-color: 17a2b8
+            timezone: Europe/Paris
+
   # This job publish the site for develop branch
   maven-site:
     runs-on: [self-hosted, Linux]
@@ -53,3 +62,11 @@ jobs:
     steps:
       - name: Build and deploy site with Maven
         run: ./mvn.sh site:site site-deploy
+      - name: Notify dedicated teams channel
+          uses: jdcargile/ms-teams-notification@v1.3
+          with:
+            github-token: ${{secrets.GITHUBPASSWORD}}
+            ms-teams-webhook-uri: ${{secrets.MSTEAMS_WEBHOOK}}
+            notification-summary: $GITHUB_REPOSITORY/$GITHUB_BASE_REF Web site updated.
+            notification-color: 17a2b8
+            timezone: Europe/Paris
