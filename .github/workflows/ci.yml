@@ -44,16 +44,6 @@ jobs:
         run: ./mvn.sh clean verify
       - name: Deploy Maven Artifacts
         run: ./mvn.sh deploy
-      - uses: aliencube/microsoft-teams-actions@v0.8.0
-        with:
-            webhook_uri: ${{ secrets.WEBHOOK_URI }}
-            title: 'Build and deployed'
-            summary: ''
-            text: ''
-            theme_color: ''
-            sections: '[{ "activityImage": "https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png", "activityTitle": "GitHub Action invoked",  "activitySubtitle": "Event triggered by ${{ github.event.head_commit.author.name }}", "activityText": "Commit message: [${{ github.event.head_commit.message}}](${{ github.event.head_commit.url }})" }]'
-            actions: '[{ "@type": "OpenUri", "name": "View Commit", "targets": [{ "os": "default", "uri": "${{ github.event.head_commit.url }}" }] }]'
-
   # This job publish the site for develop branch
   maven-site:
     runs-on: [self-hosted, Linux]
