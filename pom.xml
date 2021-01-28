@@ -140,7 +140,7 @@
     </dependencyManagement>
     <properties>
         <!-- These two properties should be overriden in sub projects -->
-        <github.account>emmanuelbruno</github.account>
+        <github.account>ebpro</github.account>
         <app.main.class />
 
         <!-- github server corresponds to entry in ~/.m2/settings.xml -->
