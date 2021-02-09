@@ -9,7 +9,7 @@
         <ignoreVersion type="regex">(?i).*RC(?:-?\d+)?</ignoreVersion>
         <ignoreVersion type="regex">(?i).*CR(?:-?\d+)?</ignoreVersion>
         <ignoreVersion type="regex">(?i).*M(?:-?\d+)?</ignoreVersion>
-        <ignoreVersion type="regex">.*jre7$</ignoreVersion>
+        <ignoreVersion type="regex">.*jre[0-9]+$</ignoreVersion>
     </ignoreVersions>
     <rules>
     </rules>
