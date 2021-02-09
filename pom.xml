@@ -32,6 +32,9 @@
         <!-- JAXRS -->
         <jersey.version>3.0.1</jersey.version>
         <jjwt.version>0.11.2</jjwt.version>
+
+        <!-- WebSocket -->
+        <tyrus.version>2.0.0</tyrus.version>
     </properties>
 
     <dependencyManagement>
@@ -39,23 +42,46 @@
             <!-- Unit tests -->
             <!-- Junit 5 https://junit.org/junit5/docs/current/user-guide/ -->
             <dependency>
+                <groupId>org.junit</groupId>
+                <artifactId>junit-bom</artifactId>
+                <version>${junit.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <!-- Add the following in the project -->
+            <!--dependency>
                 <groupId>org.junit.jupiter</groupId>
                 <artifactId>junit-jupiter-engine</artifactId>
                 <version>${junit.version}</version>
                 <scope>test</scope>
-            </dependency>
-            <dependency>
-                <groupId>org.junit.vintage</groupId>
-                <artifactId>junit-vintage-engine</artifactId>
-                <version>${junit.version}</version>
-                <scope>test</scope>
-            </dependency>
-            <!-- Mock -->
+            </dependency-->
+            <!-- Mockito https://site.mockito.org/ -->
             <dependency>
                 <groupId>org.mockito</groupId>
-                <artifactId>mockito-all</artifactId>
-                <version>1.10.19</version>
+                <artifactId>mockito-core</artifactId>
+                <version>3.7.7</version>
+                <scope>test</scope>
             </dependency>
+            <dependency>
+                <groupId>org.mockito</groupId>
+                <artifactId>mockito-junit-jupiter</artifactId>
+                <version>3.7.7</version>
+                <scope>test</scope>
+            </dependency>
+            <!-- Arquillian http://arquillian.org/arquillian-core/ -->
+            <dependency>
+                <groupId>org.jboss.arquillian</groupId>
+                <artifactId>arquillian-bom</artifactId>
+                <version>1.6.0.Final</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <!-- Add the following in the project -->
+            <!--dependency>
+                <groupId>org.jboss.arquillian.junit5</groupId>
+                <artifactId>arquillian-junit5-container</artifactId>
+                <scope>test</scope>
+            </dependency-->
 
             <!-- Utilities test functions in unit tests -->
             <!-- Harmcrest Matchers http://hamcrest.org/JavaHamcrest/tutorial -->
@@ -192,6 +218,24 @@
                 <artifactId>jakarta.ws.rs-api</artifactId>
                 <version>3.0.0</version>
                 <scope>provided</scope>
+            </dependency>
+
+            <!-- Websocket API & Implementation -->
+            <!-- Not needed embeded in Tyrus -->
+            <!--dependency>
+                <groupId>jakarta.websocket</groupId>
+                <artifactId>jakarta.websocket-api</artifactId>
+                <version>2.0.0</version>
+            </dependency-->
+            <dependency>
+                <groupId>org.glassfish.tyrus</groupId>
+                <artifactId>tyrus-server</artifactId>
+                <version>${tyrus.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.glassfish.tyrus</groupId>
+                <artifactId>tyrus-container-grizzly-server</artifactId>
+                <version>${tyrus.version}</version>
             </dependency>
 
         </dependencies>
