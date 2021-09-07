@@ -45,16 +45,17 @@ jobs:
       - name: Deploy Maven Artifacts
         run: ./mvn.sh deploy
       - name: Notify dedicated teams channel of Success
-          uses: jdcargile/ms-teams-notification@v1.3
+        uses: jdcargile/ms-teams-notification@v1.3
           if: success()
           with:
             github-token: ${{ github.token }} # this will use the runner's token.
             ms-teams-webhook-uri: ${{ secrets.MS_TEAMS_WEBHOOK }}
             notification-summary: Build and Deploy success.
             notification-color: 28a745
-            timezone: Europe/Paris
+            timezone:
+              Europe/Paris
       - name: Notify dedicated teams channel of Failure
-          uses: jdcargile/ms-teams-notification@v1.3
+        uses: jdcargile/ms-teams-notification@v1.3
           if: success()
           with:
             github-token: ${{ github.token }} # this will use the runner's token.
