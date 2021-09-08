@@ -46,23 +46,22 @@ jobs:
         run: ./mvn.sh deploy
       - name: Notify dedicated teams channel of Success
         uses: jdcargile/ms-teams-notification@v1.3
-          if: success()
-          with:
-            github-token: ${{ github.token }} # this will use the runner's token.
-            ms-teams-webhook-uri: ${{ secrets.MSTEAMS_WEBHOOK }}
-            notification-summary: Build and Deploy success.
-            notification-color: 28a745
-            timezone:
-              Europe/Paris
+        if: success()
+        with:
+          github-token: ${{ github.token }} # this will use the runner's token.
+          ms-teams-webhook-uri: ${{ secrets.MSTEAMS_WEBHOOK }}
+          notification-summary: Build and Deploy success.
+          notification-color: 28a745
+          timezone: Europe/Paris
       - name: Notify dedicated teams channel of Failure
         uses: jdcargile/ms-teams-notification@v1.3
-          if: success()
-          with:
-            github-token: ${{ github.token }} # this will use the runner's token.
-            ms-teams-webhook-uri: ${{ secrets.MSTEAMS_WEBHOOK }}
-            notification-summary: Build and Deploy failure.
-            notification-color: dc3545
-            timezone: Europe/Paris
+        if: success()
+        with:
+          github-token: ${{ github.token }} # this will use the runner's token.
+          ms-teams-webhook-uri: ${{ secrets.MSTEAMS_WEBHOOK }}
+          notification-summary: Build and Deploy failure.
+          notification-color: dc3545
+          timezone: Europe/Paris
 #      - uses: skitionek/notify-microsoft-teams@master
 #        if: success()
 #        with:
