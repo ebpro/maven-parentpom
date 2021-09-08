@@ -46,7 +46,7 @@ jobs:
         run: ./mvn.sh deploy
       - name: Notify dedicated teams channel of Success
         uses: jdcargile/ms-teams-notification@v1.3
-        if: success()
+        if: ${{ success() }}
         with:
           github-token: ${{ github.token }} # this will use the runner's token.
           ms-teams-webhook-uri: ${{ secrets.MSTEAMS_WEBHOOK }}
@@ -55,7 +55,7 @@ jobs:
           timezone: Europe/Paris
       - name: Notify dedicated teams channel of Failure
         uses: jdcargile/ms-teams-notification@v1.3
-        if: success()
+        if: ${{ failure() }}
         with:
           github-token: ${{ github.token }} # this will use the runner's token.
           ms-teams-webhook-uri: ${{ secrets.MSTEAMS_WEBHOOK }}
@@ -79,7 +79,7 @@ jobs:
 #          steps: ${{ toJson(steps) }}
 #          overwrite: "{title: `Failure to build and deploy.`}"
 
-  # This job publish the site for develop branch
+  # This job publish the successsite for develop branch
   maven-site:
     runs-on: [self-hosted, Linux]
     needs: maven-build
