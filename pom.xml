@@ -105,7 +105,7 @@
                 <groupId>org.projectlombok</groupId>
                 <artifactId>lombok</artifactId>
                 <version>1.18.20</version>
-                <scope>provided</scope>
+                <!--scope>provided</scope--> <!-- trouble with javadoc -->
             </dependency>
 
             <!-- Eclipse Collections https://www.eclipse.org/collections/-->
@@ -391,7 +391,7 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-archetype-plugin</artifactId>
-                    <version>3.1.2</version>
+                    <version>3.2.0</version>
                 </plugin>
 
                 <!-- Generates the javadoc. Private members are shown.
@@ -405,7 +405,7 @@
                     <artifactId>maven-javadoc-plugin</artifactId>
                     <version>3.2.0</version>
                     <configuration>
-                        <show>private</show>
+                        <show>public</show>
                     </configuration>
                 </plugin>
 
@@ -911,7 +911,8 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-javadoc-plugin</artifactId>
-                <version>3.2.0</version>
+                <version>3.3.1</version>
+                <!--version>3.2.0</version-->
                 <configuration />
                 <reportSets>
                     <reportSet>
