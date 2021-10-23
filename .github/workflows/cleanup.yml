@@ -5,7 +5,7 @@ jobs:
     # The tags on the runner
     runs-on: [self-hosted, Linux]
     steps:
-        - uses: smartsquaregmbh/delete-old-packages@v0.2.0
+        - uses: smartsquaregmbh/delete-old-packages@v0.3.2
           with:
             keep: 1
             names: |
