@@ -7,9 +7,9 @@
 ## If needed invalidate the cache with
 #docker builder prune --filter type=exec.cachemount
 
-ARG JRE=adoptopenjdk/openjdk11:jre-11.0.9_11-alpine
+ARG JRE=eclipse-temurin:17-jre
 
-FROM brunoe/maven:3.6.3-jdk-11-openj9 as mavenbuild
+FROM brunoe/maven:3.8.6-eclipse-temurin-17 as mavenbuild
 # A Variable to indicate if the build is in CI Server
 ARG CI
 
