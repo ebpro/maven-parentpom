@@ -45,28 +45,25 @@ jobs:
       - name: Deploy Maven Artifacts
         run: ./mvn.sh deploy
       - name: Notify dedicated teams channel of Success
-        #        uses: jdcargile/ms-teams-notification@v1.3
-        uses: toko-bifrost/ms-teams-deploy-card@master  
+        uses: dragos-cojocari/ms-teams-notification@v1.0.0
         if: ${{ success() }}
         with:
-          github-token: ${{ github.token }} # this will use the runner's token.
-            # FOR jdcargile          ms-teams-webhook-uri: ${{ secrets.MSTEAMS_WEBHOOK }}
-            # notification-summary: Build and Deploy success.
-            # notification-color: 28a745
-            # timezone: Europe/Paris
-          webhook-uri: ${{ secrets.MSTEAMS_WEBHOOK }}
+            github-token: ${{ github.token }} # this will use the runner's token.
+            ms-teams-webhook-uri: ${{ secrets.MSTEAMS_WEBHOOK }}
+            notification-summary: Build and Deploy success.
+            notification-color: 28a745
+            timezone: Europe/Paris
       - name: Notify dedicated teams channel of Failure
-        uses: jdcargile/ms-teams-notification@v1.3
+        uses: dragos-cojocari/ms-teams-notification@v1.0.0
         if: ${{ failure() }}
         with:
           github-token: ${{ github.token }} # this will use the runner's token.
-          teams-webhook-uri: ${{ secrets.MSTEAMS_WEBHOOK }}
-            #          ms-teams-webhook-uri: ${{ secrets.MSTEAMS_WEBHOOK }}
-            #          notification-summary: Build and Deploy failure.
-            #          notification-color: dc3545
-            #          timezone: Europe/Paris
+          ms-teams-webhook-uri: ${{ secrets.MSTEAMS_WEBHOOK }}
+          notification-summary: Build and Deploy failure.
+          notification-color: dc3545
+          timezone: Europe/Paris
 
-  # This job publish the successsite for develop branch
+  # This job publish the site for develop branch
   maven-site:
     runs-on: [self-hosted, Linux]
     needs: maven-build
