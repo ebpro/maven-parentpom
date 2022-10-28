@@ -405,6 +405,9 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-archetype-plugin</artifactId>
                 <version>3.2.0</version>
+                <configuration>
+                    <useDefaultExcludes>false</useDefaultExcludes>
+                </configuration>
             </plugin>
 
             <!-- Generates the javadoc. Private members are shown.
