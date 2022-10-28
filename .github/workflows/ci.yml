@@ -41,9 +41,9 @@ jobs:
       # it uses env variables from github secrets for the credentials
       # to github, dockerhub and sonar.
       - name: Build and test with Maven in docker
-        run: ./mvn.sh clean verify
+        run: ./CI/mvn.sh clean verify
       - name: Deploy Maven Artifacts
-        run: ./mvn.sh deploy
+        run: ./CI/mvn.sh deploy
       - name: Notify dedicated teams channel of Success
         uses: dragos-cojocari/ms-teams-notification@v1.0.0
         if: ${{ success() }}
@@ -71,4 +71,4 @@ jobs:
     if: github.ref == 'refs/heads/develop'
     steps:
       - name: Build and deploy site with Maven
-        run: ./mvn.sh site:site site-deploy
+        run: ./CI/mvn.sh site:site site-deploy
