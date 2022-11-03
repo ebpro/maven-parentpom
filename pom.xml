@@ -28,7 +28,7 @@
 
         <junit.version>5.9.1</junit.version>
 
-        <hibernate.version>6.1.4.Final</hibernate.version>
+        <hibernate.version>6.1.5.Final</hibernate.version>
 
         <!-- JAXRS -->
         <jersey.version>3.0.8</jersey.version>
