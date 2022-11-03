@@ -634,7 +634,7 @@
                     </configuration>
                 </plugin>
 
-                <!-- This plugins implements the gitflow branching model (http://nvie.com/git-model,
+             <!--   &lt;!&ndash; This plugins implements the gitflow branching model (http://nvie.com/git-model,
                 https://www.atlassian.com/git/tutorials/comparing-workflows/#!workflow-gitflow )
                 for maven. It gives an automatic way to manage versions and branches.
                 https://bitbucket.org/atlassian/jgit-flow/wiki/Home
@@ -661,7 +661,7 @@
                 mvn jgitflow:hotfix-finish: like mvn jgitflow:release-finish
 
                 We forbid deploy from the workstations, it has to be done by the C.I. server.
-                -->
+                &ndash;&gt;
                 <plugin>
                     <groupId>external.atlassian.jgitflow</groupId>
                     <artifactId>jgitflow-maven-plugin</artifactId>
@@ -674,37 +674,37 @@
                         </dependency>
                     </dependencies>
                     <configuration>
-                        <!-- Enable this to push to origin using SSH keys -->
+                        &lt;!&ndash; Enable this to push to origin using SSH keys &ndash;&gt;
                         <enableSshAgent>true</enableSshAgent>
-                        <!-- Keep your maven submodules at the same version as the parent POM -->
+                        &lt;!&ndash; Keep your maven submodules at the same version as the parent POM &ndash;&gt;
                         <autoVersionSubmodules>true</autoVersionSubmodules>
-                        <!-- Pushing in-development features to origin allows all devs to see what each other
-                             are working on                                        -->
-                        <!--pushFeatures>true</pushFeatures-->
+                        &lt;!&ndash; Pushing in-development features to origin allows all devs to see what each other
+                             are working on                                        &ndash;&gt;
+                        &lt;!&ndash;pushFeatures>true</pushFeatures&ndash;&gt;
 
-                        <!-- This allows the CI server (e.g. Jenkins) to automatically push new releases to
+                        &lt;!&ndash; This allows the CI server (e.g. Jenkins) to automatically push new releases to
                              origin; you can then either manually deploy them or, if you are doing Continuous
-                             Deployments, auto-deploy them to prod -->
-                        <!--pushReleases>true</pushReleases-->
-                        <!--pushHotfixes>true</pushHotfixes-->
+                             Deployments, auto-deploy them to prod &ndash;&gt;
+                        &lt;!&ndash;pushReleases>true</pushReleases&ndash;&gt;
+                        &lt;!&ndash;pushHotfixes>true</pushHotfixes&ndash;&gt;
 
-                        <!-- append the feature name to the version on the feature branch. -->
+                        &lt;!&ndash; append the feature name to the version on the feature branch. &ndash;&gt;
                         <enableFeatureVersions>true</enableFeatureVersions>
-                        <!-- Prevents deployments from dev workstations so that they can be done by a CI
-                             server  -->
+                        &lt;!&ndash; Prevents deployments from dev workstations so that they can be done by a CI
+                             server  &ndash;&gt;
                         <noDeploy>true</noDeploy>
 
-                        <!-- Whether to squash commits into a single commit before merging. -->
+                        &lt;!&ndash; Whether to squash commits into a single commit before merging. &ndash;&gt;
                         <squash>false</squash>
 
                         <scmCommentPrefix>[gitflow]</scmCommentPrefix>
 
-                        <!-- A VOIR -->
+                        &lt;!&ndash; A VOIR &ndash;&gt;
                         <featureRebase>true</featureRebase>
 
 
-                        <!--pullDevelop>true</pullDevelop>
-                        <pullMaster>true</pullMaster-->
+                        &lt;!&ndash;pullDevelop>true</pullDevelop>
+                        <pullMaster>true</pullMaster&ndash;&gt;
 
                         <flowInitContext>
                             <masterBranchName>master</masterBranchName>
@@ -714,6 +714,34 @@
                             <hotfixBranchPrefix>hotfix/</hotfixBranchPrefix>
                             <versionTagPrefix />
                         </flowInitContext>
+                    </configuration>
+                </plugin>
+-->
+                <plugin>
+                    <groupId>com.amashchenko.maven.plugin</groupId>
+                    <artifactId>gitflow-maven-plugin</artifactId>
+                    <version>1.19.0</version>
+                    <configuration>
+                        <mvnExecutable>path_to_maven_executable</mvnExecutable>
+                        <gitExecutable>path_to_git_executable</gitExecutable>
+
+                        <installProject>false</installProject>
+                        <verbose>false</verbose>
+
+                        <gitFlowConfig>
+                            <productionBranch>master</productionBranch>
+                            <developmentBranch>develop</developmentBranch>
+                            <featureBranchPrefix>feature/</featureBranchPrefix>
+                            <releaseBranchPrefix>release/</releaseBranchPrefix>
+                            <hotfixBranchPrefix>hotfix/</hotfixBranchPrefix>
+                            <supportBranchPrefix>support/</supportBranchPrefix>
+                            <versionTagPrefix/>
+                            <origin>origin</origin>
+                        </gitFlowConfig>
+
+                        <commitMessages>
+                            <!-- since 1.2.1, see Customizing commit messages -->
+                        </commitMessages>
                     </configuration>
                 </plugin>
 
