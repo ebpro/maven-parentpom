@@ -825,7 +825,9 @@
                         </providerImplementations-->
                         <pubScmUrl>scm:git:https://github.com/${github.account}/${project.artifactId}</pubScmUrl>
                         <scmBranch>gh-pages</scmBranch>
+                        <!--suppress UnresolvedMavenProperty -->
                         <username>${env.GITHUBLOGIN}</username>
+                        <!--suppress UnresolvedMavenProperty -->
                         <password>${env.GITHUBPASSWORD}</password>
                     </configuration>
                 </plugin>
