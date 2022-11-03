@@ -30,6 +30,8 @@
 
         <hibernate.version>6.1.5.Final</hibernate.version>
 
+        <lombok.version>1.18.24</lombok.version>
+
         <!-- JAXRS -->
         <jersey.version>3.0.8</jersey.version>
         <jjwt.version>0.11.5</jjwt.version>
@@ -41,7 +43,7 @@
 
         <!-- Reproducibility -->
         <!--  see https://maven.apache.org/guides/mini/guide-reproducible-builds.html -->
-        <project.build.outputTimestamp>10</project.build.outputTimestamp>
+        <project.build.outputTimestamp>1667486659</project.build.outputTimestamp>
     </properties>
 
     <pluginRepositories>
@@ -111,7 +113,7 @@
             <dependency>
                 <groupId>org.projectlombok</groupId>
                 <artifactId>lombok</artifactId>
-                <version>1.18.24</version>
+                <version>${lombok.version}</version>
                 <!--scope>provided</scope--> <!-- trouble with javadoc -->
             </dependency>
 
@@ -342,6 +344,15 @@
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-compiler-plugin</artifactId>
                     <version>3.10.1</version>
+                    <configuration>
+                        <annotationProcessorPaths>
+                            <path>
+                                <groupId>org.projectlombok</groupId>
+                                <artifactId>lombok</artifactId>
+                                <version>${lombok.version}</version>
+                            </path>
+                        </annotationProcessorPaths>
+                    </configuration>
                 </plugin>
 
                 <!-- Creates a jar of the sources of the project in the target directory.
