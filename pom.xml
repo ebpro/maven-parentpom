@@ -382,6 +382,36 @@
                             </path>
                         </annotationProcessorPaths>
                     </configuration>
+                    <executions>
+                        <!-- Compile the unit test classes to the unit test output directory -->
+                        <execution>
+                            <id>default-testCompile</id>
+                            <goals>
+                                <goal>testCompile</goal>
+                            </goals>
+                            <phase>test-compile</phase>
+                            <configuration>
+                                <outputDirectory>${basedir}/target/test-classes</outputDirectory>
+                                <compileSourceRoots>
+                                    <sourceRoot>${basedir}/src/test/java</sourceRoot>
+                                </compileSourceRoots>
+                            </configuration>
+                        </execution>
+                        <!-- Compile the integration test classes to the integration test output directory -->
+                        <execution>
+                            <id>compile-integration-tests</id>
+                            <goals>
+                                <goal>testCompile</goal>
+                            </goals>
+                            <phase>pre-integration-test</phase>
+                            <configuration>
+                                <outputDirectory>${basedir}/target/test-integration-classes</outputDirectory>
+                                <compileSourceRoots>
+                                    <sourceRoot>${basedir}/src/test-integration/java</sourceRoot>
+                                </compileSourceRoots>
+                            </configuration>
+                        </execution>
+                    </executions>
                 </plugin>
 
                 <!-- Creates a jar of the sources of the project in the target directory.
@@ -434,6 +464,40 @@
                     <configuration>
                         <addDefaultExcludes>false</addDefaultExcludes>
                     </configuration>
+                    <executions>
+                        <!-- Copy resources for the unit test resources files to the unit test output directory -->
+                        <execution>
+                            <id>default-testResources</id>
+                            <goals>
+                                <goal>testResources</goal>
+                            </goals>
+                            <phase>process-test-resources</phase>
+                            <configuration>
+                                <outputDirectory>${basedir}/target/test-classes</outputDirectory>
+                                <resources>
+                                    <resource>
+                                        <directory>${basedir}/src/test/resources</directory>
+                                    </resource>
+                                </resources>
+                            </configuration>
+                        </execution>
+                        <!-- Copy resources for the integration test resources files to the integration test output directory -->
+                        <execution>
+                            <id>add-integration-test-resources</id>
+                            <goals>
+                                <goal>copy-resources</goal>
+                            </goals>
+                            <phase>pre-integration-test</phase>
+                            <configuration>
+                                <outputDirectory>${basedir}/target/integration-test-classes</outputDirectory>
+                                <resources>
+                                    <resource>
+                                        <directory>${basedir}/src/integration-test/resources</directory>
+                                    </resource>
+                                </resources>
+                            </configuration>
+                        </execution>
+                    </executions>
                 </plugin>
 
                 <plugin>
@@ -514,8 +578,14 @@
                     <artifactId>maven-surefire-plugin</artifactId>
                     <version>3.0.0-M7</version>
                     <configuration>
+                        <testClassesDirectory>${basedir}/target/test-classes</testClassesDirectory>
+                        <testSourceDirectory>${basedir}/src/test/java</testSourceDirectory>
+                        <includes>
+                            <include>**/*.class</include>
+                        </includes>
                         <!--suppress UnresolvedMavenProperty -->
                         <argLine>${surefire.jacoco.args}</argLine>
+                        <testFailureIgnore>false</testFailureIgnore>
                     </configuration>
                 </plugin>
                 <plugin>
@@ -543,10 +613,29 @@
                     </configuration>
                     <executions>
                         <execution>
+                            <id>integration-test</id>
+                            <phase>integration-test</phase>
                             <goals>
                                 <goal>integration-test</goal>
+                            </goals>
+                            <configuration>
+                                <includes>
+                                    <include>**/*.class</include>
+                                </includes>
+                                <classesDirectory>${project.build.outputDirectory}</classesDirectory>
+                                <testClassesDirectory>${basedir}/target/test-integration-classes</testClassesDirectory>
+                                <testSourceDirectory>${basedir}/src/test-integration/java</testSourceDirectory>
+                            </configuration>
+                        </execution>
+                        <execution>
+                            <id>verify</id>
+                            <phase>verify</phase>
+                            <goals>
                                 <goal>verify</goal>
                             </goals>
+                            <configuration>
+                                <testFailureIgnore>false</testFailureIgnore>
+                            </configuration>
                         </execution>
                     </executions>
                 </plugin>
