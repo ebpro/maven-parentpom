@@ -38,6 +38,10 @@
         <tyrus.version>2.1.1</tyrus.version>
 
         <mockito.version>4.8.1</mockito.version>
+
+        <!-- Reproductibility -->
+        <!--  see https://maven.apache.org/guides/mini/guide-reproducible-builds.html -->
+        <project.build.outputTimestamp>10</project.build.outputTimestamp>
     </properties>
 
     <pluginRepositories>
