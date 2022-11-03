@@ -253,6 +253,35 @@
                 <version>${tyrus.version}</version>
             </dependency>
 
+            <!-- Loggers with SLF4J -->
+            <!-- SLF4J with logBack -->
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>slf4j-api</artifactId>
+                <version>2.0.3</version>
+            </dependency>
+            <dependency>
+                <groupId>ch.qos.logback</groupId>
+                <artifactId>logback-classic</artifactId>
+                <version>1.4.4</version>
+            </dependency>
+
+            <!--dependency>
+                <groupId>org.apache.logging.log4j</groupId>
+                <artifactId>log4j-api</artifactId>
+                <version>2.19.0</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.logging.log4j</groupId>
+                <artifactId>log4j-core</artifactId>
+                <version>2.19.0</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.logging.log4j</groupId>
+                <artifactId>log4j-slf4j-impl</artifactId>
+                <version>2.19.0</version>
+            </dependency-->
+
         </dependencies>
     </dependencyManagement>
 
@@ -645,89 +674,89 @@
                     </configuration>
                 </plugin>
 
-             <!--   &lt;!&ndash; This plugins implements the gitflow branching model (http://nvie.com/git-model,
-                https://www.atlassian.com/git/tutorials/comparing-workflows/#!workflow-gitflow )
-                for maven. It gives an automatic way to manage versions and branches.
-                https://bitbucket.org/atlassian/jgit-flow/wiki/Home
+                <!--   &lt;!&ndash; This plugins implements the gitflow branching model (http://nvie.com/git-model,
+                   https://www.atlassian.com/git/tutorials/comparing-workflows/#!workflow-gitflow )
+                   for maven. It gives an automatic way to manage versions and branches.
+                   https://bitbucket.org/atlassian/jgit-flow/wiki/Home
 
-                mvn jgitflow:feature-start:
-                  creates a new feature branch; pushes the branch to origin automatically (can be shared and
-                  used by jenkins).
-                mvn jgitflow:feature-finish:
-                  merges the feature branch back into the development branch and pushes to origin.
-                    The good way :
-                        git fetch : make sure your local repo copy is up-to-date
-                        git checkout development : go to development
-                        git merge origin/development : make sure your local develop is up-to-date (origin being the remote's name here)
-                        git checkout <feature-branch> : go to you feature branch again
-                        git merge develop : Merge and solve conflicts, if any (on you feature branch)
-                        mvn jgitflow:feature-finish you already solved the conflicts
-                mvn jgitflow:release-start:
-                   creates a release branch (freeze to prepare a release, only bugfix, documentation
-                   and translation) and pushes it to origin.
-                mvn jgitflow:release-finish:
-                   builds, tags and merges the release branch back into master and development;
-                   updates versions in master and development branches
-                mvn jgitflow:hotfix-start: like mvn jgitflow:release-start but branches off of master
-                mvn jgitflow:hotfix-finish: like mvn jgitflow:release-finish
+                   mvn jgitflow:feature-start:
+                     creates a new feature branch; pushes the branch to origin automatically (can be shared and
+                     used by jenkins).
+                   mvn jgitflow:feature-finish:
+                     merges the feature branch back into the development branch and pushes to origin.
+                       The good way :
+                           git fetch : make sure your local repo copy is up-to-date
+                           git checkout development : go to development
+                           git merge origin/development : make sure your local develop is up-to-date (origin being the remote's name here)
+                           git checkout <feature-branch> : go to you feature branch again
+                           git merge develop : Merge and solve conflicts, if any (on you feature branch)
+                           mvn jgitflow:feature-finish you already solved the conflicts
+                   mvn jgitflow:release-start:
+                      creates a release branch (freeze to prepare a release, only bugfix, documentation
+                      and translation) and pushes it to origin.
+                   mvn jgitflow:release-finish:
+                      builds, tags and merges the release branch back into master and development;
+                      updates versions in master and development branches
+                   mvn jgitflow:hotfix-start: like mvn jgitflow:release-start but branches off of master
+                   mvn jgitflow:hotfix-finish: like mvn jgitflow:release-finish
 
-                We forbid deploy from the workstations, it has to be done by the C.I. server.
-                &ndash;&gt;
-                <plugin>
-                    <groupId>external.atlassian.jgitflow</groupId>
-                    <artifactId>jgitflow-maven-plugin</artifactId>
-                    <version>1.0-m5.1</version>
-                    <dependencies>
-                        <dependency>
-                            <groupId>com.jcraft</groupId>
-                            <artifactId>jsch</artifactId>
-                            <version>0.1.55</version>
-                        </dependency>
-                    </dependencies>
-                    <configuration>
-                        &lt;!&ndash; Enable this to push to origin using SSH keys &ndash;&gt;
-                        <enableSshAgent>true</enableSshAgent>
-                        &lt;!&ndash; Keep your maven submodules at the same version as the parent POM &ndash;&gt;
-                        <autoVersionSubmodules>true</autoVersionSubmodules>
-                        &lt;!&ndash; Pushing in-development features to origin allows all devs to see what each other
-                             are working on                                        &ndash;&gt;
-                        &lt;!&ndash;pushFeatures>true</pushFeatures&ndash;&gt;
+                   We forbid deploy from the workstations, it has to be done by the C.I. server.
+                   &ndash;&gt;
+                   <plugin>
+                       <groupId>external.atlassian.jgitflow</groupId>
+                       <artifactId>jgitflow-maven-plugin</artifactId>
+                       <version>1.0-m5.1</version>
+                       <dependencies>
+                           <dependency>
+                               <groupId>com.jcraft</groupId>
+                               <artifactId>jsch</artifactId>
+                               <version>0.1.55</version>
+                           </dependency>
+                       </dependencies>
+                       <configuration>
+                           &lt;!&ndash; Enable this to push to origin using SSH keys &ndash;&gt;
+                           <enableSshAgent>true</enableSshAgent>
+                           &lt;!&ndash; Keep your maven submodules at the same version as the parent POM &ndash;&gt;
+                           <autoVersionSubmodules>true</autoVersionSubmodules>
+                           &lt;!&ndash; Pushing in-development features to origin allows all devs to see what each other
+                                are working on                                        &ndash;&gt;
+                           &lt;!&ndash;pushFeatures>true</pushFeatures&ndash;&gt;
 
-                        &lt;!&ndash; This allows the CI server (e.g. Jenkins) to automatically push new releases to
-                             origin; you can then either manually deploy them or, if you are doing Continuous
-                             Deployments, auto-deploy them to prod &ndash;&gt;
-                        &lt;!&ndash;pushReleases>true</pushReleases&ndash;&gt;
-                        &lt;!&ndash;pushHotfixes>true</pushHotfixes&ndash;&gt;
+                           &lt;!&ndash; This allows the CI server (e.g. Jenkins) to automatically push new releases to
+                                origin; you can then either manually deploy them or, if you are doing Continuous
+                                Deployments, auto-deploy them to prod &ndash;&gt;
+                           &lt;!&ndash;pushReleases>true</pushReleases&ndash;&gt;
+                           &lt;!&ndash;pushHotfixes>true</pushHotfixes&ndash;&gt;
 
-                        &lt;!&ndash; append the feature name to the version on the feature branch. &ndash;&gt;
-                        <enableFeatureVersions>true</enableFeatureVersions>
-                        &lt;!&ndash; Prevents deployments from dev workstations so that they can be done by a CI
-                             server  &ndash;&gt;
-                        <noDeploy>true</noDeploy>
+                           &lt;!&ndash; append the feature name to the version on the feature branch. &ndash;&gt;
+                           <enableFeatureVersions>true</enableFeatureVersions>
+                           &lt;!&ndash; Prevents deployments from dev workstations so that they can be done by a CI
+                                server  &ndash;&gt;
+                           <noDeploy>true</noDeploy>
 
-                        &lt;!&ndash; Whether to squash commits into a single commit before merging. &ndash;&gt;
-                        <squash>false</squash>
+                           &lt;!&ndash; Whether to squash commits into a single commit before merging. &ndash;&gt;
+                           <squash>false</squash>
 
-                        <scmCommentPrefix>[gitflow]</scmCommentPrefix>
+                           <scmCommentPrefix>[gitflow]</scmCommentPrefix>
 
-                        &lt;!&ndash; A VOIR &ndash;&gt;
-                        <featureRebase>true</featureRebase>
+                           &lt;!&ndash; A VOIR &ndash;&gt;
+                           <featureRebase>true</featureRebase>
 
 
-                        &lt;!&ndash;pullDevelop>true</pullDevelop>
-                        <pullMaster>true</pullMaster&ndash;&gt;
+                           &lt;!&ndash;pullDevelop>true</pullDevelop>
+                           <pullMaster>true</pullMaster&ndash;&gt;
 
-                        <flowInitContext>
-                            <masterBranchName>master</masterBranchName>
-                            <developBranchName>develop</developBranchName>
-                            <featureBranchPrefix>feature/</featureBranchPrefix>
-                            <releaseBranchPrefix>release/</releaseBranchPrefix>
-                            <hotfixBranchPrefix>hotfix/</hotfixBranchPrefix>
-                            <versionTagPrefix />
-                        </flowInitContext>
-                    </configuration>
-                </plugin>
--->
+                           <flowInitContext>
+                               <masterBranchName>master</masterBranchName>
+                               <developBranchName>develop</developBranchName>
+                               <featureBranchPrefix>feature/</featureBranchPrefix>
+                               <releaseBranchPrefix>release/</releaseBranchPrefix>
+                               <hotfixBranchPrefix>hotfix/</hotfixBranchPrefix>
+                               <versionTagPrefix />
+                           </flowInitContext>
+                       </configuration>
+                   </plugin>
+   -->
                 <plugin>
                     <groupId>com.amashchenko.maven.plugin</groupId>
                     <artifactId>gitflow-maven-plugin</artifactId>
@@ -746,7 +775,7 @@
                             <releaseBranchPrefix>release/</releaseBranchPrefix>
                             <hotfixBranchPrefix>hotfix/</hotfixBranchPrefix>
                             <supportBranchPrefix>support/</supportBranchPrefix>
-                            <versionTagPrefix/>
+                            <versionTagPrefix />
                             <origin>origin</origin>
                         </gitFlowConfig>
 
