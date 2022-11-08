@@ -46,6 +46,90 @@
         <project.build.outputTimestamp>1667486659</project.build.outputTimestamp>
     </properties>
 
+    <!-- More Project Information -->
+    <name>Demo Parent POM</name>
+    <description>A parent POM from the Demos</description>
+    <url>
+        https://${github.account}.github.io/${project.artifactId}/
+    </url>
+    <inceptionYear>2020</inceptionYear>
+    <licenses>
+        <license>
+            <name>mit</name>
+        </license>
+    </licenses>
+    <organization>
+        <name>Université de Toulon</name>
+        <url>https://www.univ-tln.fr</url>
+    </organization>
+    <developers>
+        <developer>
+            <id>emmanuelbruno</id>
+            <name>Emmanuel Bruno</name>
+            <email>emmanuel.bruno@univ-tln.fr</email>
+            <url>https://bruno.univ-tln.fr</url>
+            <organization>Université de Toulon</organization>
+            <organizationUrl>https://www.univ-tln.fr</organizationUrl>
+            <roles>
+                <role>architect</role>
+                <role>developer</role>
+            </roles>
+            <timezone>Europe/Paris</timezone>
+        </developer>
+    </developers>
+
+    <!-- Environment Settings -->
+    <issueManagement>
+        <system>GitHub</system>
+        <url>https://github.com/${github.account}/${project.artifactId}/issues</url>
+    </issueManagement><!--ciManagement>
+        <system>Travis</system>
+        <url>https://travis-ci.org/${github.account}/${project.artifactId}</url>
+    </ciManagement-->
+    <ciManagement>
+        <system>Github Actions</system>
+        <url>https://github.com/${github.account}/${project.artifactId}/actions</url>
+    </ciManagement>
+    <scm>
+        <url>https://github.com/${github.account}/${project.artifactId}/tree/${project.scm.tag}</url>
+        <connection>scm:git:git@github.com:${github.account}/${project.artifactId}.git</connection>
+        <developerConnection>scm:git:git@github.com:${github.account}/${project.artifactId}.git</developerConnection>
+    </scm>
+    <repositories>
+        <repository>
+            <id>central</id>
+            <url>https://repo1.maven.org/maven2</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </repository>
+        <repository>
+            <id>github</id>
+            <name>GitHub Packages</name>
+            <url>https://maven.pkg.github.com/${github.account}/${project.artifactId}</url>
+        </repository>
+    </repositories>
+    <distributionManagement>
+        <repository>
+            <id>github</id>
+            <name>GitHub Packages</name>
+            <url>https://maven.pkg.github.com/${github.account}/${project.artifactId}</url>
+        </repository>
+        <snapshotRepository>
+            <id>github</id>
+            <name>GitHub Packages</name>
+            <url>https://maven.pkg.github.com/${github.account}/${project.artifactId}</url>
+        </snapshotRepository>
+        <site>
+            <id>github.pages</id>
+            <url>scm:git:ssh://git@github.com/${github.account}/${project.artifactId}</url>
+        </site>
+    </distributionManagement>
+
+
     <pluginRepositories>
         <pluginRepository>
             <id>maven-snapshots</id>
@@ -1132,87 +1216,90 @@
         </plugins>
     </reporting>
 
-    <!-- More Project Information -->
-    <name>Demo Parent POM</name>
-    <description>A parent POM from the Demos</description>
-    <url>
-        https://${github.account}.github.io/${project.artifactId}/
-    </url>
-    <inceptionYear>2020</inceptionYear>
-    <licenses>
-        <license>
-            <name>mit</name>
-        </license>
-    </licenses>
-    <organization>
-        <name>Université de Toulon</name>
-        <url>https://www.univ-tln.fr</url>
-    </organization>
-    <developers>
-        <developer>
-            <id>emmanuelbruno</id>
-            <name>Emmanuel Bruno</name>
-            <email>emmanuel.bruno@univ-tln.fr</email>
-            <url>https://bruno.univ-tln.fr</url>
-            <organization>Université de Toulon</organization>
-            <organizationUrl>https://www.univ-tln.fr</organizationUrl>
-            <roles>
-                <role>architect</role>
-                <role>developer</role>
-            </roles>
-            <timezone>Europe/Paris</timezone>
-        </developer>
-    </developers>
-
-    <!-- Environment Settings -->
-    <issueManagement>
-        <system>GitHub</system>
-        <url>https://github.com/${github.account}/${project.artifactId}/issues</url>
-    </issueManagement><!--ciManagement>
-        <system>Travis</system>
-        <url>https://travis-ci.org/${github.account}/${project.artifactId}</url>
-    </ciManagement-->
-    <ciManagement>
-        <system>Github Actions</system>
-        <url>https://github.com/${github.account}/${project.artifactId}/actions</url>
-    </ciManagement>
-    <scm>
-        <url>https://github.com/${github.account}/${project.artifactId}/tree/${project.scm.tag}</url>
-        <connection>scm:git:git@github.com:${github.account}/${project.artifactId}.git</connection>
-        <developerConnection>scm:git:git@github.com:${github.account}/${project.artifactId}.git</developerConnection>
-    </scm>
-    <repositories>
-        <repository>
-            <id>central</id>
-            <url>https://repo1.maven.org/maven2</url>
-            <releases>
-                <enabled>true</enabled>
-            </releases>
-            <snapshots>
-                <enabled>true</enabled>
-            </snapshots>
-        </repository>
-        <repository>
-            <id>github</id>
-            <name>GitHub Packages</name>
-            <url>https://maven.pkg.github.com/${github.account}/${project.artifactId}</url>
-        </repository>
-    </repositories>
-    <distributionManagement>
-        <repository>
-            <id>github</id>
-            <name>GitHub Packages</name>
-            <url>https://maven.pkg.github.com/${github.account}/${project.artifactId}</url>
-        </repository>
-        <snapshotRepository>
-            <id>github</id>
-            <name>GitHub Packages</name>
-            <url>https://maven.pkg.github.com/${github.account}/${project.artifactId}</url>
-        </snapshotRepository>
-        <site>
-            <id>github.pages</id>
-            <url>scm:git:ssh://git@github.com/${github.account}/${project.artifactId}</url>
-        </site>
-    </distributionManagement>
+    <profiles>
+        <profile>
+            <id>shadedjar</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-shade-plugin</artifactId>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+        <profile>
+            <id>native</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.graalvm.buildtools</groupId>
+                        <artifactId>native-maven-plugin</artifactId>
+                        <version>0.9.17</version>
+                        <extensions>true</extensions>
+                        <executions>
+                            <execution>
+                                <id>build-native</id>
+                                <goals>
+                                    <goal>compile-no-fork</goal>
+                                </goals>
+                                <phase>package</phase>
+                            </execution>
+                            <execution>
+                                <id>test-native</id>
+                                <goals>
+                                    <goal>test</goal>
+                                </goals>
+                                <phase>test</phase>
+                            </execution>
+                        </executions>
+                        <configuration>
+                            <buildArgs>
+                                <!-- needed to run on alpine without glibc -->
+                                <arg>--static</arg>
+                            </buildArgs>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+        <profile>
+            <id>jlink</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-jlink-plugin</artifactId>
+                        <version>3.1.0</version>
+                        <extensions>true</extensions>
+                        <configuration>
+                            <classifier>jlink</classifier>
+                            <noHeaderFiles>true</noHeaderFiles>
+                            <noManPages>true</noManPages>
+                            <!--stripDebug>true</stripDebug-->
+                            <compress>2</compress>
+                            <launcher>default=fr.univtln.bruno.demos/fr.univtln.bruno.demos.App</launcher>
+                        </configuration>
+                        <executions>
+                            <execution>
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>jlink</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-install-plugin</artifactId>
+                        <configuration>
+                            <!-- This is an app, so we don't want to install it in the local Maven repository -->
+                            <skip>true</skip>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
 
 </project>
