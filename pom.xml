@@ -55,7 +55,9 @@
     <inceptionYear>2020</inceptionYear>
     <licenses>
         <license>
-            <name>mit</name>
+            <name>MIT License</name>
+            <url>https://opensource.org/licenses/MIT</url>
+            <distribution>repo</distribution>
         </license>
     </licenses>
     <organization>
