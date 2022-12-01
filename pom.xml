@@ -1220,6 +1220,36 @@
 
     <profiles>
         <profile>
+            <!--  A profile to sign artifacts with gpg
+            mvn verify -P gpgsigning ou mvn deploy -P gpgsigning
+
+             gpg - -verify  \
+                target/demoparentpom-1.0-SNAPSHOT.pom.asc \
+                target/demoparentpom-1.0-SNAPSHOT.pom
+
+            -->
+            <id>gpgsigning</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-gpg-plugin</artifactId>
+                        <version>3.0.1</version>
+                        <executions>
+                            <execution>
+                                <id>sign-artifacts</id>
+                                <phase>verify</phase>
+                                <goals>
+                                    <goal>sign</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+
+        <profile>
             <id>shadedjar</id>
             <build>
                 <plugins>
