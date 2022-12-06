@@ -37,7 +37,7 @@
         <jjwt.version>0.11.5</jjwt.version>
 
         <!-- WebSocket -->
-        <tyrus.version>2.1.1</tyrus.version>
+        <tyrus.version>2.1.2</tyrus.version>
 
         <mockito.version>4.9.0</mockito.version>
 
@@ -129,8 +129,10 @@
             <url>https://maven.pkg.github.com/${github.account}/${project.artifactId}</url>
         </snapshotRepository>
         <site>
-            <id>github.pages</id>
-            <url>scm:git:ssh://git@github.com/${github.account}/${project.artifactId}</url>
+            <id>githubpages</id>
+            <url>scm:git:ssh://git@github.com/${github.account}</url>
+            <!--url>scm:git:ssh://git@github.com/${github.account}/${project.artifactId}</url-->
+            <!--url>scm:git:git@github.com/${github.account}/${project.artifactId}</url-->
         </site>
     </distributionManagement>
 
@@ -347,12 +349,12 @@
             <dependency>
                 <groupId>org.slf4j</groupId>
                 <artifactId>slf4j-api</artifactId>
-                <version>2.0.3</version>
+                <version>2.0.5</version>
             </dependency>
             <dependency>
                 <groupId>ch.qos.logback</groupId>
                 <artifactId>logback-classic</artifactId>
-                <version>1.4.4</version>
+                <version>1.4.5</version>
             </dependency>
 
             <!--dependency>
@@ -380,7 +382,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-site-plugin</artifactId>
-                <version>3.9.1</version>
+                <version>4.0.0-M3</version>
                 <executions>
                     <execution>
                         <id>stage-for-scm-publish</id>
@@ -394,7 +396,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-scm-publish-plugin</artifactId>
-                <version>3.0.0</version>
+                <version>3.1.0</version>
                 <executions>
                     <execution>
                         <id>scm-publish</id>
@@ -437,7 +439,7 @@
                     </execution>
                 </executions>
             </plugin>
-            <plugin>
+            <!--plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>license-maven-plugin</artifactId>
                 <version>2.0.0</version>
@@ -453,7 +455,7 @@
                         <phase>process-sources</phase>
                     </execution>
                 </executions>
-            </plugin>
+            </plugin-->
 
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -776,6 +778,7 @@
                     <artifactId>maven-site-plugin</artifactId>
                     <version>3.12.1</version>
                     <configuration>
+
                         <skipDeploy>true</skipDeploy>
                     </configuration>
                 </plugin>
@@ -994,22 +997,15 @@
                     <artifactId>maven-scm-publish-plugin</artifactId>
                     <version>3.1.0</version>
                     <configuration>
-                        <!--providerImplementations>
-                            <git>jgit</git>
-                        </providerImplementations-->
-                        <pubScmUrl>scm:git:https://github.com/${github.account}/${project.artifactId}</pubScmUrl>
+                        <tryUpdate>true</tryUpdate>
                         <scmBranch>gh-pages</scmBranch>
-                        <!--suppress UnresolvedMavenProperty -->
-                        <username>${env.GITHUBLOGIN}</username>
-                        <!--suppress UnresolvedMavenProperty -->
-                        <password>${env.GITHUBPASSWORD}</password>
                     </configuration>
                 </plugin>
 
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-dependency-plugin</artifactId>
-                    <version>3.3.0</version>
+                    <version>3.4.0</version>
                 </plugin>
 
                 <plugin>
@@ -1090,8 +1086,8 @@
                             <report>index</report>
                             <report>licenses</report>
                             <report>modules</report>
-                            <report>plugin-management</report>
                             <report>plugins</report>
+                            <report>plugin-management</report>
                         </reports>
                     </reportSet>
                 </reportSets>
@@ -1198,7 +1194,7 @@
                     <plugin>
                         <groupId>org.graalvm.buildtools</groupId>
                         <artifactId>native-maven-plugin</artifactId>
-                        <version>0.9.18</version>
+                        <version>0.9.19</version>
                         <extensions>true</extensions>
                         <executions>
                             <execution>
