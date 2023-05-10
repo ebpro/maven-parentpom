@@ -9,4 +9,4 @@ jobs:
           with:
             keep: 1
             names: |
-              fr.univtln.bruno.demos.poms.demoparentpom
+              fr.ebruno.maven.poms.parentpom
