@@ -41,8 +41,8 @@ on:
           type: string
 
 env:
-  GITHUBLOGIN: ${{secrets.GITHUBLOGIN}}
-  GITHUBTOKEN: ${{secrets.GITHUBTOKEN}}
+  GITHUB_ACTOR: ${{secrets.GITHUB_ACTOR}}
+  GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
   SONAR_URL: ${{secrets.SONAR_URL}}
   SONAR_TOKEN: ${{secrets.SONAR_TOKEN}}
   DOCKERHUB_USERNAME: ${{secrets.DOCKERHUB_USERNAME}}
