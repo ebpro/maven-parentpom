@@ -17,9 +17,9 @@ on: [push]
 # We set env variables for shell, docker and maven.
 env:
   GITHUBLOGIN: ${{secrets.GITHUBLOGIN}}
-  GITHUBPASSWORD: ${{secrets.GITHUBTOKEN}}
-  DOCKER_USERNAME: ${{secrets.DOCKER_USERNAME}}
-  DOCKER_PASSWORD: ${{secrets.DOCKER_TOKEN}}
+  GITHUBTOKEN: ${{secrets.GITHUBTOKEN}}
+  DOCKERHUB_USERNAME: ${{secrets.DOCKERHUB_USERNAME}}
+  DOCKERHUB_TOKEN: ${{secrets.DOCKERHUB_TOKEN}}
   SONAR_URL: ${{secrets.SONAR_URL}}
   SONAR_TOKEN: ${{secrets.SONAR_TOKEN}}
   MSTEAMS_WEBHOOK: ${{ secrets.MSTEAMS_WEBHOOK }}
