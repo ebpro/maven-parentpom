@@ -56,7 +56,6 @@ jobs:
             -P jacoco,sonar \
             sonar:sonar
       # Stage artifact
-      - run: mkdir staging && cp target/*.jar staging
       - name: Stage artifacts
         uses: actions/upload-artifact@v3
         with:
