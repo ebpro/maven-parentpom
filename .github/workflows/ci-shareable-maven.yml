@@ -93,8 +93,8 @@ jobs:
         run: mvn --errors \
               --batch-mode \
               --show-version \
-              org.apache.maven.plugins:maven-wrapper-plugin:3.2.0:wrapper " \
-              -Dmaven=${{ matrix.maven }}"
+              org.apache.maven.plugins:maven-wrapper-plugin:3.2.0:wrapper \
+              -Dmaven="${{ matrix.maven }}"
 
       - name: Extract branch name
         shell: bash
