@@ -93,6 +93,7 @@ jobs:
         run: mvn --errors \
               --batch-mode \
               --show-version \
+              --update-snapshots \
               org.apache.maven.plugins:maven-wrapper-plugin:3.2.0:wrapper \
               -Dmaven="${{ matrix.maven }}"
 
