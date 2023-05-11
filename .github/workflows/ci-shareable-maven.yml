@@ -80,7 +80,7 @@ jobs:
           distribution: ${{ matrix.distribution }}
           java-version: ${{ matrix.jdk }}
           check-latest: true
-          cache: 'maven'
+      #    cache: 'maven'
 
       # Setup maven version as a wrapper
       - name: Set up Maven
