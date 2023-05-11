@@ -73,5 +73,5 @@ jobs:
         run: >
           mvn --batch-mode \
               --color always \
-              --settings docker/ci-settings.xml \
+              --settings ci-settings.xml \
               site:site site-deploy
