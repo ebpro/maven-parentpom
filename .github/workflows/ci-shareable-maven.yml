@@ -73,6 +73,12 @@ jobs:
       - uses: actions/checkout@v3
         with:
           fetch-depth: 0
+      # Maven is not installed in self hosted
+      # so we install one (see wrapper below)
+      - name: Set up Maven
+        uses: stCarolas/setup-maven@v4.5
+        with:
+            maven-version: ${{ matrix.maven }}  
      # Installs the JDK
       - name: Set up JDK
         uses: actions/setup-java@v3
