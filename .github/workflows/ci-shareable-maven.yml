@@ -118,7 +118,7 @@ jobs:
           ./mvnw --errors \
             --show-version \
             --batch-mode \
-            -DskipTests=true \           
+            -DskipTests=true \
             --color always \
             --settings ci-settings.xml \
             -Dsonar.branch.name=$MY_BRANCH \
