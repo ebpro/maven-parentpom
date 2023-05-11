@@ -11,8 +11,9 @@
 # done'
 name: Java CI
 
-# on every push
-on: [push]
+on: 
+  # push:
+  workflow_dispatch:  
 
 # We set env variables for shell, docker and maven.
 env:
