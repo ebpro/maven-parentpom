@@ -1,4 +1,4 @@
-name: Java CI
+name: Java CI (host)
 
 on: [ push ]
 
@@ -39,7 +39,7 @@ jobs:
           mvn --batch-mode \
               --update-snapshots \
               --color always \
-              --settings docker/ci-settings.xml \
+              --settings ci-settings.xml \
               -P jacoco \
               verify
       # Check quality with SonarQube
@@ -51,7 +51,7 @@ jobs:
           mvn -DskipTests=true \
             --batch-mode \
             --color always \
-            --settings docker/ci-settings.xml \
+            --settings ci-settings.xml \
             -Dsonar.branch.name=$MY_BRANCH \
             -P jacoco,sonar \
             sonar:sonar

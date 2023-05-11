@@ -9,7 +9,7 @@
 # bash -c 'for secret in GITHUBLOGIN GITHUBPASSWORD DOCKER_USERNAME DOCKER_PASSWORD SONAR_URL SONAR_TOKEN; do \
 #    eval gh secret set $secret --app actions  --body ${!secret} --org $GITHUB_ORG --visibility all; \
 # done'
-name: Java CI
+name: Java CI (docker)
 
 on: 
   # push:
