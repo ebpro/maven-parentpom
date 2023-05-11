@@ -127,7 +127,7 @@
         </snapshotRepository>
         <site>
             <id>githubpages</id>
-            <url>scm:git:ssh://git@github.com/${github.account}</url>
+            <url>scm:git:ssh://git@github.com/${github.account}/${project.artifactId}.git</url>
         </site>
     </distributionManagement>
 
