@@ -40,3 +40,8 @@ proguard/
 *.ear%
 
 pom.xml.versionsBackup
+
+# Maven wrapper
+.mvn
+mvnw
+mvnw.cmd
