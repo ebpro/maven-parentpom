@@ -10,9 +10,8 @@
             <password>${env.GITHUB_TOKEN}</password>
         </server>
         <server>
-            <id>dockerhub</id>
-            <username>${env.DOCKER_USERNAME}</username>
-            <password>${env.DOCKER_PASSWORD}</password>
+            <id>gpg.passphrase</id>
+            <passphrase>${env.GPG_PASSPHRASE}</passphrase>
         </server>
         <server>
             <id>github.pages</id>
@@ -21,6 +20,16 @@
                 <scmVersionType>branch</scmVersionType>
                 <scmVersion>gh-pages</scmVersion>
             </configuration>
+        </server>
+        <server>
+            <id>dockerhub</id>
+            <username>${env.DOCKER_USERNAME}</username>
+            <password>${env.DOCKER_PASSWORD}</password>
+        </server>
+        <server>
+            <id>maven</id>
+            <username>${env.MAVEN_USERNAME}</username>
+            <password>${env.MAVEN_CENTRAL_TOKEN}</password>
         </server>
     </servers>
 
