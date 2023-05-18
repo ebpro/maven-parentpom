@@ -1,4 +1,4 @@
-name: Java CI (host)
+name: Java CI (shareable)
 
 # Thanks to https://github.com/apache/maven-gh-actions-shared/
 on:
@@ -73,6 +73,10 @@ jobs:
       - uses: actions/checkout@v3
         with:
           fetch-depth: 0
+      # Setups git user name and email
+      - run: |
+          git config user.name github-actions
+          git config user.email github-actions@github.com        
       # Maven is not installed in self hosted
       # so we install one (see wrapper below)
       - name: Set up Maven
