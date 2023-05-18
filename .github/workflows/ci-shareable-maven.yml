@@ -83,6 +83,14 @@ jobs:
         uses: stCarolas/setup-maven@v4.5
         with:
             maven-version: ${{ matrix.maven }}  
+     # Installs the JDK
+      - name: Set up JDK
+        uses: actions/setup-java@v3
+        with:
+          distribution: ${{ matrix.distribution }}
+          java-version: ${{ matrix.jdk }}
+          check-latest: true
+          cache: 'maven'
       # Setup maven version as a wrapper
       - name: Set up Maven
         run: >
@@ -92,14 +100,6 @@ jobs:
               --update-snapshots \
               org.apache.maven.plugins:maven-wrapper-plugin:3.2.0:wrapper \
               -Dmaven="${{ matrix.maven }}"
-     # Installs the JDK
-      - name: Set up JDK
-        uses: actions/setup-java@v3
-        with:
-          distribution: ${{ matrix.distribution }}
-          java-version: ${{ matrix.jdk }}
-          check-latest: true
-          cache: 'maven'
 
       - name: Extract branch name
         shell: bash
