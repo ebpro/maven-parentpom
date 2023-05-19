@@ -8,10 +8,4 @@ jobs:
     build:
         name: build-sonar-site-upload
         uses: ebpro/gh-actions-shared-java/.github/workflows/ci-shareable-maven.yml@develop
-        with:
-          matrix-exclude: >
-            [ 
-              "minimal",
-              ""
-            ]
         secrets: inherit
