@@ -7,7 +7,7 @@
     <!-- The Basics -->
     <groupId>fr.ebruno.maven.poms</groupId>
     <artifactId>maven-parentpom</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>0.1.0-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <properties>
@@ -1064,7 +1064,16 @@
                     <artifactId>maven-enforcer-plugin</artifactId>
                     <version>3.3.0</version>
                 </plugin>
-            </plugins>
+        
+            <!-- A VOIR -->
+             <plugin>
+                    <groupId>org.codehaus.mojo</groupId>
+                    <artifactId>flatten-maven-plugin</artifactId>
+                    <version>1.5.0</version>
+            </plugin>
+
+        </plugins>
+
         </pluginManagement>
     </build>
 
