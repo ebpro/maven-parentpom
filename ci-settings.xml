@@ -10,10 +10,6 @@
             <password>${env.GITHUB_TOKEN}</password>
         </server>
         <server>
-            <id>gpg.passphrase</id>
-            <passphrase>${env.GPG_PASSPHRASE}</passphrase>
-        </server>
-        <server>
             <id>github.pages</id>
             <username>git</username>
             <configuration>
@@ -62,6 +58,7 @@
 
     <activeProfiles>
         <activeProfile>github</activeProfile>
+        <activeProfile>gpgsigning</activeProfile>
     </activeProfiles>
 
 </settings>

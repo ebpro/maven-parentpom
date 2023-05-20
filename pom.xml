@@ -1064,15 +1064,15 @@
                     <artifactId>maven-enforcer-plugin</artifactId>
                     <version>3.3.0</version>
                 </plugin>
-        
-            <!-- A VOIR -->
-             <plugin>
+
+                <!-- A VOIR -->
+                <plugin>
                     <groupId>org.codehaus.mojo</groupId>
                     <artifactId>flatten-maven-plugin</artifactId>
                     <version>1.5.0</version>
-            </plugin>
+                </plugin>
 
-        </plugins>
+            </plugins>
 
         </pluginManagement>
     </build>
@@ -1171,18 +1171,42 @@
             <!--  A profile to sign artifacts with gpg
             mvn verify -P gpgsigning ou mvn deploy -P gpgsigning
 
-             gpg - -verify  \
-                target/demoparentpom-1.0-SNAPSHOT.pom.asc \
-                target/demoparentpom-1.0-SNAPSHOT.pom
+            //no white space between the two dashes (due to xml comment).
 
-            -->
+            gpg - -verify  \
+                target/maven-parentpom-0.1.0-SNAPSHOT.pom.asc \
+                target/maven-parentpom-0.1.0-SNAPSHOT.pom -->
+
             <id>gpgsigning</id>
             <build>
                 <plugins>
-                    <plugin>
+                    <!--plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-gpg-plugin</artifactId>
                         <version>3.1.0</version>
+                        <configuration>
+                            <useAgent>true</useAgent>
+                            <passphrase>${env.GPG_PASSPHRASE}</passphrase>
+                            <gpgArguments>
+                                <arg>- -pinentry-mode</arg>
+                                <arg>loopback</arg>
+                            </gpgArguments>
+                        </configuration>
+                        <executions>
+                            <execution>
+                                <id>sign-artifacts</id>
+                                <phase>verify</phase>
+                                <goals>
+                                    <goal>sign</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin-->
+
+                    <plugin>
+                        <groupId>org.simplify4u.plugins</groupId>
+                        <artifactId>sign-maven-plugin</artifactId>
+                        <version>1.0.1</version>
                         <executions>
                             <execution>
                                 <id>sign-artifacts</id>
@@ -1193,6 +1217,7 @@
                             </execution>
                         </executions>
                     </plugin>
+
                 </plugins>
             </build>
         </profile>
