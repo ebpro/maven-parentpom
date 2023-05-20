@@ -58,7 +58,6 @@
 
     <activeProfiles>
         <activeProfile>github</activeProfile>
-        <activeProfile>gpgsigning</activeProfile>
     </activeProfiles>
 
 </settings>
