@@ -15,8 +15,8 @@ imageLower=`echo ${image}|tr '[:upper:]' '[:lower:]'`
 echo "# Building docker image (${IMAGE_NAME}.${imageLower}:$SHA) (${IMAGE_NAME}.${imageLower}:$BRANCH)"
 DOCKER_BUILDKIT=1 docker build \
   --progress plain \
-  --build-arg GITHUBLOGIN=$GITHUBLOGIN \
-  --build-arg GITHUBPASSWORD=$GITHUBPASSWORD \
+  --build-arg GITHUBACTOR=$GITHUBACTOR \
+  --build-arg GITHUBTOKEN=$GITHUBTOKEN \
   --build-arg DOCKER_USERNAME=$DOCKER_USERNAME \
   --build-arg DOCKER_PASSWORD=$DOCKER_PASSWORD \
   --build-arg SONAR_TOKEN=$SONAR_TOKEN \
@@ -27,5 +27,3 @@ DOCKER_BUILDKIT=1 docker build \
 	.
 done
 exit 0
-
-
