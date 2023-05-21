@@ -385,6 +385,12 @@
                 <!--version>4.0.0-M8</version-->
                 <executions>
                     <execution>
+                        <id>attach-descriptor</id>
+                        <goals>
+                            <goal>attach-descriptor</goal>
+                        </goals>
+                    </execution>
+                    <execution>
                         <id>stage-for-scm-publish</id>
                         <phase>post-site</phase>
                         <goals>
