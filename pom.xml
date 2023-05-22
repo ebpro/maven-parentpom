@@ -427,7 +427,7 @@
                         <configuration>
                             <rules>
                                 <requireMavenVersion>
-                                    <version>3.5.4</version>
+                                    <version>3.6.3</version>
                                 </requireMavenVersion>
                                 <requireJavaVersion>
                                     <version>${java.version}</version>
@@ -587,6 +587,7 @@
                     <artifactId>maven-resources-plugin</artifactId>
                     <version>3.3.1</version>
                     <configuration>
+                        <!-- needed to include .gitignore -->
                         <addDefaultExcludes>false</addDefaultExcludes>
                     </configuration>
                     <executions>
@@ -638,6 +639,7 @@
                     <artifactId>maven-archetype-plugin</artifactId>
                     <version>3.2.1</version>
                     <configuration>
+                        <!-- needed to include .gitignore -->
                         <useDefaultExcludes>false</useDefaultExcludes>
                     </configuration>
                 </plugin>
