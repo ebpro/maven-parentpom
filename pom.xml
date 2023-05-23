@@ -29,12 +29,12 @@
 
         <junit.version>5.9.3</junit.version>
 
-        <hibernate.version>6.2.2.Final</hibernate.version>
+        <hibernate.version>6.2.3.Final</hibernate.version>
 
         <lombok.version>1.18.26</lombok.version>
 
         <!-- JAXRS -->
-        <jersey.version>3.1.1</jersey.version>
+        <jersey.version>3.1.2</jersey.version>
         <jjwt.version>0.11.5</jjwt.version>
 
         <!-- WebSocket -->
@@ -116,6 +116,13 @@
             <url>https://maven.pkg.github.com/${github.account}/${project.artifactId}</url>
         </repository>
     </repositories-->
+    <!--pluginRepositories>
+        <pluginRepository>
+            <id>maven-snapshots</id>
+            <url>https://repository.apache.org/content/repositories/snapshots/</url>
+        </pluginRepository>
+    </pluginRepositories-->
+
     <distributionManagement>
         <repository>
             <id>github</id>
@@ -132,13 +139,6 @@
             <url>scm:git:ssh://git@github.com/${github.account}/${project.artifactId}.git</url>
         </site>
     </distributionManagement>
-
-    <pluginRepositories>
-        <pluginRepository>
-            <id>maven-snapshots</id>
-            <url>https://repository.apache.org/content/repositories/snapshots/</url>
-        </pluginRepository>
-    </pluginRepositories>
 
     <dependencyManagement>
         <dependencies>
@@ -175,7 +175,7 @@
             <dependency>
                 <groupId>org.jboss.arquillian</groupId>
                 <artifactId>arquillian-bom</artifactId>
-                <version>1.6.0.Final</version>
+                <version>1.7.0.Final</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
