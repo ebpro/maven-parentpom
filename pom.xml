@@ -21,26 +21,48 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
+        <!-- Java version -->
         <java.version>17</java.version>
         <maven.compiler.release>${java.version}</maven.compiler.release>
         <!-- still needed for sonar -->
         <maven.compiler.source>${maven.compiler.release}</maven.compiler.source>
         <maven.compiler.target>${maven.compiler.release}</maven.compiler.target>
 
+        <!-- Test -->
         <junit.version>5.9.3</junit.version>
+        <hamcrest.version>2.2</hamcrest.version>
+        <mockito.version>5.3.1</mockito.version>
+        <arquillian.version>1.7.0.Final</arquillian.version>
 
+        <!-- Persistance -->
+        <jakarta.persistence.version>3.1.0</jakarta.persistence.version>    
+        <eclipselink.version>4.0.1</eclipselink.version>
         <hibernate.version>6.2.3.Final</hibernate.version>
 
+        <!-- Utils -->
         <lombok.version>1.18.26</lombok.version>
+        <eclipsecollections.version>11.1.0</eclipsecollections.version>
+
+        <!-- Log -->
+        <sl4j.version>2.0.7</sl4j.version>
+        <logback.version>1.4.7</logback.version>
+
+        <!-- Databases -->
+        <h2.version>2.1.214</h2.version>
+        <postgresql.version>42.6.0</postgresql.version>
+        <mysql.version>8.0.33</mysql.version>
+
+        <!-- XML -->
+        <jaxb.version>4.0.0</jaxb.version>
+        <jaxbimpl.version>4.0.2</jaxbimpl.version>
 
         <!-- JAXRS -->
+        <jaxrs.version>3.1.0</jaxrs.version>
         <jersey.version>3.1.2</jersey.version>
         <jjwt.version>0.11.5</jjwt.version>
 
         <!-- WebSocket -->
         <tyrus.version>2.1.3</tyrus.version>
-
-        <mockito.version>5.3.1</mockito.version>
 
         <!-- Reproducibility -->
         <!--  see https://maven.apache.org/guides/mini/guide-reproducible-builds.html -->
@@ -48,6 +70,53 @@
 
         <!-- Java Module (Jigsaw) Name -->
         <project.module>${project.groupId}.${project.artifactId}</project.module>
+
+        <!-- JEE -->
+        <el.version>4.0.2</el.version>
+        <beanvalidation.version>3.0.0</beanvalidation.version>
+        <hibernate-validator.version>8.0.0.Final</hibernate-validator.version>
+
+        <!-- Code coverage -->
+        <jacoco.version>0.8.10</jacoco.version>
+
+        <!-- SonarQube -->
+        <sonarqube.version>3.9.1.2184</sonarqube.version>
+        <sonarqualitygate.version>1.3.0</sonarqualitygate.version>
+
+        <!-- GPG Signing -->
+        <simplify4usign.version>1.0.1</simplify4usign.version>
+
+        <!-- Maven Plugins -->
+        <mavencompiler.version>3.11.0</mavencompiler.version>
+        <mavensource.version>3.3.0</mavensource.version>
+        <mavenclean.version>3.2.0</mavenclean.version>
+        <mavenjar.version>3.3.0</mavenjar.version>
+        <mavenresource.version>3.3.1</mavenresource.version>
+        <maveninstall.version>3.1.1</maveninstall.version>
+        <mavenarchetype.version>3.2.1</mavenarchetype.version>
+        <mavenjavadoc.version>3.5.0</mavenjavadoc.version>
+        <mavendeploy.version>3.1.1</mavendeploy.version>
+        <mavensurefire.version>3.1.0</mavensurefire.version>
+        <mavensurefirereport.version>3.1.0</mavensurefirereport.version>
+        <mavenfailsafe.version>3.1.0</mavenfailsafe.version>
+        <mavensite.version>3.12.1</mavensite.version>
+        <mavenexec.version>3.1.0</mavenexec.version>
+        <mavenshade.version>3.4.1</mavenshade.version>
+        <mavenassembly.version>3.6.0</mavenassembly.version>
+        <mavenscm.version>3.2.1</mavenscm.version>
+        <mavendependency.version>3.6.0</mavendependency.version>
+        <mavenrelease.version>3.0.0</mavenrelease.version>        
+        <mavenhelper.version>3.4.0</mavenhelper.version>
+        <mavenversions.version>2.15.0</mavenversions.version>
+        <mavenenforcer.version>3.3.0</mavenenforcer.version>
+        <mavenflatten.version>1.5.0</mavenflatten.version>
+        <maveninforeport.version>3.4.3</maveninforeport.version>
+        <mavenjavadoc.version>3.5.0</mavenjavadoc.version>
+
+        <!-- Final app Packaging -->
+        <mavengrallvm.version>0.9.21</mavengrallvm.version>
+        <mavenjigsaw.version>1.1.3</mavenjigsaw.version>
+
     </properties>
 
     <!-- More Project Information -->
@@ -98,30 +167,6 @@
         <connection>scm:git:git@github.com:${github.account}/${project.artifactId}.git</connection>
         <developerConnection>scm:git:git@github.com:${github.account}/${project.artifactId}.git</developerConnection>
     </scm>
-    <!-- moved to ci-settings.xml -->
-    <!--repositories>
-        <repository>
-            <id>central</id>
-            <url>https://repo1.maven.org/maven2</url>
-            <releases>
-                <enabled>true</enabled>
-            </releases>
-            <snapshots>
-                <enabled>true</enabled>
-            </snapshots>
-        </repository>
-        <repository>
-            <id>github</id>
-            <name>GitHub Packages</name>
-            <url>https://maven.pkg.github.com/${github.account}/${project.artifactId}</url>
-        </repository>
-    </repositories-->
-    <!--pluginRepositories>
-        <pluginRepository>
-            <id>maven-snapshots</id>
-            <url>https://repository.apache.org/content/repositories/snapshots/</url>
-        </pluginRepository>
-    </pluginRepositories-->
 
     <distributionManagement>
         <repository>
@@ -175,7 +220,7 @@
             <dependency>
                 <groupId>org.jboss.arquillian</groupId>
                 <artifactId>arquillian-bom</artifactId>
-                <version>1.7.0.Final</version>
+                <version>${arquillian.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
@@ -191,7 +236,7 @@
             <dependency>
                 <groupId>org.hamcrest</groupId>
                 <artifactId>hamcrest</artifactId>
-                <version>2.2</version>
+                <version>${hamcrest.version}</version>
                 <scope>test</scope>
             </dependency>
 
@@ -209,7 +254,7 @@
             <dependency>
                 <groupId>org.eclipse.collections</groupId>
                 <artifactId>eclipse-collections</artifactId>
-                <version>11.1.0</version>
+                <version>${eclipsecollections.version}</version>
             </dependency>
 
             <!-- Databases connections -->
@@ -218,21 +263,21 @@
             <dependency>
                 <groupId>com.h2database</groupId>
                 <artifactId>h2</artifactId>
-                <version>2.1.214</version>
+                <version>${h2.version}</version>
             </dependency>
 
             <!-- Postgres https://jdbc.postgresql.org/ -->
             <dependency>
                 <groupId>org.postgresql</groupId>
                 <artifactId>postgresql</artifactId>
-                <version>42.6.0</version>
+                <version>${postgresql.version}</version>
             </dependency>
 
             <!-- MySQL https://dev.mysql.com/doc/connector-j/8.0/en/ -->
             <dependency>
                 <groupId>mysql</groupId>
                 <artifactId>mysql-connector-java</artifactId>
-                <version>8.0.33</version>
+                <version>${mysql.version}</version>
             </dependency>
 
             <!-- Jakarta Persistence (ex JPA)
@@ -240,13 +285,13 @@
             <dependency>
                 <groupId>jakarta.persistence</groupId>
                 <artifactId>jakarta.persistence-api</artifactId>
-                <version>3.1.0</version>
+                <version>${jakarta.persistence.version}</version>
             </dependency>
             <!-- EclipseLink https://www.eclipse.org/eclipselink/ -->
             <dependency>
                 <groupId>org.eclipse.persistence</groupId>
                 <artifactId>eclipselink</artifactId>
-                <version>4.0.1</version>
+                <version>${eclipselink.version}</version>
             </dependency>
             <!-- Hibernate https://hibernate.org/orm/ -->
             <dependency>
@@ -261,12 +306,12 @@
             <dependency>
                 <groupId>jakarta.xml.bind</groupId>
                 <artifactId>jakarta.xml.bind-api</artifactId>
-                <version>4.0.0</version>
+                <version>${jaxb.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.sun.xml.bind</groupId>
                 <artifactId>jaxb-impl</artifactId>
-                <version>4.0.2</version>
+                <version>${jaxbimpl.version}</version>
                 <scope>runtime</scope>
             </dependency>
 
@@ -275,7 +320,7 @@
             <dependency>
                 <groupId>org.glassfish</groupId>
                 <artifactId>jakarta.el</artifactId>
-                <version>4.0.2</version>
+                <version>${el.version}</version>
             </dependency>
 
             <!-- Authentication -->
@@ -303,12 +348,12 @@
             <!--dependency>
                 <groupId>jakarta.validation</groupId>
                 <artifactId>jakarta.validation-api</artifactId>
-                <version>3.0.0</version>
+                <version>${beanvalidation.version}</version>
             </dependency-->
             <dependency>
                 <groupId>org.hibernate.validator</groupId>
                 <artifactId>hibernate-validator</artifactId>
-                <version>8.0.0.Final</version>
+                <version>${hibernate-validator.version}</version>
             </dependency>
 
             <!-- Jakarta RESTful Web Services (JAXRS)
@@ -324,7 +369,7 @@
             <dependency>
                 <groupId>jakarta.ws.rs</groupId>
                 <artifactId>jakarta.ws.rs-api</artifactId>
-                <version>3.1.0</version>
+                <version>${jaxrs.version}</version>
             </dependency>
 
             <!-- Websocket API & Implementation -->
@@ -350,12 +395,12 @@
             <dependency>
                 <groupId>org.slf4j</groupId>
                 <artifactId>slf4j-api</artifactId>
-                <version>2.0.7</version>
+                <version>${sl4j.version}</version>
             </dependency>
             <dependency>
                 <groupId>ch.qos.logback</groupId>
                 <artifactId>logback-classic</artifactId>
-                <version>1.4.7</version>
+                <version>${logback.version}</version>
             </dependency>
 
             <!--dependency>
@@ -484,7 +529,7 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-compiler-plugin</artifactId>
-                    <version>3.11.0</version>
+                    <version>${mavencompiler.version}</version>
                     <configuration>
                         <annotationProcessorPaths>
                             <!-- Lombok configuration for Java9 modularized projects -->
@@ -535,7 +580,7 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-source-plugin</artifactId>
-                    <version>3.2.1</version>
+                    <version>${mavensource.version}</version>
                     <configuration>
                         <archive>
                             <manifest>
@@ -566,13 +611,13 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-clean-plugin</artifactId>
-                    <version>3.2.0</version>
+                    <version>${mavenclean.version}</version>
                 </plugin>
 
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-jar-plugin</artifactId>
-                    <version>3.3.0</version>
+                    <version>${mavenjar.version}</version>
                     <configuration>
                         <archive>
                             <manifest>
@@ -586,7 +631,7 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-resources-plugin</artifactId>
-                    <version>3.3.1</version>
+                    <version>${mavenresource.version}</version>
                     <configuration>
                         <!-- needed to include .gitignore -->
                         <addDefaultExcludes>false</addDefaultExcludes>
@@ -632,13 +677,13 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-install-plugin</artifactId>
-                    <version>3.1.1</version>
+                    <version>${maveninstall.version}</version>
                 </plugin>
 
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-archetype-plugin</artifactId>
-                    <version>3.2.1</version>
+                    <version>${mavenarchetype.version}</version>
                     <configuration>
                         <!-- needed to include .gitignore -->
                         <useDefaultExcludes>false</useDefaultExcludes>
@@ -654,7 +699,7 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-javadoc-plugin</artifactId>
-                    <version>3.5.0</version>
+                    <version>${mavenjavadoc.version}</version>
                     <configuration>
                         <show>private</show>
                     </configuration>
@@ -671,7 +716,7 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-deploy-plugin</artifactId>
-                    <version>3.1.1</version>
+                    <version>${mavendeploy.version}</version>
                 </plugin>
 
                 <!-- Maven utilities :
@@ -689,7 +734,7 @@
                 <plugin>
                     <groupId>org.codehaus.mojo</groupId>
                     <artifactId>build-helper-maven-plugin</artifactId>
-                    <version>3.3.0</version>
+                    <version>${mavenhelper.version}</version>
                 </plugin>
 
                 <!-- Executes unit tests and Generates reports (target/surefire-reports).
@@ -706,7 +751,7 @@
                 -->
                 <plugin>
                     <artifactId>maven-surefire-plugin</artifactId>
-                    <version>3.1.0</version>
+                    <version>${mavensurefire.version}</version>
                     <configuration>
                         <testClassesDirectory>${basedir}/target/test-classes</testClassesDirectory>
                         <testSourceDirectory>${basedir}/src/test/java</testSourceDirectory>
@@ -719,7 +764,7 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-surefire-report-plugin</artifactId>
-                    <version>3.1.0</version>
+                    <version>${mavensurefirereport.version}</version>
                     <configuration>
                         <aggregate>true</aggregate>
                         <linkXRef>true</linkXRef>
@@ -734,7 +779,7 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-failsafe-plugin</artifactId>
-                    <version>3.1.0</version>
+                    <version>${mavenfailsafe.version}</version>
                     <executions>
                         <execution>
                             <id>integration-test</id>
@@ -781,102 +826,43 @@
 
                 mvn site:run launches de
                 a web server see http://localhost:8080/
+
+                !! WARNING : BY DEFAULT WE SKIP IT TO USE GITHUB-PAGES BRANCH !!
+
                 -->
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-site-plugin</artifactId>
-                    <version>3.12.1</version>
+                    <version>${mavensite.version}</version>
                     <configuration>
-
                         <skipDeploy>true</skipDeploy>
                     </configuration>
                 </plugin>
 
-                <!--   &lt;!&ndash; This plugins implements the gitflow branching model
+                <!--   This plugins implements the gitflow branching model
+
+                SEE https://github.com/aleksandr-m/gitflow-maven-plugin
+
                 (http://nvie.com/git-model,
                    https://www.atlassian.com/git/tutorials/comparing-workflows/#!workflow-gitflow )
                    for maven. It gives an automatic way to manage versions and branches.
                    https://bitbucket.org/atlassian/jgit-flow/wiki/Home
+                   
+                    gitflow:release-start - Starts a release branch and updates version(s) to release version.
+                    gitflow:release-finish - Merges a release branch and updates version(s) to next development version.
+                    gitflow:release - Releases project w/o creating a release branch.
+                    gitflow:feature-start - Starts a feature branch and optionally updates version(s).
+                    gitflow:feature-finish - Merges a feature branch.
+                    gitflow:hotfix-start - Starts a hotfix branch and updates version(s) to hotfix version.
+                    gitflow:hotfix-finish - Merges a hotfix branch.
+                    gitflow:support-start - Starts a support branch from the production tag.
+                    gitflow:version-update - Updates version in release or support branch, optionally tagging and pushing it to the remote repository.
+                    gitflow:help - Displays help information.
 
-                   mvn jgitflow:feature-start:
-                     creates a new feature branch; pushes the branch to origin automatically (can be shared and
-                     used by jenkins).
-                   mvn jgitflow:feature-finish:
-                     merges the feature branch back into the development branch and pushes to origin.
-                       The good way :
-                           git fetch : make sure your local repo copy is up-to-date
-                           git checkout development : go to development
-                           git merge origin/development : make sure your local develop is up-to-date (origin being the
-                remote's name here)
-                           git checkout <feature-branch> : go to you feature branch again
-                           git merge develop : Merge and solve conflicts, if any (on you feature branch)
-                           mvn jgitflow:feature-finish you already solved the conflicts
-                   mvn jgitflow:release-start:
-                      creates a release branch (freeze to prepare a release, only bugfix, documentation
-                      and translation) and pushes it to origin.
-                   mvn jgitflow:release-finish:
-                      builds, tags and merges the release branch back into master and development;
-                      updates versions in master and development branches
-                   mvn jgitflow:hotfix-start: like mvn jgitflow:release-start but branches off of master
-                   mvn jgitflow:hotfix-finish: like mvn jgitflow:release-finish
+                MULTIMODULES: mvn gitflow:<goal> -DargLine='-DprocessAllModules'
 
-                   We forbid deploy from the workstations, it has to be done by the C.I. server.
-                   &ndash;&gt;
-                   <plugin>
-                       <groupId>external.atlassian.jgitflow</groupId>
-                       <artifactId>jgitflow-maven-plugin</artifactId>
-                       <version>1.0-m5.1</version>
-                       <dependencies>
-                           <dependency>
-                               <groupId>com.jcraft</groupId>
-                               <artifactId>jsch</artifactId>
-                               <version>0.1.55</version>
-                           </dependency>
-                       </dependencies>
-                       <configuration>
-                           &lt;!&ndash; Enable this to push to origin using SSH keys &ndash;&gt;
-                           <enableSshAgent>true</enableSshAgent>
-                           &lt;!&ndash; Keep your maven submodules at the same version as the parent POM &ndash;&gt;
-                           <autoVersionSubmodules>true</autoVersionSubmodules>
-                           &lt;!&ndash; Pushing in-development features to origin allows all devs to see what each other
-                                are working on                                        &ndash;&gt;
-                           &lt;!&ndash;pushFeatures>true</pushFeatures&ndash;&gt;
-
-                           &lt;!&ndash; This allows the CI server (e.g. Jenkins) to automatically push new releases to
-                                origin; you can then either manually deploy them or, if you are doing Continuous
-                                Deployments, auto-deploy them to prod &ndash;&gt;
-                           &lt;!&ndash;pushReleases>true</pushReleases&ndash;&gt;
-                           &lt;!&ndash;pushHotfixes>true</pushHotfixes&ndash;&gt;
-
-                           &lt;!&ndash; append the feature name to the version on the feature branch. &ndash;&gt;
-                           <enableFeatureVersions>true</enableFeatureVersions>
-                           &lt;!&ndash; Prevents deployments from dev workstations so that they can be done by a CI
-                                server  &ndash;&gt;
-                           <noDeploy>true</noDeploy>
-
-                           &lt;!&ndash; Whether to squash commits into a single commit before merging. &ndash;&gt;
-                           <squash>false</squash>
-
-                           <scmCommentPrefix>[gitflow]</scmCommentPrefix>
-
-                           &lt;!&ndash; A VOIR &ndash;&gt;
-                           <featureRebase>true</featureRebase>
-
-
-                           &lt;!&ndash;pullDevelop>true</pullDevelop>
-                           <pullMaster>true</pullMaster&ndash;&gt;
-
-                           <flowInitContext>
-                               <masterBranchName>master</masterBranchName>
-                               <developBranchName>develop</developBranchName>
-                               <featureBranchPrefix>feature/</featureBranchPrefix>
-                               <releaseBranchPrefix>release/</releaseBranchPrefix>
-                               <hotfixBranchPrefix>hotfix/</hotfixBranchPrefix>
-                               <versionTagPrefix />
-                           </flowInitContext>
-                       </configuration>
-                   </plugin>
-   -->
+                -->
+                  
                 <plugin>
                     <groupId>com.amashchenko.maven.plugin</groupId>
                     <artifactId>gitflow-maven-plugin</artifactId>
@@ -899,9 +885,6 @@
                             <origin>origin</origin>
                         </gitFlowConfig>
 
-                        <commitMessages>
-                            <!-- since 1.2.1, see Customizing commit messages -->
-                        </commitMessages>
                     </configuration>
                 </plugin>
 
@@ -911,7 +894,7 @@
                 <plugin>
                     <groupId>org.codehaus.mojo</groupId>
                     <artifactId>exec-maven-plugin</artifactId>
-                    <version>3.1.0</version>
+                    <version>${mavenexec.version}</version>
                     <executions>
                         <execution>
                             <goals>
@@ -937,7 +920,7 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-shade-plugin</artifactId>
-                    <version>3.4.1</version>
+                    <version>${mavenshade.version}</version>
                     <configuration>
                         <createDependencyReducedPom>true</createDependencyReducedPom>
                         <minimizeJar>true</minimizeJar>
@@ -994,7 +977,7 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-assembly-plugin</artifactId>
-                    <version>3.5.0</version>
+                    <version>${mavenassembly.version}</version>
                 </plugin>
 
                 <!-- configuration of the SCM plugin to deploy GitHub pages in a dedicated branch -->
@@ -1008,7 +991,7 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-scm-publish-plugin</artifactId>
-                    <version>3.2.1</version>
+                    <version>${mavenscm.version}</version>
                     <configuration>
                         <tryUpdate>true</tryUpdate>
                         <scmBranch>gh-pages</scmBranch>
@@ -1018,39 +1001,39 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-dependency-plugin</artifactId>
-                    <version>3.5.0</version>
+                    <version>${mavendependency.version}</version>
                 </plugin>
 
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-release-plugin</artifactId>
-                    <version>3.0.0</version>
+                    <version>${mavenrelease.version}</version>
                 </plugin>
 
-                <plugin>
+                <!--plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-antrun-plugin</artifactId>
                     <version>3.1.0</version>
-                </plugin>
+                </plugin-->
 
                 <!-- Sonarqube -->
                 <plugin>
                     <groupId>org.sonarsource.scanner.maven</groupId>
                     <artifactId>sonar-maven-plugin</artifactId>
-                    <version>3.9.1.2184</version>
+                    <version>${sonarqube.version}</version>
                 </plugin>
 
                 <plugin>
                     <groupId>io.github.r0bb3n</groupId>
                     <artifactId>sonar-quality-gate-maven-plugin</artifactId>
-                    <version>1.3.0</version>
+                    <version>${sonarqualitygate.version}</version>
                 </plugin>
 
                 <!-- Plugin to check latest stable version of plugins and dependencies -->
                 <plugin>
                     <groupId>org.codehaus.mojo</groupId>
                     <artifactId>versions-maven-plugin</artifactId>
-                    <version>2.15.0</version>
+                    <version>${mavenversions.version}</version>
                     <configuration>
                         <rulesUri>file:///${project.basedir}/rules.xml</rulesUri>
                     </configuration>
@@ -1068,14 +1051,14 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-enforcer-plugin</artifactId>
-                    <version>3.3.0</version>
+                    <version>${mavenenforcer.version}</version>
                 </plugin>
 
                 <!-- A VOIR -->
                 <plugin>
                     <groupId>org.codehaus.mojo</groupId>
                     <artifactId>flatten-maven-plugin</artifactId>
-                    <version>1.5.0</version>
+                    <version>${mavenflatten.version}</version>
                 </plugin>
 
             </plugins>
@@ -1092,7 +1075,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-project-info-reports-plugin</artifactId>
-                <version>3.4.3</version>
+                <version>${maveninforeport.version}</version>
                 <configuration>
                     <!--dependencyLocationsEnabled>false</dependencyLocationsEnabled-->
                 </configuration>
@@ -1131,7 +1114,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-javadoc-plugin</artifactId>
-                <version>3.4.1</version>
+                <version>${mavenjavadoc.version}</version>
                 <configuration />
                 <reportSets>
                     <reportSet>
@@ -1158,7 +1141,7 @@
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>versions-maven-plugin</artifactId>
-                <version>2.15.0</version>
+                <version>${mavenversions.version}</version>
                 <reportSets>
                     <reportSet>
                         <reports>
@@ -1185,34 +1168,11 @@
 
             <id>gpgsigning</id>
             <build>
-                <plugins>
-                    <!--plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-gpg-plugin</artifactId>
-                        <version>3.1.0</version>
-                        <configuration>
-                            <useAgent>true</useAgent>
-                            <passphrase>${env.GPG_PASSPHRASE}</passphrase>
-                            <gpgArguments>
-                                <arg>- -pinentry-mode</arg>
-                                <arg>loopback</arg>
-                            </gpgArguments>
-                        </configuration>
-                        <executions>
-                            <execution>
-                                <id>sign-artifacts</id>
-                                <phase>verify</phase>
-                                <goals>
-                                    <goal>sign</goal>
-                                </goals>
-                            </execution>
-                        </executions>
-                    </plugin-->
-
+                <plugins>                
                     <plugin>
                         <groupId>org.simplify4u.plugins</groupId>
                         <artifactId>sign-maven-plugin</artifactId>
-                        <version>1.0.1</version>
+                        <version>${simplify4usign.version}</version>
                         <executions>
                             <execution>
                                 <id>sign-artifacts</id>
@@ -1246,7 +1206,7 @@
                     <plugin>
                         <groupId>org.graalvm.buildtools</groupId>
                         <artifactId>native-maven-plugin</artifactId>
-                        <version>0.9.21</version>
+                        <version>${mavengrallvm.version}</version>
                         <extensions>true</extensions>
                         <executions>
                             <execution>
@@ -1309,7 +1269,7 @@
                     <plugin>
                         <groupId>io.github.ghackenberg</groupId>
                         <artifactId>jigsaw-maven-plugin</artifactId>
-                        <version>1.1.3</version>
+                        <version>${mavenjigsaw.version}</version>
                         <executions>
                             <execution>
                                 <phase>package</phase>
@@ -1374,7 +1334,7 @@
                     <plugin>
                         <groupId>org.jacoco</groupId>
                         <artifactId>jacoco-maven-plugin</artifactId>
-                        <version>0.8.10</version>
+                        <version>${jacoco.version}</version>
                         <executions>
                             <!-- Surefire -->
                             <execution>
