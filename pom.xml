@@ -664,10 +664,10 @@
                             </goals>
                             <phase>pre-integration-test</phase>
                             <configuration>
-                                <outputDirectory>${basedir}/target/integration-test-classes</outputDirectory>
+                                <outputDirectory>${basedir}/target/test-integration-classes</outputDirectory>
                                 <resources>
                                     <resource>
-                                        <directory>${basedir}/src/integration-test/resources</directory>
+                                        <directory>${basedir}/src/test-integration/resources</directory>
                                     </resource>
                                 </resources>
                             </configuration>
