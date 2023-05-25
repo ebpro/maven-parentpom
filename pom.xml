@@ -397,6 +397,7 @@
                 <groupId>org.slf4j</groupId>
                 <artifactId>slf4j-api</artifactId>
                 <version>${sl4j.version}</version>
+                <scope>test</scope>
             </dependency>
             <dependency>
                 <groupId>ch.qos.logback</groupId>
@@ -404,22 +405,21 @@
                 <version>${logback.version}</version>
                 <scope>runtime</scope>
             </dependency>
-
-            <!--dependency>
-                <groupId>org.apache.logging.log4j</groupId>
-                <artifactId>log4j-api</artifactId>
-                <version>2.19.0</version>
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>jcl-over-slf4j</artifactId>
+                <version>${sl4j.version}</version>
             </dependency>
             <dependency>
-                <groupId>org.apache.logging.log4j</groupId>
-                <artifactId>log4j-core</artifactId>
-                <version>2.19.0</version>
+                <groupId>org.slf4j</groupId>
+                <artifactId>jul-to-slf4j</artifactId>
+                <version>${sl4j.version}</version>
             </dependency>
             <dependency>
-                <groupId>org.apache.logging.log4j</groupId>
-                <artifactId>log4j-slf4j-impl</artifactId>
-                <version>2.19.0</version>
-            </dependency-->
+                <groupId>org.slf4j</groupId>
+                <artifactId>log4j-over-slf4j</artifactId>
+                <version>${sl4j.version}</version>
+            </dependency>
 
         </dependencies>
     </dependencyManagement>
@@ -430,7 +430,6 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-site-plugin</artifactId>
-                <!--version>4.0.0-M8</version-->
                 <executions>
                     <execution>
                         <id>attach-descriptor</id>
@@ -450,7 +449,6 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-scm-publish-plugin</artifactId>
-                <!--version>3.1.0</version-->
                 <executions>
                     <execution>
                         <id>scm-publish</id>
@@ -465,7 +463,6 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-enforcer-plugin</artifactId>
-                <!--version>3.3.0</version-->
                 <executions>
                     <execution>
                         <id>enforce-versions</id>
@@ -1015,7 +1012,7 @@
                     <version>${mavendependency.version}</version>
                     <configuration>
                         <!-- We remove classes loaded by introspection from the check -->
-                        <ignoredUnusedDeclaredDependencies>                        
+                        <ignoredUnusedDeclaredDependencies>
                             <ignoredUnusedDeclaredDependency>org.projectlombok:lombok</ignoredUnusedDeclaredDependency>
                             <ignoredUnusedDeclaredDependency>org.slf4j:slf4j-api</ignoredUnusedDeclaredDependency>
                             <ignoredUnusedDeclaredDependency> org.junit.jupiter:junit-jupiter-engine</ignoredUnusedDeclaredDependency>
@@ -1302,7 +1299,8 @@
                             <multiRelease>${java.version}</multiRelease>
                             <ignoreMissingDeps>true</ignoreMissingDeps>
                             <launcher>myapp=${project.module}/${app.main.class}</launcher>
-                            <jlinkOptions>--no-header-files,--no-man-pages,--strip-debug, --bind-services</jlinkOptions>
+                            <jlinkOptions>--no-header-files --no-man-pages --strip-debug
+                                --compress=2</jlinkOptions>
                             <module>${project.module}</module>
                             <!--ignoreSigningInfo>true</ignoreSigningInfo-->
                         </configuration>
