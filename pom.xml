@@ -1013,8 +1013,11 @@
                     <artifactId>maven-dependency-plugin</artifactId>
                     <version>${mavendependency.version}</version>
                     <configuration>
-                        <ignoredUnusedDeclaredDependencies>
+                        <!-- We remove classes loaded by introspection from the check -->
+                        <ignoredUnusedDeclaredDependencies>                        
                             <ignoredUnusedDeclaredDependency>org.projectlombok:lombok</ignoredUnusedDeclaredDependency>
+                            <ignoredUnusedDeclaredDependency>org.slf4j:slf4j-api</ignoredUnusedDeclaredDependency>
+                            <ignoredUnusedDeclaredDependency> org.junit.jupiter:junit-jupiter-engine</ignoredUnusedDeclaredDependency>
                         </ignoredUnusedDeclaredDependencies>
                     </configuration>
                 </plugin>
