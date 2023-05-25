@@ -248,7 +248,7 @@
                 <groupId>org.projectlombok</groupId>
                 <artifactId>lombok</artifactId>
                 <version>${lombok.version}</version>
-                <!--scope>provided</scope--> <!-- trouble with javadoc -->
+                <scope>provided</scope> <!-- trouble with javadoc ??? -->
             </dependency>
 
             <!-- Eclipse Collections https://www.eclipse.org/collections/-->
@@ -1012,6 +1012,11 @@
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-dependency-plugin</artifactId>
                     <version>${mavendependency.version}</version>
+                    <configuration>
+                        <ignoredUnusedDeclaredDependencies>
+                            <ignoredUnusedDeclaredDependency>org.projectlombok:lombok</ignoredUnusedDeclaredDependency>
+                        </ignoredUnusedDeclaredDependencies>
+                    </configuration>
                 </plugin>
 
                 <plugin>
