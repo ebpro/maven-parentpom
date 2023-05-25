@@ -397,13 +397,11 @@
                 <groupId>org.slf4j</groupId>
                 <artifactId>slf4j-api</artifactId>
                 <version>${sl4j.version}</version>
-                <scope>test</scope>
             </dependency>
             <dependency>
                 <groupId>ch.qos.logback</groupId>
                 <artifactId>logback-classic</artifactId>
                 <version>${logback.version}</version>
-                <scope>runtime</scope>
             </dependency>
             <dependency>
                 <groupId>org.slf4j</groupId>
@@ -1299,8 +1297,8 @@
                             <multiRelease>${java.version}</multiRelease>
                             <ignoreMissingDeps>true</ignoreMissingDeps>
                             <launcher>myapp=${project.module}/${app.main.class}</launcher>
-                            <jlinkOptions>--no-header-files --no-man-pages --strip-debug
-                                --compress=2</jlinkOptions>
+                            <!-- Waiting for pull request to be merged -->
+                            <!--jlinkOptions>- -no-header-files,- -no-man-pages,- -strip-debug,- -compress=2</jlinkOptions-->
                             <module>${project.module}</module>
                             <!--ignoreSigningInfo>true</ignoreSigningInfo-->
                         </configuration>
