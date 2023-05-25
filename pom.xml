@@ -35,12 +35,12 @@
         <arquillian.version>1.7.0.Final</arquillian.version>
 
         <!-- Persistance -->
-        <jakarta.persistence.version>3.1.0</jakarta.persistence.version>    
+        <jakarta.persistence.version>3.1.0</jakarta.persistence.version>
         <eclipselink.version>4.0.1</eclipselink.version>
         <hibernate.version>6.2.3.Final</hibernate.version>
 
         <!-- Utils -->
-        <lombok.version>1.18.26</lombok.version>
+        <lombok.version>1.18.28</lombok.version>
         <eclipsecollections.version>11.1.0</eclipsecollections.version>
 
         <!-- Log -->
@@ -105,8 +105,9 @@
         <mavenassembly.version>3.6.0</mavenassembly.version>
         <mavenscm.version>3.2.1</mavenscm.version>
         <mavendependency.version>3.6.0</mavendependency.version>
-        <mavenrelease.version>3.0.0</mavenrelease.version>        
+        <mavenrelease.version>3.0.0</mavenrelease.version>
         <mavenhelper.version>3.4.0</mavenhelper.version>
+        <mavenhelp.version>3.4.0</mavenhelp.version>
         <mavenversions.version>2.15.0</mavenversions.version>
         <mavenenforcer.version>3.3.0</mavenenforcer.version>
         <mavenflatten.version>1.5.0</mavenflatten.version>
@@ -737,6 +738,13 @@
                     <version>${mavenhelper.version}</version>
                 </plugin>
 
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-help-plugin</artifactId>
+                    <version>${mavenhelp.version}</version>
+                </plugin>
+
+
                 <!-- Executes unit tests and Generates reports (target/surefire-reports).
                 http://maven.apache.org/surefire/maven-surefire-plugin/
                 mvn test
@@ -849,20 +857,22 @@
                    https://bitbucket.org/atlassian/jgit-flow/wiki/Home
                    
                     gitflow:release-start - Starts a release branch and updates version(s) to release version.
-                    gitflow:release-finish - Merges a release branch and updates version(s) to next development version.
+                    gitflow:release-finish - Merges a release branch and updates version(s) to next development
+                version.
                     gitflow:release - Releases project w/o creating a release branch.
                     gitflow:feature-start - Starts a feature branch and optionally updates version(s).
                     gitflow:feature-finish - Merges a feature branch.
                     gitflow:hotfix-start - Starts a hotfix branch and updates version(s) to hotfix version.
                     gitflow:hotfix-finish - Merges a hotfix branch.
                     gitflow:support-start - Starts a support branch from the production tag.
-                    gitflow:version-update - Updates version in release or support branch, optionally tagging and pushing it to the remote repository.
+                    gitflow:version-update - Updates version in release or support branch, optionally tagging and
+                pushing it to the remote repository.
                     gitflow:help - Displays help information.
 
                 MULTIMODULES: mvn gitflow:<goal> -DargLine='-DprocessAllModules'
 
                 -->
-                  
+
                 <plugin>
                     <groupId>com.amashchenko.maven.plugin</groupId>
                     <artifactId>gitflow-maven-plugin</artifactId>
@@ -1168,7 +1178,7 @@
 
             <id>gpgsigning</id>
             <build>
-                <plugins>                
+                <plugins>
                     <plugin>
                         <groupId>org.simplify4u.plugins</groupId>
                         <artifactId>sign-maven-plugin</artifactId>
