@@ -402,6 +402,7 @@
                 <groupId>ch.qos.logback</groupId>
                 <artifactId>logback-classic</artifactId>
                 <version>${logback.version}</version>
+                <scope>runtime</scope>
             </dependency>
 
             <!--dependency>
@@ -1301,8 +1302,7 @@
                             <multiRelease>${java.version}</multiRelease>
                             <ignoreMissingDeps>true</ignoreMissingDeps>
                             <launcher>myapp=${project.module}/${app.main.class}</launcher>
-                            <!-- jlinkOptions>- -no-header-files,- -no-man-pages,-
-                            -strip-debug</jlinkOptions-->
+                            <jlinkOptions>--no-header-files,--no-man-pages,--strip-debug, --bind-services</jlinkOptions>
                             <module>${project.module}</module>
                             <!--ignoreSigningInfo>true</ignoreSigningInfo-->
                         </configuration>
