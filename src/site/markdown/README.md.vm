@@ -1,0 +1,25 @@
+# Usage
+
+## Configuration
+Add the parent coordinates to your *pom.xml*
+```xml
+<parent>
+  <groupId>${project.groupId}</groupId>
+  <artifactId>${project.artifactId}</artifactId>
+  <version>${project.version}</version>
+</parent>
+```
+
+## Mains goals
+
+```console
+# Generate the Web site
+mvn site
+# Generate the Web site and deploy it to the github branch gh-pages
+mvn site-deploy
+```
+
+```console
+# Update the licence headers of the source files
+mvn license:update-file-header
+```
