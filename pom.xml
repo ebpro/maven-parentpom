@@ -11,7 +11,7 @@
     <packaging>pom</packaging>
 
     <properties>
-        <!-- These two properties should be overriden in subprojects -->
+        <!-- These two properties should be override in subprojects -->
         <github.account>ebpro</github.account>
         <app.main.class />
 
@@ -29,36 +29,36 @@
         <maven.compiler.target>${maven.compiler.release}</maven.compiler.target>
 
         <!-- Test -->
-        <junit.version>5.9.3</junit.version>
+        <junit.version>5.10.0</junit.version>
         <hamcrest.version>2.2</hamcrest.version>
-        <mockito.version>5.3.1</mockito.version>
-        <arquillian.version>1.7.0.Final</arquillian.version>
+        <mockito.version>5.5.0</mockito.version>
+        <arquillian.version>1.7.1.Final</arquillian.version>
 
-        <!-- Persistance -->
+        <!-- Persistence -->
         <jakarta.persistence.version>3.1.0</jakarta.persistence.version>
-        <eclipselink.version>4.0.1</eclipselink.version>
-        <hibernate.version>6.2.3.Final</hibernate.version>
+        <eclipselink.version>4.0.2</eclipselink.version>
+        <hibernate.version>6.3.0.Final</hibernate.version>
 
         <!-- Utils -->
         <lombok.version>1.18.28</lombok.version>
         <eclipsecollections.version>11.1.0</eclipsecollections.version>
 
         <!-- Log -->
-        <sl4j.version>2.0.7</sl4j.version>
-        <logback.version>1.4.7</logback.version>
+        <sl4j.version>2.0.9</sl4j.version>
+        <logback.version>1.4.11</logback.version>
 
         <!-- Databases -->
-        <h2.version>2.1.214</h2.version>
+        <h2.version>2.2.222</h2.version>
         <postgresql.version>42.6.0</postgresql.version>
         <mysql.version>8.0.33</mysql.version>
 
         <!-- XML -->
         <jaxb.version>4.0.0</jaxb.version>
-        <jaxbimpl.version>4.0.2</jaxbimpl.version>
+        <jaxbimpl.version>4.0.3</jaxbimpl.version>
 
         <!-- JAXRS -->
         <jaxrs.version>3.1.0</jaxrs.version>
-        <jersey.version>3.1.2</jersey.version>
+        <jersey.version>3.1.3</jersey.version>
         <jjwt.version>0.11.5</jjwt.version>
 
         <!-- WebSocket -->
@@ -74,7 +74,7 @@
         <!-- JEE -->
         <el.version>4.0.2</el.version>
         <beanvalidation.version>3.0.0</beanvalidation.version>
-        <hibernate-validator.version>8.0.0.Final</hibernate-validator.version>
+        <hibernate-validator.version>8.0.1.Final</hibernate-validator.version>
 
         <!-- Code coverage -->
         <jacoco.version>0.8.10</jacoco.version>
@@ -89,33 +89,33 @@
         <!-- Maven Plugins -->
         <mavencompiler.version>3.11.0</mavencompiler.version>
         <mavensource.version>3.3.0</mavensource.version>
-        <mavenclean.version>3.2.0</mavenclean.version>
+        <mavenclean.version>3.3.1</mavenclean.version>
         <mavenjar.version>3.3.0</mavenjar.version>
         <mavenresource.version>3.3.1</mavenresource.version>
         <maveninstall.version>3.1.1</maveninstall.version>
         <mavenarchetype.version>3.2.1</mavenarchetype.version>
         <mavenjavadoc.version>3.5.0</mavenjavadoc.version>
         <mavendeploy.version>3.1.1</mavendeploy.version>
-        <mavensurefire.version>3.1.0</mavensurefire.version>
-        <mavensurefirereport.version>3.1.0</mavensurefirereport.version>
-        <mavenfailsafe.version>3.1.0</mavenfailsafe.version>
+        <mavensurefire.version>3.1.2</mavensurefire.version>
+        <mavensurefirereport.version>3.1.2</mavensurefirereport.version>
+        <mavenfailsafe.version>3.1.2</mavenfailsafe.version>
         <mavensite.version>3.12.1</mavensite.version>
         <mavenexec.version>3.1.0</mavenexec.version>
-        <mavenshade.version>3.4.1</mavenshade.version>
+        <mavenshade.version>3.5.0</mavenshade.version>
         <mavenassembly.version>3.6.0</mavenassembly.version>
         <mavenscm.version>3.2.1</mavenscm.version>
         <mavendependency.version>3.6.0</mavendependency.version>
-        <mavenrelease.version>3.0.0</mavenrelease.version>
+        <mavenrelease.version>3.0.1</mavenrelease.version>
         <mavenhelper.version>3.4.0</mavenhelper.version>
         <mavenhelp.version>3.4.0</mavenhelp.version>
-        <mavenversions.version>2.15.0</mavenversions.version>
-        <mavenenforcer.version>3.3.0</mavenenforcer.version>
+        <mavenversions.version>2.16.0</mavenversions.version>
+        <mavenenforcer.version>3.4.1</mavenenforcer.version>
         <mavenflatten.version>1.5.0</mavenflatten.version>
-        <maveninforeport.version>3.4.3</maveninforeport.version>
+        <maveninforeport.version>3.4.5</maveninforeport.version>
         <mavenjavadoc.version>3.5.0</mavenjavadoc.version>
 
         <!-- Final app Packaging -->
-        <mavengrallvm.version>0.9.21</mavengrallvm.version>
+        <mavengrallvm.version>0.9.26</mavengrallvm.version>
         <mavenjigsaw.version>1.1.3</mavenjigsaw.version>
 
     </properties>
@@ -843,7 +843,7 @@
                     </configuration>
                 </plugin>
 
-                <!--   This plugins implements the gitflow branching model
+                <!--   This plugin implements the gitflow branching model
 
                 SEE https://github.com/aleksandr-m/gitflow-maven-plugin
 
@@ -872,7 +872,7 @@
                 <plugin>
                     <groupId>com.amashchenko.maven.plugin</groupId>
                     <artifactId>gitflow-maven-plugin</artifactId>
-                    <version>1.19.0</version>
+                    <version>1.20.0</version>
                     <configuration>
                         <!--mvnExecutable>path_to_maven_executable</mvnExecutable-->
                         <!--gitExecutable>path_to_git_executable</gitExecutable-->
@@ -1446,6 +1446,7 @@
                         <configuration>
                             <!--suppress
                             UnresolvedMavenProperty -->
+                            <!--suppress UnresolvedMavenProperty -->
                             <argLine>${failsafe.jacoco.args}</argLine>
                         </configuration>
                     </plugin>
@@ -1454,6 +1455,7 @@
                         <configuration>
                             <!--suppress
                             UnresolvedMavenProperty -->
+                            <!--suppress UnresolvedMavenProperty -->
                             <argLine>${surefire.jacoco.args}</argLine>
                             <testFailureIgnore>false</testFailureIgnore>
                         </configuration>
