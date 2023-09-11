@@ -32,7 +32,7 @@
             <password>${env.DOCKERHUB_TOKEN}</password>
         </server>
         <server>
-            <id>maven</id>
+            <id>ossrh</id>
             <username>${env.MAVEN_USERNAME}</username>
             <password>${env.MAVEN_CENTRAL_TOKEN}</password>
         </server>
