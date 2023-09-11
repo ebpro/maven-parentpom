@@ -4,9 +4,9 @@
     <modelVersion>4.0.0</modelVersion>
 
     <!-- The Basics -->
-    <groupId>fr.ebruno.maven.poms</groupId>
+    <groupId>fr.ebruno</groupId>
     <artifactId>maven-parentpom</artifactId>
-    <version>0.1.2</version>
+    <version>0.1.3</version>
     <packaging>pom</packaging>
 
     <properties>
@@ -65,7 +65,7 @@
 
         <!-- Reproducibility -->
         <!--  see https://maven.apache.org/guides/mini/guide-reproducible-builds.html -->
-        <project.build.outputTimestamp>1694454057</project.build.outputTimestamp>
+        <project.build.outputTimestamp>1694462654</project.build.outputTimestamp>
 
         <!-- Java Module (Jigsaw) Name -->
         <project.module>${project.groupId}.${project.artifactId}</project.module>
