@@ -28,9 +28,10 @@
         <maven.compiler.release>${java.version}</maven.compiler.release>
         <maven.version>3.9.11</maven.version>
 
-        <!-- still needed for sonar -->
+        <!-- still needed for sonar (release is the source of truth for compilation) -->
         <maven.compiler.source>${maven.compiler.release}</maven.compiler.source>
         <maven.compiler.target>${maven.compiler.release}</maven.compiler.target>
+        <maven.compiler.parameters>true</maven.compiler.parameters>
 
         <!-- Test -->
         <junit.version>6.1.3</junit.version>
@@ -80,8 +81,8 @@
         <!-- WebSocket -->
         <tyrus.version>2.2.2</tyrus.version>
 
-        <!-- Reproducibility -->
-        <!--  see https://maven.apache.org/guides/mini/guide-reproducible-builds -->
+        <!-- Reproducibility: see https://maven.apache.org/guides/mini/guide-reproducible-builds
+             Override in CI: mvn -Dproject.build.outputTimestamp=... or set SOURCE_DATE_EPOCH -->
         <project.build.outputTimestamp>2026-09-22T00:00:00Z</project.build.outputTimestamp>
 
         <!-- Java Module (Jigsaw) Name -->
@@ -156,10 +157,25 @@
         <!-- Continuous integration -->
         <gitflow-maven-plugin.version>1.21.0</gitflow-maven-plugin.version>
         <keytool-maven-plugin.version>2.0.2</keytool-maven-plugin.version>
+
+        <!-- SBOM -->
+        <cyclonedx.version>9.1.0</cyclonedx.version>
+
+        <!-- Security -->
+        <dependency-check.version>12.1.3</dependency-check.version>
+
+        <!-- Formatting -->
+        <spotless.version>3.0.0</spotless.version>
+        <palantir-java-format.version>2.50.0</palantir-java-format.version>
+
+        <!-- API Compatibility -->
+        <revapi.version>0.28.1</revapi.version>
+
+        <!-- Maven Wrapper -->
+        <mavenwrapper.version>3.3.2</mavenwrapper.version>
         <testcontainers.postgresql.version>1.21.4</testcontainers.postgresql.version>
         <arquillian-weld-embedded.version>4.0.0.Final</arquillian-weld-embedded.version>
         <weld-se-core.version>6.0.4.Final</weld-se-core.version>
-        <hibernate-entitymanager.version>5.6.15.Final</hibernate-entitymanager.version>
         <hibernate-c3p0.version>7.4.10.Final</hibernate-c3p0.version>
         <c3p0.version>0.14.2</c3p0.version>
     </properties>
@@ -230,12 +246,15 @@
     <dependencyManagement>
         <dependencies>
 
-            <!-- TODO CHECK -->
+            <!-- Jackson BOM (manages all core Jackson artifact versions) -->
             <dependency>
-                <groupId>com.fasterxml.jackson.core</groupId>
-                <artifactId>jackson-annotations</artifactId>
+                <groupId>com.fasterxml.jackson</groupId>
+                <artifactId>jackson-bom</artifactId>
                 <version>${jackson.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
             </dependency>
+            <!-- Jackson Jakarta RS provider (not in jackson-bom) -->
             <dependency>
                 <groupId>com.fasterxml.jackson.jakarta.rs</groupId>
                 <artifactId>jackson-jakarta-rs-json-provider</artifactId>
@@ -403,8 +422,8 @@
 
             <!-- MySQL https://dev.mysql.com/doc/connector-j/8.0/en/ -->
             <dependency>
-                <groupId>mysql</groupId>
-                <artifactId>mysql-connector-java</artifactId>
+                <groupId>com.mysql</groupId>
+                <artifactId>mysql-connector-j</artifactId>
                 <version>${mysql.version}</version>
             </dependency>
 
@@ -446,7 +465,7 @@
 
 
             <dependency>
-                <groupId>org.hibernate</groupId>
+                <groupId>org.hibernate.orm</groupId>
                 <artifactId>hibernate-c3p0</artifactId>
                 <version>${hibernate-c3p0.version}</version>
             </dependency>
@@ -579,31 +598,19 @@
             </dependency>
 
             <!-- Loggers with SLF4J -->
-            <!-- SLF4J with logBack -->
+            <!-- SLF4J BOM (manages all org.slf4j:* artifact versions) -->
             <dependency>
                 <groupId>org.slf4j</groupId>
-                <artifactId>slf4j-api</artifactId>
+                <artifactId>slf4j-bom</artifactId>
                 <version>${sl4j.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
             </dependency>
+            <!-- Logback implementation -->
             <dependency>
                 <groupId>ch.qos.logback</groupId>
                 <artifactId>logback-classic</artifactId>
                 <version>${logback.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.slf4j</groupId>
-                <artifactId>jcl-over-slf4j</artifactId>
-                <version>${sl4j.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.slf4j</groupId>
-                <artifactId>jul-to-slf4j</artifactId>
-                <version>${sl4j.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.slf4j</groupId>
-                <artifactId>log4j-over-slf4j</artifactId>
-                <version>${sl4j.version}</version>
             </dependency>
 
         </dependencies>
@@ -661,11 +668,15 @@
                         <configuration>
                             <rules>
                                 <requireMavenVersion>
-                                    <version>${maven.version}</version>
+                                    <version>[${maven.version},)</version>
                                 </requireMavenVersion>
                                 <requireJavaVersion>
-                                    <version>${java.version}</version>
+                                    <version>[${java.version},)</version>
                                 </requireJavaVersion>
+                                <dependencyConvergence/>
+                                <banDuplicatePomDependencyVersions/>
+                                <requireUpperBoundDeps/>
+                                <banDynamicVersions/>
                                 <!--requireProperty>
                                     <property>app.main.class</property>
                                     <message>You must set app.main.class property.</message>
@@ -721,6 +732,10 @@
                     <configuration>
                         <showDeprecation>true</showDeprecation>
                         <showWarnings>true</showWarnings>
+                        <proc>full</proc>
+                        <compilerArgs>
+                            <arg>-Xlint:all</arg>
+                        </compilerArgs>
                         <annotationProcessorPaths>
 
                             <!-- TODO: add org.eclipse.persistence.jpa.modelgen.processor in a
@@ -897,6 +912,7 @@
                     <version>${mavenjavadoc.version}</version>
                     <configuration>
                         <show>private</show>
+                        <doclint>all,-missing</doclint>
                     </configuration>
                 </plugin>
 
@@ -1227,12 +1243,102 @@
                     <version>${mavenenforcer.version}</version>
                 </plugin>
 
+                <!-- SBOM generation (CycloneDX) -->
+                <plugin>
+                    <groupId>org.cyclonedx</groupId>
+                    <artifactId>cyclonedx-maven-plugin</artifactId>
+                    <version>${cyclonedx.version}</version>
+                    <executions>
+                        <execution>
+                            <id>generate-sbom</id>
+                            <phase>verify</phase>
+                            <goals>
+                                <goal>makeBom</goal>
+                            </goals>
+                            <configuration>
+                                <outputFormat>all</outputFormat>
+                                <outputName>bom</outputName>
+                                <outputDirectory>${project.build.directory}</outputDirectory>
+                            </configuration>
+                        </execution>
+                    </executions>
+                </plugin>
+
+                <!-- Dependency security scanning (OWASP) -->
+                <plugin>
+                    <groupId>org.owasp</groupId>
+                    <artifactId>dependency-check-maven</artifactId>
+                    <version>${dependency-check.version}</version>
+                    <configuration>
+                        <formats>
+                            <format>JSON</format>
+                            <format>HTML</format>
+                        </formats>
+                        <failBuildOnCVSS>9</failBuildOnCVSS>
+                        <cvssThreshold>CRITICAL</cvssThreshold>
+                        <skipProvidedScope>true</skipProvidedScope>
+                        <skipSystemScope>true</skipSystemScope>
+                    </configuration>
+                </plugin>
+
+                <!-- Maven Wrapper (regenerate with: mvn wrapper:wrapper) -->
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-wrapper-plugin</artifactId>
+                    <version>${mavenwrapper.version}</version>
+                    <configuration>
+                        <type>only-script</type>
+                        <mavenVersion>${maven.version}</mavenVersion>
+                    </configuration>
+                </plugin>
+
+                <!-- Code formatting (Spotless + Palantir Java Format)
+                     Activate with: mvn spotless:check (CI) or mvn spotless:apply (dev) -->
+                <plugin>
+                    <groupId>com.diffplug.spotless</groupId>
+                    <artifactId>spotless-maven-plugin</artifactId>
+                    <version>${spotless.version}</version>
+                    <configuration>
+                        <java>
+                            <palantirJavaFormat>
+                                <version>${palantir-java-format.version}</version>
+                            </palantirJavaFormat>
+                            <removeUnusedImports/>
+                            <importOrder>
+                                <order>java|javax,jakarta,org,com,fr,</order>
+                            </importOrder>
+                            <licenseHeader>
+                                <contentDelimiter>^package</contentDelimiter>
+                            </licenseHeader>
+                        </java>
+                    </configuration>
+                </plugin>
+
+                <!-- API compatibility checking (Revapi)
+                     Activate with: mvn revapi:check
+                     Compares against the last released version -->
+                <plugin>
+                    <groupId>org.revapi</groupId>
+                    <artifactId>revapi-maven-plugin</artifactId>
+                    <version>${revapi.version}</version>
+                    <configuration>
+                        <check>
+                            <java>
+                                <configProperty>name</configProperty>
+                                <value>revapi.java.checks</value>
+                            </java>
+                        </check>
+                    </configuration>
+                </plugin>
+
                 <!-- A VOIR -->
                 <plugin>
                     <groupId>org.codehaus.mojo</groupId>
                     <artifactId>flatten-maven-plugin</artifactId>
                     <version>${mavenflatten.version}</version>
                     <configuration>
+                        <flattenMode>oss</flattenMode>
+                        <updatePomFile>true</updatePomFile>
                     </configuration>
                     <executions>
                         <!-- enable flattening -->
