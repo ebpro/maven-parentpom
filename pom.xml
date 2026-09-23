@@ -24,9 +24,9 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
         <!-- Java version -->
-        <java.version>21</java.version>
+        <java.version>25</java.version>
         <maven.compiler.release>${java.version}</maven.compiler.release>
-        <maven.version>3.9.8</maven.version>
+        <maven.version>3.9.11</maven.version>
 
         <!-- still needed for sonar -->
         <maven.compiler.source>${maven.compiler.release}</maven.compiler.source>
@@ -82,7 +82,7 @@
 
         <!-- Reproducibility -->
         <!--  see https://maven.apache.org/guides/mini/guide-reproducible-builds -->
-        <project.build.outputTimestamp>1723828385</project.build.outputTimestamp>
+        <project.build.outputTimestamp>2026-09-22T00:00:00Z</project.build.outputTimestamp>
 
         <!-- Java Module (Jigsaw) Name -->
         <project.module>${project.groupId}.${project.artifactId}</project.module>
@@ -91,8 +91,8 @@
         <el.version>4.0.2</el.version>
         <beanvalidation.version>3.0.0</beanvalidation.version>
         <hibernate-validator.version>8.0.1.Final</hibernate-validator.version>
-        <!-- Jakarta EE API 10 with Java 17 -->
-        <jakarta.jakartaee-api.version>10.0.0</jakarta.jakartaee-api.version>
+        <!-- Jakarta EE API 11 with Java 25 -->
+        <jakarta.jakartaee-api.version>11.0.0</jakarta.jakartaee-api.version>
         <!-- Payara JEE server -->
         <payara.version>6.2023.11</payara.version>
         <arquillian-payara.version>3.0.alpha8</arquillian-payara.version>
@@ -127,7 +127,7 @@
         <mavenresource.version>3.3.1</mavenresource.version>
         <maveninstall.version>3.1.2</maveninstall.version>
         <mavenarchetype.version>3.2.1</mavenarchetype.version>
-        <mavenjavadoc.version>3.5.0</mavenjavadoc.version>
+        <mavenjavadoc.version>3.8.0</mavenjavadoc.version>
         <mavendeploy.version>3.1.2</mavendeploy.version>
         <mavensurefire.version>3.3.1</mavensurefire.version>
         <mavensurefirereport.version>3.3.1</mavensurefirereport.version>
@@ -145,10 +145,9 @@
         <mavenenforcer.version>3.5.0</mavenenforcer.version>
         <mavenflatten.version>1.6.0</mavenflatten.version>
         <maveninforeport.version>3.6.2</maveninforeport.version>
-        <mavenjavadoc.version>3.8.0</mavenjavadoc.version>
 
         <!-- Release-->
-        <nexusstaging.version>1.7.0</nexusstaging.version>
+        <centralpublishing.version>0.8.1</centralpublishing.version>
 
         <!-- Final app Packaging -->
         <mavengrallvm.version>0.9.26</mavengrallvm.version>
@@ -994,9 +993,10 @@
                 </plugin>
 
                 <plugin>
-                    <groupId>org.sonatype.plugins</groupId>
-                    <artifactId>nexus-staging-maven-plugin</artifactId>
-                    <version>${nexusstaging.version}</version>
+                    <groupId>org.sonatype.central</groupId>
+                    <artifactId>central-publishing-maven-plugin</artifactId>
+                    <version>${centralpublishing.version}</version>
+                    <extensions>true</extensions>
                 </plugin>
 
                 <!-- Generate of website for the project. It includes static and dynamic pages,
@@ -1496,26 +1496,20 @@
 
         <profile>
             <id>mavencentral</id>
-            <distributionManagement>
-                <snapshotRepository>
-                    <id>ossrh</id>
-                    <url>https://s01.oss.sonatype.org/content/repositories/snapshots</url>
-                </snapshotRepository>
-                <repository>
-                    <id>ossrh</id>
-                    <url>https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/</url>
-                </repository>
-            </distributionManagement>
+            <!-- Central Portal publishing (replaces legacy OSSRH/nexus-staging).
+                 Prerequisite: configure 'central.publishing.defaultDeploymentRepository'
+                 in your CI secrets or ~/.m2/settings.xml with your Central Portal repo ID.
+                 See: https://central.sonatype.org/publish/publish-portal-maven/ -->
             <build>
                 <plugins>
                     <plugin>
-                        <groupId>org.sonatype.plugins</groupId>
-                        <artifactId>nexus-staging-maven-plugin</artifactId>
+                        <groupId>org.sonatype.central</groupId>
+                        <artifactId>central-publishing-maven-plugin</artifactId>
+                        <version>${centralpublishing.version}</version>
                         <extensions>true</extensions>
                         <configuration>
-                            <serverId>ossrh</serverId>
-                            <nexusUrl>https://s01.oss.sonatype.org/</nexusUrl>
-                            <autoReleaseAfterClose>true</autoReleaseAfterClose>
+                            <!-- Uncomment and set to your Central Portal deployment repository ID -->
+                            <!--central.publishing.defaultDeploymentRepository>central-portal-xxxx</central.publishing.defaultDeploymentRepository-->
                         </configuration>
                     </plugin>
                     <plugin>

@@ -15,6 +15,8 @@ jobs:
         secrets: inherit
         with:
           runs-on: arc-runner-set-compute-lsis
+          jdk-matrix: '[ "25" ]'
+          maven-matrix: '[ "3.9.11" ]'
           quality-goal-run: "true"
           deploy-goal-run: "true"
           site-goal-run: "true"
