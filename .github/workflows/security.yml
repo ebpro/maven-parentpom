@@ -98,7 +98,13 @@ jobs:
           cache: 'maven'
 
       - name: Run OWASP Dependency Check
-        run: mvn -B org.owasp:dependency-check-maven:check -DfailBuildOnCVSS=9 -Dformats=JSON
+        env:
+          NVD_API_KEY: ${{ secrets.NVD_API_KEY }}
+        run: |
+          mvn -B org.owasp:dependency-check-maven:check \
+            -DfailBuildOnCVSS=9 \
+            -Dformats=JSON \
+            -DnvdApiKey="${NVD_API_KEY}"
 
       - name: Upload dependency check report
         if: always()
