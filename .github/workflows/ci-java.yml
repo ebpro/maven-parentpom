@@ -20,5 +20,7 @@ jobs:
           verify-goal: 'install'
           quality-goal-run: "true"
           deploy-goal-run: "true"
+          deploy-goal-develop: '--activate-profiles mavencentral'
+          deploy-goal-release: '--activate-profiles mavencentral'
           site-goal-run: "true"
           site-goal-branch: "master"
