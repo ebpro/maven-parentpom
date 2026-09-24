@@ -66,7 +66,7 @@
         <mysql.version>8.0.33</mysql.version>
 
         <!-- JSON -->
-        <jackson.version>2.22</jackson.version>
+        <jackson.version>2.22.3</jackson.version>
 
         <!-- XML -->
         <jaxb.version>4.0.5</jaxb.version>
