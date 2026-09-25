@@ -2268,13 +2268,6 @@
                             </execution>
                         </executions>
                     </plugin>
-                    <!-- Central Portal publishing -->
-                    <plugin>
-                        <groupId>org.sonatype.central</groupId>
-                        <artifactId>central-publishing-maven-plugin</artifactId>
-                        <version>${centralpublishing.version}</version>
-                        <extensions>true</extensions>
-                    </plugin>
                 </plugins>
             </build>
         </profile>
