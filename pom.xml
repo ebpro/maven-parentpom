@@ -160,7 +160,7 @@
         <keytool-maven-plugin.version>2.0.2</keytool-maven-plugin.version>
 
         <!-- SBOM -->
-        <cyclonedx.version>9.1.0</cyclonedx.version>
+        <cyclonedx.version>2.9.3</cyclonedx.version>
 
         <!-- Security -->
         <dependency-check.version>13.0.0</dependency-check.version>
