@@ -1,0 +1,71 @@
+name: Release to Maven Central
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Tag to release (e.g., v0.1.20)'
+        required: true
+
+permissions:
+  contents: read
+
+env:
+  CI: true
+
+jobs:
+  release:
+    name: Build, Sign & Publish to Central
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Java 25
+        uses: actions/setup-java@v4
+        with:
+          java-version: '25'
+          distribution: 'temurin'
+          cache: 'maven'
+
+      - name: Setup GPG
+        uses: olafbergerson/gpg-maven-action@v2
+        with:
+          gpg-passphrase: ${{ secrets.SIGN_KEY_PASS }}
+          gpg-key: ${{ secrets.SIGN_KEY }}
+          gpg-key-armored: true
+
+      - name: Build & Verify (sign + SBOM + javadoc + sources)
+        run: |
+          mvn -B clean verify \
+            -P release \
+            -DskipTests=false
+
+      - name: Publish to Maven Central (Central Portal)
+        env:
+          CENTRAL_PORTAL_USERNAME: ${{ secrets.CENTRAL_PORTAL_USERNAME }}
+          CENTRAL_PORTAL_TOKEN: ${{ secrets.CENTRAL_PORTAL_TOKEN }}
+        run: |
+          mvn -B central-publishing:publish \
+            -Dcentral.publishing.username="${CENTRAL_PORTAL_USERNAME}" \
+            -Dcentral.publishing.password="${CENTRAL_PORTAL_TOKEN}"
+
+      - name: Upload SBOM artifact
+        if: success()
+        uses: actions/upload-artifact@v4
+        with:
+          name: sbom-${{ github.ref_name }}
+          path: |
+            target/bom.json
+            target/bom.xml
+
+      - name: Upload release artifacts
+        if: success()
+        uses: actions/upload-artifact@v4
+        with:
+          name: release-artifacts-${{ github.ref_name }}
+          path: target/*.jar

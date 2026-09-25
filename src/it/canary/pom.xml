@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/maven-v4_0_0.xsd">
+
+    <modelVersion>4.0.0</modelVersion>
+
+    <!--
+        The parent GAV is filtered by the maven-invoker-plugin at IT time
+        (see the "it" profile in the parent POM, <filterProperties>), so
+        this project always inherits from the very version of the parent
+        that is under test.
+        @...@ is the invoker filtering delimiter for POM files (Maven-style
+        ${...} tokens are not filtered here).
+        <relativePath/> forces resolution from the repository (the parent
+        installed by invoker:install) instead of the local file system.
+    -->
+    <parent>
+        <groupId>@invoker.parent.groupId@</groupId>
+        <artifactId>@invoker.parent.artifactId@</artifactId>
+        <version>@invoker.parent.version@</version>
+        <relativePath />
+    </parent>
+
+    <groupId>fr.ebruno.maven.poms.it</groupId>
+    <artifactId>canary</artifactId>
+    <version>1.0.0-SNAPSHOT</version>
+    <packaging>jar</packaging>
+
+    <name>IT: Canary</name>
+    <description>
+        Canary integration test. Proves that a child project can inherit from
+        the parent POM and build successfully:
+        - parent GAV resolution
+        - dependencyManagement (Jackson BOM, JUnit BOM)
+        - pluginManagement (compiler, surefire)
+        - Java 25 compilation
+        - JUnit 6 test execution
+    </description>
+
+    <!-- No plugin declarations on purpose: everything is inherited from the
+    parent (build/plugins and pluginManagement). -->
+    <dependencies>
+        <!-- Version managed by the Jackson BOM imported by the parent -->
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+        </dependency>
+        <!-- Version managed by the JUnit BOM imported by the parent -->
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter</artifactId>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+</project>

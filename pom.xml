@@ -24,65 +24,66 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
         <!-- Java version -->
-        <java.version>21</java.version>
+        <java.version>25</java.version>
         <maven.compiler.release>${java.version}</maven.compiler.release>
-        <maven.version>3.9.8</maven.version>
+        <maven.version>3.9.11</maven.version>
 
-        <!-- still needed for sonar -->
+        <!-- still needed for sonar (release is the source of truth for compilation) -->
         <maven.compiler.source>${maven.compiler.release}</maven.compiler.source>
         <maven.compiler.target>${maven.compiler.release}</maven.compiler.target>
+        <maven.compiler.parameters>true</maven.compiler.parameters>
 
         <!-- Test -->
-        <junit.version>5.10.3</junit.version>
+        <junit.version>6.1.3</junit.version>
         <hamcrest.version>3.0</hamcrest.version>
-        <mockito.version>5.12.0</mockito.version>
-        <arquillian.version>1.9.1.Final</arquillian.version>
-        <version.arquillian_cube>1.18.2</version.arquillian_cube>
+        <mockito.version>5.24.0</mockito.version>
+        <arquillian.version>1.10.2.Final</arquillian.version>
+        <version.arquillian_cube>2.0.0.Final</version.arquillian_cube>
 
         <jsonassert.version>1.5.3</jsonassert.version>
-        <awaitility.version>4.2.2</awaitility.version>
-        <rest-assured.version>5.5.0</rest-assured.version>
-        <testcontainers.version>1.20.1</testcontainers.version>
-        <assertj.version>3.26.3</assertj.version>
+        <awaitility.version>4.3.0</awaitility.version>
+        <rest-assured.version>6.0.1</rest-assured.version>
+        <testcontainers.version>2.0.5</testcontainers.version>
+        <assertj.version>3.27.7</assertj.version>
 
         <!-- Persistence -->
         <jakarta.persistence.version>3.2.0</jakarta.persistence.version>
-        <eclipselink.version>4.0.4</eclipselink.version>
-        <hibernate.version>6.6.0.Final</hibernate.version>
+        <eclipselink.version>5.0.2</eclipselink.version>
+        <hibernate.version>7.4.10.Final</hibernate.version>
 
         <!-- Utils -->
-        <lombok.version>1.18.34</lombok.version>
-        <eclipsecollections.version>11.1.0</eclipsecollections.version>
-        <throwing-function.version>1.5.1</throwing-function.version>
+        <lombok.version>1.18.48</lombok.version>
+        <eclipsecollections.version>13.0.0</eclipsecollections.version>
+        <throwing-function.version>1.6.1</throwing-function.version>
 
         <!-- Log -->
-        <sl4j.version>2.0.16</sl4j.version>
-        <logback.version>1.5.6</logback.version>
+        <sl4j.version>2.0.20</sl4j.version>
+        <logback.version>1.6.4</logback.version>
 
         <!-- Databases -->
-        <h2.version>2.3.232</h2.version>
-        <postgresql.version>42.7.3</postgresql.version>
-        <mysql.version>8.0.33</mysql.version>
+        <h2.version>2.5.250</h2.version>
+        <postgresql.version>42.7.13</postgresql.version>
+        <mysql.version>26.7.0</mysql.version>
 
         <!-- JSON -->
-        <jackson.version>2.17.2</jackson.version>
+        <jackson.version>2.22.3</jackson.version>
 
         <!-- XML -->
-        <jaxb.version>4.0.2</jaxb.version>
-        <jaxbimpl.version>4.0.5</jaxbimpl.version>
+        <jaxb.version>4.0.5</jaxb.version>
+        <jaxbimpl.version>4.0.9</jaxbimpl.version>
 
         <!-- REST - JAXRS -->
         <jaxrs.version>4.0.0</jaxrs.version>
-        <jersey.version>3.1.8</jersey.version>
-        <jersey-client.version>3.1.8</jersey-client.version>
-        <jjwt.version>0.12.6</jjwt.version>
+        <jersey.version>4.0.2</jersey.version>
+        <jersey-client.version>4.0.2</jersey-client.version>
+        <jjwt.version>0.13.0</jjwt.version>
 
         <!-- WebSocket -->
-        <tyrus.version>2.2.0</tyrus.version>
+        <tyrus.version>2.2.2</tyrus.version>
 
-        <!-- Reproducibility -->
-        <!--  see https://maven.apache.org/guides/mini/guide-reproducible-builds -->
-        <project.build.outputTimestamp>1723828385</project.build.outputTimestamp>
+        <!-- Reproducibility: see https://maven.apache.org/guides/mini/guide-reproducible-builds
+             Override in CI: mvn -Dproject.build.outputTimestamp=... or set SOURCE_DATE_EPOCH -->
+        <project.build.outputTimestamp>2026-09-22T00:00:00Z</project.build.outputTimestamp>
 
         <!-- Java Module (Jigsaw) Name -->
         <project.module>${project.groupId}.${project.artifactId}</project.module>
@@ -90,79 +91,94 @@
         <!-- JEE -->
         <el.version>4.0.2</el.version>
         <beanvalidation.version>3.0.0</beanvalidation.version>
-        <hibernate-validator.version>8.0.1.Final</hibernate-validator.version>
-        <!-- Jakarta EE API 10 with Java 17 -->
-        <jakarta.jakartaee-api.version>10.0.0</jakarta.jakartaee-api.version>
+        <hibernate-validator.version>9.1.4.Final</hibernate-validator.version>
+        <!-- Jakarta EE API 11 with Java 25 -->
+        <jakarta.jakartaee-api.version>11.0.0</jakarta.jakartaee-api.version>
         <!-- Payara JEE server -->
         <payara.version>6.2023.11</payara.version>
         <arquillian-payara.version>3.0.alpha8</arquillian-payara.version>
 
-        <maven-war-plugin.version>3.4.0</maven-war-plugin.version>
-        <maven-ejb-plugin.version>3.2.1</maven-ejb-plugin.version>
-        <maven-ear-plugin.version>3.3.0</maven-ear-plugin.version>
+        <maven-war-plugin.version>3.5.1</maven-war-plugin.version>
+        <maven-ejb-plugin.version>3.3.0</maven-ejb-plugin.version>
+        <maven-ear-plugin.version>3.4.0</maven-ear-plugin.version>
 
         <!-- JSF -->
-        <primefaces.version>14.0.4</primefaces.version>
-        <all-themes.version>1.0.11</all-themes.version>
+        <primefaces.version>16.0.0</primefaces.version>
+        <all-themes.version>1.1.0</all-themes.version>
 
         <!-- Code coverage -->
-        <jacoco.version>0.8.10</jacoco.version>
+        <jacoco.version>0.8.15</jacoco.version>
 
         <!-- SonarQube -->
-        <sonarqube.version>4.0.0.4121</sonarqube.version>
+        <sonarqube.version>5.8.0.7211</sonarqube.version>
         <sonarqualitygate.version>1.3.0</sonarqualitygate.version>
         <!-- SonarQube (quality) plugin version, used by the sonar profile -->
         <sonar.maven.plugin.version>5.5.0.6356</sonar.maven.plugin.version>
         <!-- JaCoCo (code coverage) plugin version, used by the sonar profile -->
-        <jacoco.maven.plugin.version>0.8.14</jacoco.maven.plugin.version>
+        <jacoco.maven.plugin.version>0.8.15</jacoco.maven.plugin.version>
 
         <!-- GPG Signing -->
-        <simplify4usign.version>1.0.1</simplify4usign.version>
+        <simplify4usign.version>1.2.0</simplify4usign.version>
 
         <!-- Maven Plugins -->
-        <mavencompiler.version>3.13.0</mavencompiler.version>
-        <mavensource.version>3.3.1</mavensource.version>
-        <mavenclean.version>3.4.0</mavenclean.version>
-        <mavenjar.version>3.4.2</mavenjar.version>
-        <mavenresource.version>3.3.1</mavenresource.version>
-        <maveninstall.version>3.1.2</maveninstall.version>
-        <mavenarchetype.version>3.2.1</mavenarchetype.version>
-        <mavenjavadoc.version>3.5.0</mavenjavadoc.version>
-        <mavendeploy.version>3.1.2</mavendeploy.version>
-        <mavensurefire.version>3.3.1</mavensurefire.version>
-        <mavensurefirereport.version>3.3.1</mavensurefirereport.version>
-        <mavenfailsafe.version>3.3.1</mavenfailsafe.version>
-        <mavensite.version>3.12.1</mavensite.version>
-        <mavenexec.version>3.4.1</mavenexec.version>
-        <mavenshade.version>3.6.0</mavenshade.version>
-        <mavenassembly.version>3.7.1</mavenassembly.version>
+        <mavencompiler.version>3.16.0</mavencompiler.version>
+        <mavensource.version>3.4.0</mavensource.version>
+        <mavenclean.version>3.5.0</mavenclean.version>
+        <mavenjar.version>3.5.1</mavenjar.version>
+        <mavenresource.version>3.5.0</mavenresource.version>
+        <maveninstall.version>3.2.0</maveninstall.version>
+        <mavenarchetype.version>3.4.1</mavenarchetype.version>
+        <mavenjavadoc.version>3.12.0</mavenjavadoc.version>
+        <mavendeploy.version>3.2.0</mavendeploy.version>
+        <mavensurefire.version>3.6.0</mavensurefire.version>
+        <mavensurefirereport.version>3.6.0</mavensurefirereport.version>
+        <mavenfailsafe.version>3.6.0</mavenfailsafe.version>
+        <mavensite.version>3.22.0</mavensite.version>
+        <mavenexec.version>3.6.4</mavenexec.version>
+        <mavenshade.version>3.6.2</mavenshade.version>
+        <mavenassembly.version>3.8.0</mavenassembly.version>
         <mavenscm.version>3.3.0</mavenscm.version>
-        <mavendependency.version>3.7.1</mavendependency.version>
-        <mavenrelease.version>3.1.1</mavenrelease.version>
-        <mavenhelper.version>3.6.0</mavenhelper.version>
-        <mavenhelp.version>3.4.1</mavenhelp.version>
-        <mavenversions.version>2.17.1</mavenversions.version>
-        <mavenenforcer.version>3.5.0</mavenenforcer.version>
-        <mavenflatten.version>1.6.0</mavenflatten.version>
-        <maveninforeport.version>3.6.2</maveninforeport.version>
-        <mavenjavadoc.version>3.8.0</mavenjavadoc.version>
+        <mavendependency.version>3.11.0</mavendependency.version>
+        <mavenrelease.version>3.3.1</mavenrelease.version>
+        <mavenhelper.version>3.6.2</mavenhelper.version>
+        <mavenhelp.version>3.5.2</mavenhelp.version>
+        <mavenversions.version>2.22.0</mavenversions.version>
+        <mavenenforcer.version>3.6.3</mavenenforcer.version>
+        <mavenflatten.version>1.8.0</mavenflatten.version>
+        <maveninforeport.version>3.9.0</maveninforeport.version>
+        <maveninvoker.version>3.10.1</maveninvoker.version>
 
         <!-- Release-->
-        <nexusstaging.version>1.7.0</nexusstaging.version>
+        <centralpublishing.version>0.11.0</centralpublishing.version>
 
         <!-- Final app Packaging -->
-        <mavengrallvm.version>0.9.26</mavengrallvm.version>
+        <mavengrallvm.version>1.1.14</mavengrallvm.version>
         <mavenjigsaw.version>1.1.3</mavenjigsaw.version>
 
         <!-- Continuous integration -->
         <gitflow-maven-plugin.version>1.21.0</gitflow-maven-plugin.version>
-        <keytool-maven-plugin.version>1.7</keytool-maven-plugin.version>
-        <testcontainers.postgresql.version>1.20.1</testcontainers.postgresql.version>
+        <keytool-maven-plugin.version>2.0.2</keytool-maven-plugin.version>
+
+        <!-- SBOM -->
+        <cyclonedx.version>2.9.3</cyclonedx.version>
+
+        <!-- Security -->
+        <dependency-check.version>13.0.0</dependency-check.version>
+
+        <!-- Formatting -->
+        <spotless.version>3.10.2</spotless.version>
+        <palantir-java-format.version>2.50.0</palantir-java-format.version>
+
+        <!-- API Compatibility -->
+        <revapi.version>0.28.1</revapi.version>
+
+        <!-- Maven Wrapper -->
+        <mavenwrapper.version>3.3.4</mavenwrapper.version>
+        <testcontainers.postgresql.version>1.21.4</testcontainers.postgresql.version>
         <arquillian-weld-embedded.version>4.0.0.Final</arquillian-weld-embedded.version>
-        <weld-se-core.version>5.1.2.Final</weld-se-core.version>
-        <hibernate-entitymanager.version>5.6.15.Final</hibernate-entitymanager.version>
-        <hibernate-c3p0.version>6.6.0.Final</hibernate-c3p0.version>
-        <c3p0.version>0.10.1</c3p0.version>
+        <weld-se-core.version>6.0.4.Final</weld-se-core.version>
+        <hibernate-c3p0.version>7.4.10.Final</hibernate-c3p0.version>
+        <c3p0.version>0.14.2</c3p0.version>
     </properties>
 
     <!-- More Project Information -->
@@ -215,28 +231,34 @@
     </scm>
 
     <distributionManagement>
-      <site>
-         <id>site</id>
-         <url>file:///tmp/site/staging</url>
-      </site>
-   </distributionManagement>
-
-    <!--distributionManagement>
+        <repository>
+            <id>github</id>
+            <name>GitHub Packages</name>
+            <url>https://maven.pkg.github.com/${github.account}/${project.artifactId}</url>
+        </repository>
+        <snapshotRepository>
+            <id>github</id>
+            <name>GitHub Packages</name>
+            <url>https://maven.pkg.github.com/${github.account}/${project.artifactId}</url>
+        </snapshotRepository>
         <site>
-            <id>githubpages</id>
-            <url>scm:git:ssh://git@github.com/${github.account}/${project.artifactId}.git</url>
+            <id>site</id>
+            <url>file:///tmp/site/staging</url>
         </site>
-    </distributionManagement-->
+    </distributionManagement>
 
     <dependencyManagement>
         <dependencies>
 
-            <!-- TODO CHECK -->
+            <!-- Jackson BOM (manages all core Jackson artifact versions) -->
             <dependency>
-                <groupId>com.fasterxml.jackson.core</groupId>
-                <artifactId>jackson-annotations</artifactId>
+                <groupId>com.fasterxml.jackson</groupId>
+                <artifactId>jackson-bom</artifactId>
                 <version>${jackson.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
             </dependency>
+            <!-- Jackson Jakarta RS provider (not in jackson-bom) -->
             <dependency>
                 <groupId>com.fasterxml.jackson.jakarta.rs</groupId>
                 <artifactId>jackson-jakarta-rs-json-provider</artifactId>
@@ -404,8 +426,8 @@
 
             <!-- MySQL https://dev.mysql.com/doc/connector-j/8.0/en/ -->
             <dependency>
-                <groupId>mysql</groupId>
-                <artifactId>mysql-connector-java</artifactId>
+                <groupId>com.mysql</groupId>
+                <artifactId>mysql-connector-j</artifactId>
                 <version>${mysql.version}</version>
             </dependency>
 
@@ -447,7 +469,7 @@
 
 
             <dependency>
-                <groupId>org.hibernate</groupId>
+                <groupId>org.hibernate.orm</groupId>
                 <artifactId>hibernate-c3p0</artifactId>
                 <version>${hibernate-c3p0.version}</version>
             </dependency>
@@ -580,31 +602,19 @@
             </dependency>
 
             <!-- Loggers with SLF4J -->
-            <!-- SLF4J with logBack -->
+            <!-- SLF4J BOM (manages all org.slf4j:* artifact versions) -->
             <dependency>
                 <groupId>org.slf4j</groupId>
-                <artifactId>slf4j-api</artifactId>
+                <artifactId>slf4j-bom</artifactId>
                 <version>${sl4j.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
             </dependency>
+            <!-- Logback implementation -->
             <dependency>
                 <groupId>ch.qos.logback</groupId>
                 <artifactId>logback-classic</artifactId>
                 <version>${logback.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.slf4j</groupId>
-                <artifactId>jcl-over-slf4j</artifactId>
-                <version>${sl4j.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.slf4j</groupId>
-                <artifactId>jul-to-slf4j</artifactId>
-                <version>${sl4j.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.slf4j</groupId>
-                <artifactId>log4j-over-slf4j</artifactId>
-                <version>${sl4j.version}</version>
             </dependency>
 
         </dependencies>
@@ -662,11 +672,15 @@
                         <configuration>
                             <rules>
                                 <requireMavenVersion>
-                                    <version>${maven.version}</version>
+                                    <version>[${maven.version},)</version>
                                 </requireMavenVersion>
                                 <requireJavaVersion>
-                                    <version>${java.version}</version>
+                                    <version>[${java.version},)</version>
                                 </requireJavaVersion>
+                                <dependencyConvergence/>
+                                <banDuplicatePomDependencyVersions/>
+                                <requireUpperBoundDeps/>
+                                <banDynamicVersions/>
                                 <!--requireProperty>
                                     <property>app.main.class</property>
                                     <message>You must set app.main.class property.</message>
@@ -722,6 +736,10 @@
                     <configuration>
                         <showDeprecation>true</showDeprecation>
                         <showWarnings>true</showWarnings>
+                        <proc>full</proc>
+                        <compilerArgs>
+                            <arg>-Xlint:all</arg>
+                        </compilerArgs>
                         <annotationProcessorPaths>
 
                             <!-- TODO: add org.eclipse.persistence.jpa.modelgen.processor in a
@@ -898,6 +916,7 @@
                     <version>${mavenjavadoc.version}</version>
                     <configuration>
                         <show>private</show>
+                        <doclint>all,-missing</doclint>
                     </configuration>
                 </plugin>
 
@@ -994,9 +1013,10 @@
                 </plugin>
 
                 <plugin>
-                    <groupId>org.sonatype.plugins</groupId>
-                    <artifactId>nexus-staging-maven-plugin</artifactId>
-                    <version>${nexusstaging.version}</version>
+                    <groupId>org.sonatype.central</groupId>
+                    <artifactId>central-publishing-maven-plugin</artifactId>
+                    <version>${centralpublishing.version}</version>
+                    <extensions>true</extensions>
                 </plugin>
 
                 <!-- Generate of website for the project. It includes static and dynamic pages,
@@ -1227,12 +1247,102 @@
                     <version>${mavenenforcer.version}</version>
                 </plugin>
 
+                <!-- SBOM generation (CycloneDX) -->
+                <plugin>
+                    <groupId>org.cyclonedx</groupId>
+                    <artifactId>cyclonedx-maven-plugin</artifactId>
+                    <version>${cyclonedx.version}</version>
+                    <executions>
+                        <execution>
+                            <id>generate-sbom</id>
+                            <phase>verify</phase>
+                            <goals>
+                                <goal>makeBom</goal>
+                            </goals>
+                            <configuration>
+                                <outputFormat>all</outputFormat>
+                                <outputName>bom</outputName>
+                                <outputDirectory>${project.build.directory}</outputDirectory>
+                            </configuration>
+                        </execution>
+                    </executions>
+                </plugin>
+
+                <!-- Dependency security scanning (OWASP) -->
+                <plugin>
+                    <groupId>org.owasp</groupId>
+                    <artifactId>dependency-check-maven</artifactId>
+                    <version>${dependency-check.version}</version>
+                    <configuration>
+                        <formats>
+                            <format>JSON</format>
+                            <format>HTML</format>
+                        </formats>
+                        <failBuildOnCVSS>9</failBuildOnCVSS>
+                        <cvssThreshold>CRITICAL</cvssThreshold>
+                        <skipProvidedScope>true</skipProvidedScope>
+                        <skipSystemScope>true</skipSystemScope>
+                    </configuration>
+                </plugin>
+
+                <!-- Maven Wrapper (regenerate with: mvn wrapper:wrapper) -->
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-wrapper-plugin</artifactId>
+                    <version>${mavenwrapper.version}</version>
+                    <configuration>
+                        <type>only-script</type>
+                        <mavenVersion>${maven.version}</mavenVersion>
+                    </configuration>
+                </plugin>
+
+                <!-- Code formatting (Spotless + Palantir Java Format)
+                     Activate with: mvn spotless:check (CI) or mvn spotless:apply (dev) -->
+                <plugin>
+                    <groupId>com.diffplug.spotless</groupId>
+                    <artifactId>spotless-maven-plugin</artifactId>
+                    <version>${spotless.version}</version>
+                    <configuration>
+                        <java>
+                            <palantirJavaFormat>
+                                <version>${palantir-java-format.version}</version>
+                            </palantirJavaFormat>
+                            <removeUnusedImports/>
+                            <importOrder>
+                                <order>java|javax,jakarta,org,com,fr,</order>
+                            </importOrder>
+                            <licenseHeader>
+                                <contentDelimiter>^package</contentDelimiter>
+                            </licenseHeader>
+                        </java>
+                    </configuration>
+                </plugin>
+
+                <!-- API compatibility checking (Revapi)
+                     Activate with: mvn revapi:check
+                     Compares against the last released version -->
+                <plugin>
+                    <groupId>org.revapi</groupId>
+                    <artifactId>revapi-maven-plugin</artifactId>
+                    <version>${revapi.version}</version>
+                    <configuration>
+                        <check>
+                            <java>
+                                <configProperty>name</configProperty>
+                                <value>revapi.java.checks</value>
+                            </java>
+                        </check>
+                    </configuration>
+                </plugin>
+
                 <!-- A VOIR -->
                 <plugin>
                     <groupId>org.codehaus.mojo</groupId>
                     <artifactId>flatten-maven-plugin</artifactId>
                     <version>${mavenflatten.version}</version>
                     <configuration>
+                        <flattenMode>oss</flattenMode>
+                        <updatePomFile>true</updatePomFile>
                     </configuration>
                     <executions>
                         <!-- enable flattening -->
@@ -1496,26 +1606,20 @@
 
         <profile>
             <id>mavencentral</id>
-            <distributionManagement>
-                <snapshotRepository>
-                    <id>ossrh</id>
-                    <url>https://s01.oss.sonatype.org/content/repositories/snapshots</url>
-                </snapshotRepository>
-                <repository>
-                    <id>ossrh</id>
-                    <url>https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/</url>
-                </repository>
-            </distributionManagement>
+            <!-- Central Portal publishing (replaces legacy OSSRH/nexus-staging).
+                 Prerequisite: configure 'central.publishing.defaultDeploymentRepository'
+                 in your CI secrets or ~/.m2/settings.xml with your Central Portal repo ID.
+                 See: https://central.sonatype.org/publish/publish-portal-maven/ -->
             <build>
                 <plugins>
                     <plugin>
-                        <groupId>org.sonatype.plugins</groupId>
-                        <artifactId>nexus-staging-maven-plugin</artifactId>
+                        <groupId>org.sonatype.central</groupId>
+                        <artifactId>central-publishing-maven-plugin</artifactId>
+                        <version>${centralpublishing.version}</version>
                         <extensions>true</extensions>
                         <configuration>
-                            <serverId>ossrh</serverId>
-                            <nexusUrl>https://s01.oss.sonatype.org/</nexusUrl>
-                            <autoReleaseAfterClose>true</autoReleaseAfterClose>
+                            <!-- Uncomment and set to your Central Portal deployment repository ID -->
+                            <!--central.publishing.defaultDeploymentRepository>central-portal-xxxx</central.publishing.defaultDeploymentRepository-->
                         </configuration>
                     </plugin>
                     <plugin>
@@ -1532,21 +1636,6 @@
                     </plugin>
                 </plugins>
             </build>
-        </profile>
-        <profile>
-            <id>github</id>
-            <distributionManagement>
-                <repository>
-                    <id>github</id>
-                    <name>GitHub Packages</name>
-                    <url>https://maven.pkg.github.com/${github.account}/${project.artifactId}</url>
-                </repository>
-                <snapshotRepository>
-                    <id>github</id>
-                    <name>GitHub Packages</name>
-                    <url>https://maven.pkg.github.com/${github.account}/${project.artifactId}</url>
-                </snapshotRepository>
-            </distributionManagement>
         </profile>
         <profile>
             <id>shadedjar</id>
@@ -2023,6 +2112,198 @@
             </build>
         </profile>
 
+
+        <!-- Release profile: combines all steps for publishing to Maven Central.
+             Usage: mvn clean verify -P release
+             Requires: GPG key (for signing), Central Portal token (for publishing) -->
+        <profile>
+            <id>release</id>
+            <build>
+                <plugins>
+                    <!-- Fail if attempting to release a SNAPSHOT version -->
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-enforcer-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>enforce-release</id>
+                                <goals>
+                                    <goal>enforce</goal>
+                                </goals>
+                                <configuration>
+                                    <rules>
+                                        <requireReleaseVersion>
+                                            <message>Release versions cannot be SNAPSHOT</message>
+                                        </requireReleaseVersion>
+                                        <requireScmVersion>
+                                            <message>SCM revision must not be a SNAPSHOT</message>
+                                        </requireScmVersion>
+                                    </rules>
+                                    <fail>true</fail>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <!-- Source jar -->
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-source-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>attach-sources</id>
+                                <phase>verify</phase>
+                                <goals>
+                                    <goal>jar-no-fork</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <!-- Javadoc jar -->
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-javadoc-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>attach-javadocs</id>
+                                <phase>verify</phase>
+                                <goals>
+                                    <goal>jar</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <!-- GPG Signing -->
+                    <plugin>
+                        <groupId>org.simplify4u.plugins</groupId>
+                        <artifactId>sign-maven-plugin</artifactId>
+                        <version>${simplify4usign.version}</version>
+                        <executions>
+                            <execution>
+                                <id>sign-artifacts</id>
+                                <phase>verify</phase>
+                                <goals>
+                                    <goal>sign</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <!-- SBOM generation -->
+                    <plugin>
+                        <groupId>org.cyclonedx</groupId>
+                        <artifactId>cyclonedx-maven-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>generate-sbom</id>
+                                <phase>verify</phase>
+                                <goals>
+                                    <goal>makeBom</goal>
+                                </goals>
+                                <configuration>
+                                    <outputFormat>all</outputFormat>
+                                    <outputName>bom</outputName>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <!-- Central Portal publishing -->
+                    <plugin>
+                        <groupId>org.sonatype.central</groupId>
+                        <artifactId>central-publishing-maven-plugin</artifactId>
+                        <version>${centralpublishing.version}</version>
+                        <extensions>true</extensions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+
+        <!-- Code formatting profile: Spotless with Palantir Java Format.
+             Check:   mvn spotless:check -P format
+             Apply:   mvn spotless:apply -P format -->
+        <profile>
+            <id>format</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>com.diffplug.spotless</groupId>
+                        <artifactId>spotless-maven-plugin</artifactId>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+
+        <!-- API compatibility checking: Revapi.
+             Compares current JAR against the last released version.
+             Check:   mvn revapi:check -P api-compat
+             Requires: a previous release in the local/remote repository -->
+        <profile>
+            <id>api-compat</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.revapi</groupId>
+                        <artifactId>revapi-maven-plugin</artifactId>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+
+        <!-- Integration tests: prove that child projects can inherit from this
+             parent POM and build successfully (see src/it).
+             The maven-invoker-plugin installs this parent into an isolated
+             local repository (target/local-repo), then builds every project
+             under src/it against it during the integration-test phase.
+             Activated automatically when a src/it directory exists, i.e. in
+             this project only: downstream child projects (without src/it)
+             are not affected by this profile. -->
+        <profile>
+            <id>it</id>
+            <activation>
+                <file>
+                    <exists>src/it</exists>
+                </file>
+            </activation>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-invoker-plugin</artifactId>
+                        <version>${maveninvoker.version}</version>
+                        <configuration>
+                            <pomIncludes>
+                                <pomInclude>**/pom.xml</pomInclude>
+                            </pomIncludes>
+                            <!-- Required for POM filtering; also keeps all IT
+                                 build artifacts out of the source tree -->
+                            <cloneProjectsTo>${project.build.directory}/it</cloneProjectsTo>
+                            <localRepositoryPath>${project.build.directory}/local-repo</localRepositoryPath>
+                            <settingsFile>src/it/settings.xml</settingsFile>
+                            <streamLogs>true</streamLogs>
+                            <filterProperties>
+                                <invoker.parent.groupId>${project.groupId}</invoker.parent.groupId>
+                                <invoker.parent.artifactId>${project.artifactId}</invoker.parent.artifactId>
+                                <invoker.parent.version>${project.version}</invoker.parent.version>
+                            </filterProperties>
+                        </configuration>
+                        <executions>
+                            <execution>
+                                <id>install-parent-for-it</id>
+                                <phase>pre-integration-test</phase>
+                                <goals>
+                                    <goal>install</goal>
+                                </goals>
+                            </execution>
+                            <execution>
+                                <id>integration-tests</id>
+                                <phase>integration-test</phase>
+                                <goals>
+                                    <goal>run</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
     </profiles>
 
 </project>
