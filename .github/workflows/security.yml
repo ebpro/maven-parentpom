@@ -59,3 +59,29 @@ jobs:
           path: |
             target/bom.json
             target/bom.xml
+
+  dependency-check-canary:
+    name: OWASP Dependency Check (canary)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          submodules: true
+      - uses: actions/setup-java@v4
+        with:
+          java-version: '25'
+          distribution: 'temurin'
+          cache: 'maven'
+      - name: Build parent + canary
+        run: mvn -B clean verify -DskipTests --errors
+        env:
+          MAVEN_OPTS: -Xmx512m
+      - name: Run OWASP Dependency Check on canary
+        env:
+          NVD_API_KEY: ${{ secrets.NVD_API_KEY }}
+        run: |
+          mvn -B org.owasp:dependency-check-maven:13.0.0:check \
+            -f target/it/canary/pom.xml \
+            -DnvdApiKey="${NVD_API_KEY}" \
+            -Dmaven.repo.local=target/local-repo

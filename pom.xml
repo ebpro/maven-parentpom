@@ -16,7 +16,27 @@
         <!-- These two properties should be override in subprojects -->
         <github.account>ebpro</github.account>
         <app.main.class />
-        
+
+        <!--
+          Application image contract:
+          ===========================
+          app.image       - discriminator: libs | jlink | native (empty = library/non-app)
+          app.main.class  - required for libs, jlink, native (fully qualified main class)
+          app.module.name - JPMS module name (defaults to ${project.groupId}.${project.artifactId})
+
+          Docker target mapping:
+            libs   -> finalLibs   (java -cp app.jar:libs/* ${app.main.class})
+            jlink  -> finalJlink  (custom runtime, run ./myapp launcher)
+            native -> finalNative (single native executable)
+
+          shadedjar is NOT part of app.image - use -Pshadedjar explicitly for fat-jar mode.
+
+          Static native binary (alpine/musl): add the "static" arg to the
+          native-maven-plugin buildArgs in your module (combine.children="append").
+        -->
+        <app.image />
+        <app.module.name>${project.module}</app.module.name>
+
         <!-- GitHub server corresponds to entry in ~/.m2/settings.xml -->
         <github.global.server>github</github.global.server>
 
@@ -1637,6 +1657,29 @@
                 </plugins>
             </build>
         </profile>
+        <!-- Application mode: thin JAR + target/libs/ runtime dependencies -->
+        <profile>
+            <id>libs</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-dependency-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>copy-runtime-libs</id>
+                                <phase>package</phase>
+                                <goals><goal>copy-dependencies</goal></goals>
+                                <configuration>
+                                    <outputDirectory>${project.build.directory}/libs</outputDirectory>
+                                    <includeScope>runtime</includeScope>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
         <profile>
             <id>shadedjar</id>
             <build>
@@ -1674,9 +1717,9 @@
                             </execution>
                         </executions>
                         <configuration>
+                            <mainClass>${app.main.class}</mainClass>
                             <buildArgs>
-                                <!-- needed to run on alpine without glibc -->
-                                <arg>--static</arg>
+                                <arg>-H:+ReportExceptionStackTraces</arg>
                             </buildArgs>
                         </configuration>
                     </plugin>
@@ -1715,6 +1758,8 @@
                         </executions>
                     </plugin>
 
+                    <!-- NOTE: jigsaw-maven-plugin 1.1.3 'link' goal only supports: launcher, module, output, modulePath, ignoreSigningInformation.
+                         mainClass, multiRelease, jlinkOptions, ignoreMissingDeps are currently no-ops (awaiting upstream support). -->
                     <plugin>
                         <groupId>io.github.ghackenberg</groupId>
                         <artifactId>jigsaw-maven-plugin</artifactId>
@@ -1728,13 +1773,13 @@
                             </execution>
                         </executions>
                         <configuration>
+                            <!-- No-op in 1.1.3, will work when plugin is upgraded -->
                             <mainClass>${app.main.class}</mainClass>
                             <multiRelease>${java.version}</multiRelease>
-                            <ignoreMissingDeps>true</ignoreMissingDeps>
-                            <launcher>myapp=${project.module}/${app.main.class}</launcher>
-                            <!-- Waiting for pull request to be merged -->
-                            <jlinkOptions>--no-header-files,- -no-man-pages,- -strip-debug,--compress=2</jlinkOptions>
-                            <module>${project.module}</module>
+                            <ignoreMissingDeps>false</ignoreMissingDeps>
+                            <launcher>myapp=${app.module.name}/${app.main.class}</launcher>
+                            <jlinkOptions>--no-header-files --no-man-pages --strip-debug --compress=2</jlinkOptions>
+                            <module>${app.module.name}</module>
                             <!--ignoreSigningInfo>true</ignoreSigningInfo-->
                         </configuration>
                     </plugin>
