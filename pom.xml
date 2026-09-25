@@ -146,6 +146,7 @@
         <mavenenforcer.version>3.6.3</mavenenforcer.version>
         <mavenflatten.version>1.8.0</mavenflatten.version>
         <maveninforeport.version>3.9.0</maveninforeport.version>
+        <maveninvoker.version>3.10.1</maveninvoker.version>
 
         <!-- Release-->
         <centralpublishing.version>0.11.0</centralpublishing.version>
@@ -2241,6 +2242,64 @@
                     <plugin>
                         <groupId>org.revapi</groupId>
                         <artifactId>revapi-maven-plugin</artifactId>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+
+        <!-- Integration tests: prove that child projects can inherit from this
+             parent POM and build successfully (see src/it).
+             The maven-invoker-plugin installs this parent into an isolated
+             local repository (target/local-repo), then builds every project
+             under src/it against it during the integration-test phase.
+             Activated automatically when a src/it directory exists, i.e. in
+             this project only: downstream child projects (without src/it)
+             are not affected by this profile. -->
+        <profile>
+            <id>it</id>
+            <activation>
+                <file>
+                    <exists>src/it</exists>
+                </file>
+            </activation>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-invoker-plugin</artifactId>
+                        <version>${maveninvoker.version}</version>
+                        <configuration>
+                            <pomIncludes>
+                                <pomInclude>**/pom.xml</pomInclude>
+                            </pomIncludes>
+                            <!-- Required for POM filtering; also keeps all IT
+                                 build artifacts out of the source tree -->
+                            <cloneProjectsTo>${project.build.directory}/it</cloneProjectsTo>
+                            <localRepositoryPath>${project.build.directory}/local-repo</localRepositoryPath>
+                            <settingsFile>src/it/settings.xml</settingsFile>
+                            <streamLogs>true</streamLogs>
+                            <filterProperties>
+                                <invoker.parent.groupId>${project.groupId}</invoker.parent.groupId>
+                                <invoker.parent.artifactId>${project.artifactId}</invoker.parent.artifactId>
+                                <invoker.parent.version>${project.version}</invoker.parent.version>
+                            </filterProperties>
+                        </configuration>
+                        <executions>
+                            <execution>
+                                <id>install-parent-for-it</id>
+                                <phase>pre-integration-test</phase>
+                                <goals>
+                                    <goal>install</goal>
+                                </goals>
+                            </execution>
+                            <execution>
+                                <id>integration-tests</id>
+                                <phase>integration-test</phase>
+                                <goals>
+                                    <goal>run</goal>
+                                </goals>
+                            </execution>
+                        </executions>
                     </plugin>
                 </plugins>
             </build>
