@@ -84,4 +84,5 @@ jobs:
           mvn -B org.owasp:dependency-check-maven:13.0.0:check \
             -f target/it/canary/pom.xml \
             -DnvdApiKey="${NVD_API_KEY}" \
-            -Dmaven.repo.local=target/local-repo
+            -Dmaven.repo.local=target/local-repo \
+            -DfailBuildOnCVSS=9

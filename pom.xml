@@ -1660,6 +1660,12 @@
         <!-- Application mode: thin JAR + target/libs/ runtime dependencies -->
         <profile>
             <id>libs</id>
+            <activation>
+                <property>
+                    <name>app.image</name>
+                    <value>libs</value>
+                </property>
+            </activation>
             <build>
                 <plugins>
                     <plugin>
@@ -1693,6 +1699,12 @@
         </profile>
         <profile>
             <id>native</id>
+            <activation>
+                <property>
+                    <name>app.image</name>
+                    <value>native</value>
+                </property>
+            </activation>
             <build>
                 <plugins>
                     <plugin>
@@ -1728,6 +1740,12 @@
         </profile>
         <profile>
             <id>jlink</id>
+            <activation>
+                <property>
+                    <name>app.image</name>
+                    <value>jlink</value>
+                </property>
+            </activation>
             <build>
                 <plugins>
                     <!-- Needed to use jlink with automatic modules
