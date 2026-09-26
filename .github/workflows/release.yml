@@ -1,35 +1,68 @@
-name: Release to Maven Central
+name: Release
 
 on:
   push:
     tags:
-      - 'v*'
+      - 'v[0-9]+.*'
   workflow_dispatch:
     inputs:
-      tag:
-        description: 'Tag to release (e.g., v0.1.20)'
+      version:
+        description: 'Release version (e.g., 0.1.20)'
         required: true
+        type: string
+      publish-central:
+        description: 'Also publish to Maven Central Portal'
+        required: false
+        default: 'false'
+        type: choice
+        options:
+          - 'false'
+          - 'true'
 
 permissions:
-  contents: read
+  contents: write
+  packages: write
+
+concurrency:
+  group: release
+  cancel-in-progress: false
 
 env:
   CI: true
 
 jobs:
-  release:
-    name: Build, Sign & Publish to Central
-    runs-on: ubuntu-latest
+  # ─────────────────────────────────────────────────────────────
+  # Tier 1: GitHub Packages (always)
+  # ─────────────────────────────────────────────────────────────
+  release-github-packages:
+    name: Release → GitHub Packages
+    runs-on: [self-hosted, linux, ebpro-org, x64]
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
-      - name: Setup Java 25
+      - name: Determine release version
+        id: version
+        run: |
+          if [ "${{ github.event_name }}" = "push" ]; then
+            # Tag-triggered: extract version from tag (v0.1.20 -> 0.1.20)
+            VERSION="${GITHUB_REF_NAME#v}"
+          else
+            # Manual dispatch: use input
+            VERSION="${{ github.event.inputs.version }}"
+          fi
+          echo "version=${VERSION}" >> "$GITHUB_OUTPUT"
+          echo "tag=v${VERSION}" >> "$GITHUB_OUTPUT"
+          echo "Releasing version: ${VERSION}"
+
+      - name: Setup Java 25 + Maven
         uses: actions/setup-java@v4
         with:
           java-version: '25'
           distribution: 'temurin'
+          maven-version: '3.9.11'
           cache: 'maven'
 
       - name: Setup GPG
@@ -39,33 +72,207 @@ jobs:
           gpg-key: ${{ secrets.SIGN_KEY }}
           gpg-key-armored: true
 
-      - name: Build & Verify (sign + SBOM + javadoc + sources)
+      - name: Set release version (strip -SNAPSHOT)
+        run: |
+          mvn -B versions:set \
+            -DnewVersion="${{ steps.version.outputs.version }}" \
+            -DgenerateBackupPoms=false
+
+      - name: Build + Sign + Deploy to GitHub Packages
+        env:
+          GITHUBTOKEN: ${{ secrets.GITHUBTOKEN }}
+        run: |
+          mvn -B clean deploy \
+            -P release \
+            -DskipTests \
+            -Dmaven.repo.local=.m2/repository \
+            -s <(cat <<SETTINGS
+          <?xml version="1.0" encoding="UTF-8"?>
+          <settings xmlns="http://maven.apache.org/SETTINGS/1.2.0">
+            <servers>
+              <server>
+                <id>github</id>
+                <username>x-access-token</username>
+                <password>${GITHUBTOKEN}</password>
+              </server>
+            </servers>
+          </settings>
+          SETTINGS
+          )
+
+      - name: Create and push tag
+        if: github.event_name == 'workflow_dispatch'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git tag -a "${{ steps.version.outputs.tag }}" -m "Release ${{ steps.version.outputs.version }}"
+          git push origin "${{ steps.version.outputs.tag }}"
+
+      - name: Create GitHub Release
+        if: github.event_name == 'workflow_dispatch'
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ steps.version.outputs.tag }}
+          name: Release ${{ steps.version.outputs.version }}
+          generate_release_notes: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUBTOKEN }}
+
+      - name: Bump to next SNAPSHOT
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          CURRENT="${{ steps.version.outputs.version }}"
+          # Increment patch version: 0.1.20 -> 0.1.21-SNAPSHOT
+          MAJOR=$(echo "$CURRENT" | cut -d. -f1)
+          MINOR=$(echo "$CURRENT" | cut -d. -f2)
+          PATCH=$(echo "$CURRENT" | cut -d. -f3)
+          NEXT_PATCH=$((PATCH + 1))
+          NEXT_VERSION="${MAJOR}.${MINOR}.${NEXT_PATCH}-SNAPSHOT"
+
+          mvn -B versions:set \
+            -DnewVersion="${NEXT_VERSION}" \
+            -DgenerateBackupPoms=false
+
+          git add pom.xml
+          git commit -m "chore(release): bump to ${NEXT_VERSION} [ci skip]"
+          git push origin HEAD:develop
+
+      - name: Upload SBOM artifact
+        if: success()
+        uses: actions/upload-artifact@v4
+        with:
+          name: sbom-${{ steps.version.outputs.tag }}
+          path: |
+            target/bom.json
+            target/bom.xml
+
+  # ─────────────────────────────────────────────────────────────
+  # Tier 2: Maven Central Portal (opt-in)
+  # ─────────────────────────────────────────────────────────────
+  release-maven-central:
+    name: Release → Maven Central
+    needs: release-github-packages
+    runs-on: [self-hosted, linux, ebpro-org, x64]
+    if: |
+      github.event_name == 'workflow_dispatch' &&
+      github.event.inputs.publish-central == 'true'
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Java 25 + Maven
+        uses: actions/setup-java@v4
+        with:
+          java-version: '25'
+          distribution: 'temurin'
+          maven-version: '3.9.11'
+          cache: 'maven'
+
+      - name: Setup GPG
+        uses: olafbergerson/gpg-maven-action@v2
+        with:
+          gpg-passphrase: ${{ secrets.SIGN_KEY_PASS }}
+          gpg-key: ${{ secrets.SIGN_KEY }}
+          gpg-key-armored: true
+
+      - name: Set release version
+        run: |
+          VERSION="${{ github.event.inputs.version }}"
+          mvn -B versions:set \
+            -DnewVersion="${VERSION}" \
+            -DgenerateBackupPoms=false
+
+      - name: Build (sources + javadoc + sign + SBOM)
         run: |
           mvn -B clean verify \
             -P release \
-            -DskipTests=false
+            -DskipTests
 
-      - name: Publish to Maven Central (Central Portal)
+      - name: Publish to Maven Central Portal
         env:
           CENTRAL_PORTAL_USERNAME: ${{ secrets.CENTRAL_PORTAL_USERNAME }}
           CENTRAL_PORTAL_TOKEN: ${{ secrets.CENTRAL_PORTAL_TOKEN }}
         run: |
           mvn -B central-publishing:publish \
             -Dcentral.publishing.username="${CENTRAL_PORTAL_USERNAME}" \
-            -Dcentral.publishing.password="${CENTRAL_PORTAL_TOKEN}"
+            -Dcentral.publishing.password="${CENTRAL_PORTAL_TOKEN}" \
+            -Dcentral.publishing.defaultDeploymentRepository=central-portal-ebpro
 
       - name: Upload SBOM artifact
         if: success()
         uses: actions/upload-artifact@v4
         with:
-          name: sbom-${{ github.ref_name }}
+          name: sbom-central-${{ github.event.inputs.version }}
           path: |
             target/bom.json
             target/bom.xml
 
-      - name: Upload release artifacts
-        if: success()
-        uses: actions/upload-artifact@v4
+  # ─────────────────────────────────────────────────────────────
+  # Validation: verify artifacts are resolvable
+  # ─────────────────────────────────────────────────────────────
+  validate:
+    name: Validate published artifacts
+    needs: [release-github-packages]
+    runs-on: [self-hosted, linux, ebpro-org, x64]
+    steps:
+      - name: Setup Java 25 + Maven
+        uses: actions/setup-java@v4
         with:
-          name: release-artifacts-${{ github.ref_name }}
-          path: target/*.jar
+          java-version: '25'
+          distribution: 'temurin'
+          maven-version: '3.9.11'
+          cache: 'maven'
+
+      - name: Determine version
+        id: version
+        run: |
+          if [ "${{ github.event_name }}" = "push" ]; then
+            VERSION="${GITHUB_REF_NAME#v}"
+          else
+            VERSION="${{ github.event.inputs.version }}"
+          fi
+          echo "version=${VERSION}" >> "$GITHUB_OUTPUT"
+
+      - name: Verify artifact is resolvable from GitHub Packages
+        env:
+          GITHUBTOKEN: ${{ secrets.GITHUBTOKEN }}
+        run: |
+          VERSION="${{ steps.version.outputs.version }}"
+          # Fetch the exact POM artifact from GitHub Packages.
+          # dependency:get fails if the artifact is not resolvable.
+          WORKDIR="$(mktemp -d)"
+          cd "$WORKDIR"
+          mvn -B org.apache.maven.plugins:maven-dependency-plugin:3.8.1:get \
+            -Dartifact=fr.ebruno.maven.poms:maven-parentpom:${VERSION}:pom \
+            -DremoteRepositories=github::default::https://maven.pkg.github.com/ebpro/maven-parentpom \
+            -s <(cat <<SETTINGS
+          <?xml version="1.0" encoding="UTF-8"?>
+          <settings xmlns="http://maven.apache.org/SETTINGS/1.2.0">
+            <servers>
+              <server>
+                <id>github</id>
+                <username>x-access-token</username>
+                <password>${GITHUBTOKEN}</password>
+              </server>
+            </servers>
+            <profiles>
+              <profile>
+                <id>github</id>
+                <repositories>
+                  <repository>
+                    <id>github</id>
+                    <url>https://maven.pkg.github.com/ebpro/maven-parentpom</url>
+                  </repository>
+                </repositories>
+              </profile>
+            </profiles>
+            <activeProfiles>
+              <activeProfile>github</activeProfile>
+            </activeProfiles>
+          </settings>
+          SETTINGS
+          )
+          echo "Artifact ${VERSION} is resolvable from GitHub Packages"
