@@ -221,7 +221,7 @@ For **application** (non-library) modules, the `app.image` property selects the 
 | `sonar` | Manual: `-Psonar` | SonarQube analysis |
 | `arq-payara-micro` | Manual | Arquillian + Payara Micro embedded |
 | `arq-payara-managed` | Manual | Arquillian + Payara managed |
-| `release` | Manual: `-Prelease` | Release preparation (flatten, gpg, central) |
+| `release` | Manual: `-Prelease` | Release prep: enforcer + sources + javadoc + GPG sign + SBOM |
 | `format` | Manual: `-Pformat` | Spotless format/apply |
 | `api-compat` | Manual: `-Papi-compat` | RevAPI binary compatibility check |
 | `it` | Automatic (file-activated on `src/it`) | Maven Invoker integration tests |
@@ -297,40 +297,34 @@ target/bom.xml
 
 ## Release Process
 
-### Prerequisites
+> **Full standard**: see [`docs/RELEASING.md`](docs/RELEASING.md) — trunk-based, tag-driven, two-tier publishing (reusable across all `ebpro` Java repos).
 
-1. **GPG key** (ed25519) — registered on Central Portal
-   - `SIGN_KEY` org secret: armored private key
-   - `SIGN_KEY_PASS` org secret: passphrase
-2. **Central Portal** credentials
-   - `CENTRAL_PORTAL_USERNAME` org secret
-   - `CENTRAL_PORTAL_TOKEN` org secret
-3. **Maven Central account** — key fingerprint registered at https://central.sonatype.com
+Releases are **tag-driven** and handled entirely by CI (`release.yml`). No `maven-release-plugin`, no manual `mvn release:prepare`.
 
-### Release workflow
+- **Tier 1 — GitHub Packages** (internal): automatic on every release tag
+- **Tier 2 — Maven Central** (public): opt-in via `workflow_dispatch` + `publish-central: true`
 
-```
-git tag v0.1.20
-  → GitHub Actions: release.yml
-    → mvn clean verify -Prelease -Pgpgsigning -Pmavencentral
-    → Sign JAR + POM + sources + javadoc
-    → Deploy to Central Portal (staged → closed → released)
-    → Deploy to GitHub Packages
-```
-
-### Tag format
-
-`v{major}.{minor}.{patch}` — e.g., `v0.1.20`
-
-### Manual release (local)
+### Quick release (GitHub Packages)
 
 ```bash
-# Prepare
-mvn clean verify -Prelease -Pgpgsigning -Pmavencentral
-
-# Or use maven-release-plugin
-mvn release:prepare release:perform
+git checkout develop && git pull
+git tag -a v0.1.20 -m "Release 0.1.20"
+git push origin v0.1.20   # CI builds, signs, deploys, then bumps to 0.1.21-SNAPSHOT
 ```
+
+### Full release (GitHub Packages + Maven Central)
+
+Trigger **Actions → Release → Run workflow** with `version: 0.1.20` and `publish-central: true`.
+
+### Prerequisites
+
+| Secret | Purpose |
+|--------|---------|
+| `SIGN_KEY` / `SIGN_KEY_PASS` | GPG private key (ed25519) + passphrase |
+| `GITHUBTOKEN` | PAT with `packages:write` + `contents:write` |
+| `CENTRAL_PORTAL_USERNAME` / `CENTRAL_PORTAL_TOKEN` | Central Portal credentials (Tier 2 only) |
+
+Tag format: `v{major}.{minor}.{patch}` — e.g., `v0.1.20`.
 
 ---
 
@@ -342,7 +336,7 @@ mvn release:prepare release:perform
 |----------|---------|---------|
 | `ci-java.yml` | Push/PR to `develop` | Build, test, SonarQube |
 | `security.yml` | Push/PR to `develop` | CodeQL, SBOM, OWASP canary, Dep Review |
-| `release.yml` | Tag `v*` | Sign + publish to Central Portal |
+| `release.yml` | Tag `v*` / `workflow_dispatch` | Two-tier publish: GitHub Packages (always) + Central (opt-in) |
 
 ### Runners
 
@@ -412,11 +406,13 @@ mvn versions:update-properties
 
 ### Release a new parent version
 
+Tag-driven — CI does the rest (build, sign, deploy, bump to next `-SNAPSHOT`).
+See [`docs/RELEASING.md`](docs/RELEASING.md).
+
 ```bash
-mvn release:prepare -DreleaseVersion=0.1.20 -DdevelopmentVersion=0.1.21-SNAPSHOT
-mvn release:perform
-git tag v0.1.20
-git push && git push --tags
+git checkout develop && git pull
+git tag -a v0.1.20 -m "Release 0.1.20"
+git push origin v0.1.20
 ```
 
 ---
@@ -443,11 +439,13 @@ git push && git push --tags
 maven-parentpom/
 ├── pom.xml                    # The parent POM (2300+ lines)
 ├── README.md                  # This file
+├── docs/
+│   └── RELEASING.md           # Release standard (trunk-based, two-tier)
 ├── .github/
 │   └── workflows/
 │       ├── ci-java.yml        # Build + test + SonarQube
 │       ├── security.yml       # CodeQL + SBOM + OWASP + Dep Review
-│       └── release.yml        # GPG sign + Central Portal publish
+│       └── release.yml        # Two-tier release: GitHub Packages + Central (opt-in)
 ├── src/
 │   └── it/
 │       ├── canary/            # Invoker IT: minimal child project
