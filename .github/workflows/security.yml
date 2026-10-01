@@ -94,6 +94,18 @@ jobs:
         env:
           MAVEN_OPTS: -Xmx512m
 
+      - name: NVD date
+        id: nvd-date
+        run: echo "d=$(date -u +%Y%m%d)" >> "$GITHUB_OUTPUT"
+
+      - name: Cache NVD data
+        uses: actions/cache@v4
+        with:
+          path: /home/runner/.nvd-cache
+          key: nvd-${{ steps.nvd-date.outputs.d }}
+          restore-keys: |
+            nvd-
+
       - name: Run OWASP Dependency Check on canary
         env:
           NVD_API_KEY: ${{ secrets.NVD_API_KEY }}
