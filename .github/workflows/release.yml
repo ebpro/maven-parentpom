@@ -29,7 +29,14 @@ concurrency:
 
 env:
   CI: true
+  # ci-utils-java/ci-settings.xml:
+  #  - nexus-proxy profile mirrors central through Nexus when MAVEN_PROXY_URL is set
+  #    (server auth via NEXUS_USERNAME / NEXUS_PASSWORD)
+  #  - github profile builds its repository URL from GITHUBORG
   MAVEN_PROXY_URL: ${{ secrets.MAVEN_PROXY_URL }}
+  NEXUS_USERNAME: ${{ secrets.NEXUS_USERNAME }}
+  NEXUS_PASSWORD: ${{ secrets.NEXUS_PASSWORD }}
+  GITHUBORG: ${{ github.repository_owner }}
 
 jobs:
   # ─────────────────────────────────────────────────────────────
@@ -43,6 +50,7 @@ jobs:
         uses: actions/checkout@v7
         with:
           fetch-depth: 0
+          submodules: true
 
       - name: Determine release version
         id: version
@@ -74,7 +82,7 @@ jobs:
 
       - name: Set release version (strip -SNAPSHOT)
         run: |
-          ./mvnw -B versions:set \
+          ./mvnw -B --settings ci-utils-java/ci-settings.xml versions:set \
             -DnewVersion="${{ steps.version.outputs.version }}" \
             -DgenerateBackupPoms=false
 
@@ -82,22 +90,9 @@ jobs:
         env:
           GITHUBTOKEN: ${{ secrets.GITHUBTOKEN }}
         run: |
-          ./mvnw -B clean deploy \
+          ./mvnw -B --settings ci-utils-java/ci-settings.xml clean deploy \
             -P release \
-            -DskipTests \
-            -s <(cat <<SETTINGS
-          <?xml version="1.0" encoding="UTF-8"?>
-          <settings xmlns="http://maven.apache.org/SETTINGS/1.2.0">
-            <servers>
-              <server>
-                <id>github</id>
-                <username>x-access-token</username>
-                <password>${GITHUBTOKEN}</password>
-              </server>
-            </servers>
-          </settings>
-          SETTINGS
-          )
+            -DskipTests
 
       - name: Create and push tag
         if: github.event_name == 'workflow_dispatch'
@@ -129,7 +124,7 @@ jobs:
           NEXT_PATCH=$((PATCH + 1))
           NEXT_VERSION="${MAJOR}.${MINOR}.${NEXT_PATCH}-SNAPSHOT"
 
-          ./mvnw -B versions:set \
+          ./mvnw -B --settings ci-utils-java/ci-settings.xml versions:set \
             -DnewVersion="${NEXT_VERSION}" \
             -DgenerateBackupPoms=false
 
@@ -161,6 +156,7 @@ jobs:
         uses: actions/checkout@v7
         with:
           fetch-depth: 0
+          submodules: true
 
       - name: Setup Java 25
         uses: actions/setup-java@v6
@@ -179,13 +175,13 @@ jobs:
       - name: Set release version
         run: |
           VERSION="${{ github.event.inputs.version }}"
-          ./mvnw -B versions:set \
+          ./mvnw -B --settings ci-utils-java/ci-settings.xml versions:set \
             -DnewVersion="${VERSION}" \
             -DgenerateBackupPoms=false
 
       - name: Build (sources + javadoc + sign + SBOM)
         run: |
-          ./mvnw -B clean verify \
+          ./mvnw -B --settings ci-utils-java/ci-settings.xml clean verify \
             -P release \
             -DskipTests
 
@@ -194,7 +190,7 @@ jobs:
           CENTRAL_PORTAL_USERNAME: ${{ secrets.CENTRAL_PORTAL_USERNAME }}
           CENTRAL_PORTAL_TOKEN: ${{ secrets.CENTRAL_PORTAL_TOKEN }}
         run: |
-          ./mvnw -B central-publishing:publish \
+          ./mvnw -B --settings ci-utils-java/ci-settings.xml central-publishing:publish \
             -Dcentral.publishing.username="${CENTRAL_PORTAL_USERNAME}" \
             -Dcentral.publishing.password="${CENTRAL_PORTAL_TOKEN}" \
             -Dcentral.publishing.defaultDeploymentRepository=central-portal-ebpro
@@ -216,6 +212,11 @@ jobs:
     needs: [release-github-packages]
     runs-on: [self-hosted, linux, ebpro-org, x64]
     steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          submodules: true
+
       - name: Setup Java 25
         uses: actions/setup-java@v6
         with:
@@ -240,36 +241,14 @@ jobs:
           VERSION="${{ steps.version.outputs.version }}"
           # Fetch the exact POM artifact from GitHub Packages.
           # dependency:get fails if the artifact is not resolvable.
+          # Run from a clean temp dir (no local pom.xml on the classpath),
+          # but invoke the workspace Maven wrapper and settings via absolute
+          # paths so the relative cwd does not break ./mvnw / settings lookup.
           WORKDIR="$(mktemp -d)"
           cd "$WORKDIR"
-          ./mvnw -B org.apache.maven.plugins:maven-dependency-plugin:3.8.1:get \
+          "$GITHUB_WORKSPACE/mvnw" -B \
+            --settings "$GITHUB_WORKSPACE/ci-utils-java/ci-settings.xml" \
+            org.apache.maven.plugins:maven-dependency-plugin:3.8.1:get \
             -Dartifact=fr.ebruno.maven.poms:maven-parentpom:${VERSION}:pom \
-            -DremoteRepositories=github::default::https://maven.pkg.github.com/ebpro/maven-parentpom \
-            -s <(cat <<SETTINGS
-          <?xml version="1.0" encoding="UTF-8"?>
-          <settings xmlns="http://maven.apache.org/SETTINGS/1.2.0">
-            <servers>
-              <server>
-                <id>github</id>
-                <username>x-access-token</username>
-                <password>${GITHUBTOKEN}</password>
-              </server>
-            </servers>
-            <profiles>
-              <profile>
-                <id>github</id>
-                <repositories>
-                  <repository>
-                    <id>github</id>
-                    <url>https://maven.pkg.github.com/ebpro/maven-parentpom</url>
-                  </repository>
-                </repositories>
-              </profile>
-            </profiles>
-            <activeProfiles>
-              <activeProfile>github</activeProfile>
-            </activeProfiles>
-          </settings>
-          SETTINGS
-          )
+            -DremoteRepositories=github::default::https://maven.pkg.github.com/ebpro/maven-parentpom
           echo "Artifact ${VERSION} is resolvable from GitHub Packages"
