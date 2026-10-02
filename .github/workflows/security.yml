@@ -22,6 +22,9 @@ permissions:
 # This avoids re-downloading artifacts from the internet on every run.
 env:
   RUNNER: self-hosted
+  MAVEN_PROXY_URL: ${{ secrets.MAVEN_PROXY_URL }}
+  NEXUS_USERNAME: ${{ secrets.NEXUS_USERNAME }}
+  NEXUS_PASSWORD: ${{ secrets.NEXUS_PASSWORD }}
 
 jobs:
   dependency-review:
@@ -55,6 +58,8 @@ jobs:
     runs-on: [self-hosted, linux, ebpro-org]
     steps:
       - uses: actions/checkout@v7
+        with:
+          submodules: true
 
       - name: Setup Java 25
         uses: actions/setup-java@v6
@@ -64,7 +69,7 @@ jobs:
           cache: 'maven'
 
       - name: Generate CycloneDX SBOM
-        run: mvn -B cyclonedx:makeBom -DoutputFormat=All -DoutputName=bom
+        run: ./mvnw -B --settings ci-utils-java/ci-settings.xml cyclonedx:makeBom -DoutputFormat=All -DoutputName=bom
 
       - name: Upload SBOM artifact
         uses: actions/upload-artifact@v7
@@ -90,7 +95,7 @@ jobs:
           cache: 'maven'
 
       - name: Build parent + canary
-        run: mvn -B clean verify -DskipTests --errors
+        run: ./mvnw -B --settings ci-utils-java/ci-settings.xml clean verify -DskipTests --errors
         env:
           MAVEN_OPTS: -Xmx512m
 
@@ -99,7 +104,7 @@ jobs:
         run: echo "d=$(date -u +%Y%m%d)" >> "$GITHUB_OUTPUT"
 
       - name: Cache NVD data
-        uses: actions/cache@v4
+        uses: actions/cache@v6
         with:
           path: /home/runner/.nvd-cache
           key: nvd-${{ steps.nvd-date.outputs.d }}
@@ -110,7 +115,7 @@ jobs:
         env:
           NVD_API_KEY: ${{ secrets.NVD_API_KEY }}
         run: |
-          mvn -B org.owasp:dependency-check-maven:13.0.0:check \
+          ./mvnw -B --settings ci-utils-java/ci-settings.xml org.owasp:dependency-check-maven:13.0.0:check \
             -f target/it/canary/pom.xml \
             -DnvdApiKey="${NVD_API_KEY}" \
             -DdataDirectory=/home/runner/.nvd-cache \
