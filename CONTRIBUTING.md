@@ -26,4 +26,4 @@ Thanks for contributing!
 A PR is mergeable when:
 - CI (build + tests) is green
 - Security workflow is green
-- SonarQube quality gate passes
+- SonarQube quality gate passes *(maintainer-triggered, requires `SONAR_TOKEN`)*

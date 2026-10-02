@@ -15,8 +15,8 @@
 - [ ] `./mvnw -B clean verify` passes locally
 - [ ] CI (build + tests) is green
 - [ ] Security workflow is green
-- [ ] SonarQube quality gate passes
-- [ ] Version bumped if the change is user-facing
+- [ ] SonarQube quality gate passes (maintainer: runs on trusted context)
+- [ ] No breaking changes to published POM structure (or documented)
 - [ ] Changelog updated (if applicable)
 
 ## Test evidence
