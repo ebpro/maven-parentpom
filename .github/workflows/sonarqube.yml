@@ -5,7 +5,7 @@ on:
   pull_request:
     branches: ['**']
   push:
-    branches: [develop, main, master]
+    branches: [main]
 
 permissions:
   contents: read
@@ -19,7 +19,7 @@ jobs:
     uses: ebpro/ci-java/.github/workflows/sonarqube-maven.yml@v1.0.0
     with:
       java-version: '25'
-      sonar-main-branch: ${{ vars.SONAR_MAIN_BRANCH || 'develop' }}
+      sonar-main-branch: ${{ vars.SONAR_MAIN_BRANCH || 'main' }}
       sonar-host-url: ${{ vars.SONAR_HOST_URL }}
       sonar-public-url: ${{ vars.SONAR_PUBLIC_URL }}
       sonar-runner: ${{ vars.SONAR_RUNNER }}

@@ -2,9 +2,9 @@ name: Security
 
 on:
   push:
-    branches: [ develop, main, master ]
+    branches: [main]
   pull_request:
-    branches: [ develop, main, master ]
+    branches: [main]
   merge_group: # run the dependency-review gate in the merge queue
   schedule:
     # Weekly scan (Mondays at 6am UTC)

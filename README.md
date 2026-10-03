@@ -75,6 +75,36 @@ That's it. You get: enforced Java/Maven versions, dependency convergence, JaCoCo
 
 ---
 
+## Git Workflow
+
+This repository follows a **trunk-based** development model:
+
+- **`main`** is the only long-lived branch (always deployable, always green)
+- Feature branches are short-lived (max 2 days) and merge via **squash PR**
+- **Releases** are tags (`vX.Y.Z`) on `main` — no release branches
+
+### Branch Naming
+
+| Prefix | Purpose | Example |
+|--------|---------|---------|
+| `feat/` | New feature | `feat/revision-property` |
+| `fix/` | Bug fix | `fix/enforcer-rule` |
+| `refactor/` | Restructure | `refactor/release-workflow` |
+| `ci/` | CI/CD changes | `ci/sota-2026-actions` |
+| `chore/` | Deps, config | `chore/bump-wrapper` |
+| `docs/` | Documentation | `docs/release-process` |
+
+### CI Pipeline
+
+Every PR and push to `main` triggers:
+- **Build + Test** (Java 25, Maven 3.9.11, Temurin)
+- **SonarQube** analysis
+- **CodeQL** security analysis
+- **Dependency Review** (license + vulnerability)
+- **SNAPSHOT deploy** to GitHub Packages (on `main` push)
+
+---
+
 ## Managed Dependencies
 
 All versions are managed in `<dependencyManagement>`. Declare dependencies in your child **without** `<version>`.
@@ -307,7 +337,7 @@ Releases are **tag-driven** and handled entirely by CI (`release.yml`). No `mave
 ### Quick release (GitHub Packages)
 
 ```bash
-git checkout develop && git pull
+git checkout main && git pull
 git tag -a v0.1.20 -m "Release 0.1.20"
 git push origin v0.1.20   # CI builds, signs, deploys, then bumps to 0.1.21-SNAPSHOT
 ```
@@ -334,8 +364,8 @@ Tag format: `v{major}.{minor}.{patch}` — e.g., `v0.1.20`.
 
 | Workflow | Trigger | Purpose |
 |----------|---------|---------|
-| `ci-java.yml` | Push/PR to `develop` | Build, test, SonarQube |
-| `security.yml` | Push/PR to `develop` | CodeQL, SBOM, OWASP canary, Dep Review |
+| `ci-java.yml` | Push/PR to `main` | Build, test, SonarQube |
+| `security.yml` | Push/PR to `main` | CodeQL, SBOM, OWASP canary, Dep Review |
 | `release.yml` | Tag `v*` / `workflow_dispatch` | Two-tier publish: GitHub Packages (always) + Central (opt-in) |
 
 ### Runners
@@ -410,7 +440,7 @@ Tag-driven — CI does the rest (build, sign, deploy, bump to next `-SNAPSHOT`).
 See [`docs/RELEASING.md`](docs/RELEASING.md).
 
 ```bash
-git checkout develop && git pull
+git checkout main && git pull
 git tag -a v0.1.20 -m "Release 0.1.20"
 git push origin v0.1.20
 ```
@@ -443,7 +473,8 @@ maven-parentpom/
 │   └── RELEASING.md           # Release standard (trunk-based, two-tier)
 ├── .github/
 │   └── workflows/
-│       ├── ci-java.yml        # Build + test + SonarQube
+│       ├── ci-java.yml        # Build + test + deploy
+│       ├── sonarqube.yml      # SonarQube analysis
 │       ├── security.yml       # CodeQL + SBOM + OWASP + Dep Review
 │       └── release.yml        # Two-tier release: GitHub Packages + Central (opt-in)
 ├── src/

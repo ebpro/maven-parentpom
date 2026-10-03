@@ -6,14 +6,27 @@ Thanks for contributing!
 
 1. Fork & clone, then create a branch: `git checkout -b feat/your-change`
 2. Build & test: `./mvnw -B clean verify`
-3. Open a PR against `develop` using the PR template.
+3. Open a PR against `main` using the PR template.
 
 ## Branches
 
+This repository uses a **trunk-based** model: `main` is the only long-lived branch.
+
 | Branch | Purpose |
 |--------|---------|
-| `develop` | Default branch, receives PRs |
-| `master` | Release / site branch (no direct PRs) |
+| `main` | Default branch, always green, receives squash PRs |
+| `feat/…`, `fix/…`, `refactor/…`, `ci/…`, `chore/…`, `docs/…` | Short-lived feature branches (max 2 days) |
+
+### Branch Naming
+
+| Prefix | Purpose | Example |
+|--------|---------|---------|
+| `feat/` | New feature | `feat/revision-property` |
+| `fix/` | Bug fix | `fix/enforcer-rule` |
+| `refactor/` | Restructure | `refactor/release-workflow` |
+| `ci/` | CI/CD changes | `ci/sota-2026-actions` |
+| `chore/` | Deps, config | `chore/bump-wrapper` |
+| `docs/` | Documentation | `docs/release-process` |
 
 ## Conventions
 
